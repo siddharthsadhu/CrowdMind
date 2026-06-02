@@ -73,198 +73,517 @@ Each phase delivers usable value.
 
 ---
 
-# Phase 1 — Foundation MVP
+# Phase A — Frontend Polish & Tooling
 
 Status:
 
 ```text
-CURRENT PHASE
+CURRENT PHASE — IN PROGRESS
 ```
 
 Goal:
 
-Build the minimum viable Knowledge Evolution Platform.
+Stabilize the frontend shell, add professional tooling, and prepare the frontend for backend integration.
 
 ---
 
-## Authentication
+## A1 — Visual QA
 
 Priority:
 
-Critical
+High
 
-Features:
+Tasks:
 
-* Clerk Integration
-* Login
-* Registration
-* Session Management
-* Protected Routes
-
-Status:
-
-Planned
+* Verify all 21 routes render correct Stitch HTML
+* Fix broken images, links, or navigation
+* Ensure responsive layout consistency
 
 ---
 
-## User Profiles
+## A2 — Custom Avatar Dropdown
 
 Priority:
 
-Critical
+High
 
-Features:
+Tasks:
 
-* User Profile
-* Reputation Display
-* Contribution History
-
-Status:
-
-Planned
+* Replace login/register buttons in AppHeader with avatar dropdown
+* Add profile, contributions, settings, saved knowledge links
+* Add logout action
 
 ---
 
-## Questions
+## A3 — State Management & HTTP Client
 
 Priority:
 
-Critical
+High
 
-Features:
+Tasks:
 
-* Create Question
-* View Questions
-* Categories
-* Question Detail
-
-Status:
-
-Planned
+* Install Zustand + TanStack Query
+* Create `stores/` directory with auth store skeleton
+* Create `providers/` directory
+* Install axios or use built-in fetch
+* Create `services/api/client.ts` (centralized axios instance)
+* Create service modules: `questions.ts`, `discussions.ts`, `faqs.ts`, `auth.ts`, `users.ts`, `notifications.ts`, `moderation.ts`
 
 ---
 
-## AI Question Analysis
-
-Priority:
-
-Critical
-
-Features:
-
-* Duplicate Detection
-* Related FAQs
-* Related Discussions
-* Category Suggestions
-
-Status:
-
-Planned
-
----
-
-## Discussions
-
-Priority:
-
-Critical
-
-Features:
-
-* Create Discussion
-* Discussion Thread
-* Replies
-* Voting
-
-Status:
-
-Planned
-
----
-
-## FAQ Repository
-
-Priority:
-
-Critical
-
-Features:
-
-* FAQ Listing
-* FAQ Detail
-* Search
-* Category Filters
-
-Status:
-
-Planned
-
----
-
-## Search
-
-Priority:
-
-Critical
-
-Features:
-
-* Keyword Search
-* FAQ Search
-* Discussion Search
-
-Status:
-
-Planned
-
----
-
-## Notifications
+## A4 — Form Management
 
 Priority:
 
 Medium
 
-Features:
+Tasks:
 
-* In-App Notifications
-* Read/Unread Status
-
-Status:
-
-Planned
+* Install React Hook Form + Zod
+* Create form validation schemas for questions, discussions, replies
 
 ---
 
-## Saved Knowledge
+# Phase B — Backend Skeleton & Core Layer
 
-Priority:
+Goal:
 
-Medium
-
-Features:
-
-* Save FAQ
-* Save Discussion
-* Collections
-
-Status:
-
-Planned
+Create the FastAPI backend project structure with all core infrastructure.
 
 ---
 
-# Phase 1 Deliverable
+## B1 — Project Scaffold
+
+Tasks:
+
+* Create `backend/` directory
+* Initialize `pyproject.toml` with all dependencies (FastAPI, SQLAlchemy 2.0, Alembic, Pydantic v2, psycopg3, pytest, httpx, etc.)
+* Create module structure: `app/core/`, `app/models/`, `app/schemas/`, `app/api/`, `app/services/`, `app/repositories/`, `app/infrastructure/`
+
+---
+
+## B2 — Core Layer
+
+Tasks:
+
+* `app/core/config.py` — settings via pydantic-settings + .env
+* `app/core/database.py` — async SQLAlchemy engine + session factory
+* `app/core/security.py` — JWT verification middleware for Clerk tokens
+* `app/core/dependencies.py` — dependency injection (get_db, get_current_user, require_role)
+
+---
+
+## B3 — Database Models
+
+Tasks:
+
+* Create all SQLAlchemy 2.0 models per DATABASE.md: User, Question, Discussion, Reply, Vote, FAQ, FAQCandidate, FAQVersion, Report, ModerationAction, Notification, SavedKnowledge, ReputationHistory, AnalyticsEvent
+* Add UUID pk, timestamps, soft delete
+* Create `Base` with common columns mixin
+
+---
+
+## B4 — Alembic Setup
+
+Tasks:
+
+* Initialize Alembic
+* Create initial migration
+* Create seed data script
+
+---
+
+## B5 — Infrastructure Stubs
+
+Tasks:
+
+* Docker Compose for PostgreSQL 16 + pgvector
+* `Makefile` or task runner for common commands
+* VSCode launch configs
+
+---
+
+# Phase C — Questions Module (API + Frontend)
+
+Goal:
+
+Build the complete Questions feature (CRUD + AI analysis) end-to-end.
+
+---
+
+## C1 — Questions Schemas
+
+Tasks:
+
+* Pydantic models: QuestionCreate, QuestionUpdate, QuestionResponse, QuestionList
+* Category enum
+
+---
+
+## C2 — Questions Repository
+
+Tasks:
+
+* SQLAlchemy repository pattern: create, get_by_id, list (paginated), update, soft_delete
+* Category filter support
+
+---
+
+## C3 — Questions Service
+
+Tasks:
+
+* Business logic: create question, duplicate check, similar FAQ lookup
+* Service → Repository pattern
+
+---
+
+## C4 — Questions API
+
+Tasks:
+
+* `POST /api/v1/questions`
+* `GET /api/v1/questions`
+* `GET /api/v1/questions/{id}`
+* `PATCH /api/v1/questions/{id}`
+* `DELETE /api/v1/questions/{id}` (soft delete)
+* Standard error handling with HTTPException
+
+---
+
+## C5 — Questions Tests
+
+Tasks:
+
+* Unit tests for service
+* Integration tests for API with httpx.AsyncClient
+* Mock DB test fixtures
+
+---
+
+## C6 — Questions Frontend
+
+Tasks:
+
+* Create API service module `services/api/questions.ts`
+* Wire AskQuestionPage to real API
+* Wire questions listing to mock (wait for discussions endpoint)
+
+---
+
+# Phase D — Clerk Auth + User Module
+
+Goal:
+
+Replace mock auth with real Clerk authentication across frontend and backend.
+
+---
+
+## D1 — Clerk Frontend Setup
+
+Tasks:
+
+* Install `@clerk/clerk-react`
+* Wrap app with ClerkProvider
+* Replace AuthContext with Clerk hooks
+* Update RouteGuard to use Clerk
+* Update AppHeader to use Clerk UserButton + avatar dropdown
+
+---
+
+## D2 — Clerk Backend Verification
+
+Tasks:
+
+* Create Clerk webhook endpoint for user sync (`POST /api/v1/webhooks/clerk`)
+* Implement JWT verification middleware
+* Create User repository and service
+* Sync Clerk users to local database
+
+---
+
+## D3 — User Module API
+
+Tasks:
+
+* `GET /api/v1/users/me`
+* `GET /api/v1/users/{id}`
+* `PATCH /api/v1/users/me`
+* Reputation integration
+
+---
+
+# Phase E — Discussions, Replies & Voting
+
+Goal:
+
+Build the complete discussion system with voting.
+
+---
+
+## E1 — Discussions Module
+
+Tasks:
+
+* Create schemas, repository, service, API endpoints
+* `POST /api/v1/discussions`
+* `GET /api/v1/discussions`
+* `GET /api/v1/discussions/{id}`
+* `PATCH /api/v1/discussions/{id}`
+* `DELETE /api/v1/discussions/{id}`
+
+---
+
+## E2 — Replies Module
+
+Tasks:
+
+* Create schemas, repository, service, API endpoints
+* `POST /api/v1/discussions/{id}/replies`
+* `GET /api/v1/discussions/{id}/replies`
+* `PATCH /api/v1/replies/{id}`
+* `DELETE /api/v1/replies/{id}`
+
+---
+
+## E3 — Voting Module
+
+Tasks:
+
+* Create schemas, repository, service, API endpoints
+* `POST /api/v1/votes` (upvote/downvote on questions, discussions, replies)
+* `DELETE /api/v1/votes/{id}`
+* Aggregate vote counts
+
+---
+
+## E4 — Frontend Wire-Up
+
+Tasks:
+
+* Wire DiscussionThreadPage to real API
+* Wire CreateDiscussionPage to real API
+* Wire DiscussionsPage listing
+* Wire voting buttons to API
+* Replace all mock data with API calls
+
+---
+
+# Phase F — FAQ Module & Knowledge Pipeline
+
+Goal:
+
+Build the complete FAQ lifecycle: candidate generation → review → publish → versioning.
+
+---
+
+## F1 — FAQ Candidates
+
+Tasks:
+
+* Create schemas, repository, service, API
+* `POST /api/v1/faq-candidates` (AI-generated)
+* `GET /api/v1/faq-candidates`
+* `GET /api/v1/faq-candidates/{id}`
+* `PATCH /api/v1/faq-candidates/{id}` (moderator review)
+
+---
+
+## F2 — Published FAQs
+
+Tasks:
+
+* Create schemas, repository, service, API
+* `POST /api/v1/faqs` (publish from candidate)
+* `GET /api/v1/faqs`
+* `GET /api/v1/faqs/{id}`
+* `PATCH /api/v1/faqs/{id}`
+* `DELETE /api/v1/faqs/{id}` (archive)
+
+---
+
+## F3 — FAQ Versioning
+
+Tasks:
+
+* Version tracking on publish/update
+* `GET /api/v1/faqs/{id}/versions`
+* `GET /api/v1/faqs/{id}/versions/{version_id}`
+
+---
+
+## F4 — Frontend Wire-Up
+
+Tasks:
+
+* Wire LibraryPage to real FAQ API
+* Wire FaqDetailPage
+* Wire FaqManagementPage (admin)
+* Wire FaqCandidateReviewPage (admin)
+
+---
+
+# Phase G — Search, Notifications & Saved Knowledge
+
+Goal:
+
+Add search (keyword + vector), notifications, and personal knowledge management.
+
+---
+
+## G1 — Search Module
+
+Tasks:
+
+* Keyword search on FAQs and discussions
+* pgvector setup for semantic search
+* `GET /api/v1/search?q=...`
+
+---
+
+## G2 — Notifications Module
+
+Tasks:
+
+* Create notification on reply, vote, FAQ publish
+* `GET /api/v1/notifications`
+* `PATCH /api/v1/notifications/{id}/read`
+* Frontend: NotificationsPage, notification badge
+
+---
+
+## G3 — Saved Knowledge Module
+
+Tasks:
+
+* `POST /api/v1/saved` (save FAQ/discussion)
+* `DELETE /api/v1/saved/{id}`
+* `GET /api/v1/saved`
+* Frontend: SavedKnowledgePage
+
+---
+
+# Phase H — Moderation & Governance
+
+Goal:
+
+Build the moderation and trust layer.
+
+---
+
+## H1 — Reports & Moderation
+
+Tasks:
+
+* `POST /api/v1/reports`
+* `GET /api/v1/reports` (admin)
+* Moderation repository and API
+* ModerationPage, ReportInvestigationPage frontend wire-up
+
+---
+
+## H2 — Admin Console Wire-Up
+
+Tasks:
+
+* MissionControlPage
+* SettingsPage
+* AnalyticsPage (basic stats)
+
+---
+
+# Phase I — AI Integration & Knowledge Evolution
+
+Goal:
+
+Integrate AI providers and knowledge evolution tracking.
+
+---
+
+## I1 — AI Gateway
+
+Tasks:
+
+* Create AI provider abstraction (Gemini, Groq)
+* Provider adapter pattern per ADR-002
+* AI analysis endpoint for questions
+
+---
+
+## I2 — FAQ Candidate Generation
+
+Tasks:
+
+* AI synthesis from discussion
+* Generate FAQ candidate content
+* Store candidate for moderator review
+
+---
+
+## I3 — Knowledge Evolution
+
+Tasks:
+
+* Version history tracking
+* Evolution timeline visualization
+* Frontend: EvolutionPage
+
+---
+
+# Phase J — Testing, Security & Production Readiness
+
+Goal:
+
+Harden the platform for production deployment.
+
+---
+
+## J1 — Security Audit
+
+Tasks:
+
+* Rate limiting
+* Input validation pass
+* RBAC verification
+* CORS configuration
+* Audit logging
+
+---
+
+## J2 — Performance
+
+Tasks:
+
+* Query optimization (N+1 fixes)
+* API pagination pass
+* Response caching strategy
+
+---
+
+## J3 — CI/CD
+
+Tasks:
+
+* GitHub Actions: lint, typecheck, test
+* Docker build for backend + frontend
+* Production deployment config
+
+---
+
+# Phase 1 Deliverable (MVP)
 
 Working Platform With:
 
 ```text
-Authentication
-Questions
-Discussions
-FAQs
-Search
+Authentication (Clerk)
+Questions + AI Analysis
+Discussions + Replies + Voting
+FAQs (Candidates → Published → Versioned)
+Search (Keyword + Semantic)
 Notifications
+Saved Knowledge
+Moderation
 ```
 
 ---
