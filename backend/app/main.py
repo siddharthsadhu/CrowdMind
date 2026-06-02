@@ -10,6 +10,7 @@ from app.api.webhooks import router as webhooks_router
 from app.api.users import router as users_router
 from app.api.discussions import router as discussions_router
 from app.api.replies import router as replies_router, direct_router as replies_direct_router
+from app.api.votes import router as votes_router
 
 logger = logging.getLogger(__name__)
 
@@ -41,6 +42,7 @@ app.include_router(users_router)
 app.include_router(discussions_router)
 app.include_router(replies_router)
 app.include_router(replies_direct_router)
+app.include_router(votes_router)
 
 
 @app.get("/health")
