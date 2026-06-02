@@ -1,26 +1,25 @@
 import { api } from './client'
 
-export type UserProfileResponse = {
+export type UserResponse = {
   id: string
+  clerk_user_id: string
+  username: string
   email: string
-  name: string
-  role: string
-  reputation: number
-  bio: string | null
+  full_name: string
   avatar_url: string | null
-  created_at: string
-  question_count: number
-  answer_count: number
-  faq_count: number
+  bio: string | null
+  reputation_score: number
+  role: string
+  created_at: string | null
 }
 
 export const usersApi = {
-  getProfile: (id: string) =>
-    api.get<UserProfileResponse>(`/api/v1/users/${id}`),
+  getMe: () =>
+    api.get<UserResponse>('/api/v1/users/me'),
 
-  updateProfile: (data: Partial<{ name: string; bio: string }>) =>
-    api.patch<UserProfileResponse>('/api/v1/users/me', data),
+  getById: (id: string) =>
+    api.get<UserResponse>(`/api/v1/users/${id}`),
 
-  getContributions: (id: string) =>
-    api.get<{ questions: number; answers: number; faqs: number }>(`/api/v1/users/${id}/contributions`),
+  updateMe: (data: { full_name?: string; bio?: string; avatar_url?: string }) =>
+    api.patch<UserResponse>('/api/v1/users/me', data),
 }

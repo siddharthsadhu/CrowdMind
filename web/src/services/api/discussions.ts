@@ -2,18 +2,23 @@ import { api } from './client'
 
 export type DiscussionCreate = {
   title: string
-  content?: string
+  description?: string
   question_id?: string
 }
 
 export type DiscussionResponse = {
   id: string
-  title: string
-  content: string
   question_id: string | null
   created_by: string
+  title: string
+  description: string | null
+  status: string
+  view_count: number
+  reply_count: number
+  participant_count: number
+  consensus_score: number | null
   created_at: string
-  updated_at: string
+  updated_at: string | null
 }
 
 export type DiscussionListResponse = {
@@ -24,7 +29,7 @@ export type DiscussionListResponse = {
 }
 
 export const discussionsApi = {
-  list: (params?: { page?: string; page_size?: string }) =>
+  list: (params?: { page?: string; page_size?: string; status?: string }) =>
     api.get<DiscussionListResponse>('/api/v1/discussions', params),
 
   getById: (id: string) =>
@@ -33,7 +38,7 @@ export const discussionsApi = {
   create: (data: DiscussionCreate) =>
     api.post<DiscussionResponse>('/api/v1/discussions', data),
 
-  update: (id: string, data: Partial<DiscussionCreate>) =>
+  update: (id: string, data: { title?: string; description?: string; status?: string }) =>
     api.patch<DiscussionResponse>(`/api/v1/discussions/${id}`, data),
 
   delete: (id: string) =>

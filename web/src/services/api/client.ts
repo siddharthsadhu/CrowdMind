@@ -55,10 +55,10 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 export const api = {
   get: <T>(path: string, params?: Record<string, string | undefined>) =>
     request<T>(path, { params }),
-  post: <T>(path: string, body?: unknown) =>
-    request<T>(path, { method: 'POST', body }),
-  patch: <T>(path: string, body?: unknown) =>
-    request<T>(path, { method: 'PATCH', body }),
-  delete: <T>(path: string) =>
-    request<T>(path, { method: 'DELETE' }),
+  post: <T>(path: string, body?: unknown, params?: Record<string, string | undefined>) =>
+    request<T>(path, { method: 'POST', body, params }),
+  patch: <T>(path: string, body?: unknown, params?: Record<string, string | undefined>) =>
+    request<T>(path, { method: 'PATCH', body, params }),
+  delete: <T>(path: string, params?: Record<string, string | undefined>) =>
+    request<T>(path, { method: 'DELETE', params }),
 }

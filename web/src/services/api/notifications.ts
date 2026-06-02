@@ -4,14 +4,21 @@ export type NotificationResponse = {
   id: string
   type: string
   title: string
-  body: string
+  body: string | null
   read: boolean
-  created_at: string
+  created_at: string | null
+}
+
+export type NotificationListResponse = {
+  items: NotificationResponse[]
+  total: number
+  page: number
+  page_size: number
 }
 
 export const notificationsApi = {
   list: (params?: { page?: string; page_size?: string }) =>
-    api.get<{ items: NotificationResponse[]; total: number }>('/api/v1/notifications', params),
+    api.get<NotificationListResponse>('/api/v1/notifications', params),
 
   markRead: (id: string) =>
     api.patch<void>(`/api/v1/notifications/${id}/read`),

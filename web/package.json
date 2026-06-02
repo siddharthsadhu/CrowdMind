@@ -10,6 +10,7 @@
     "stitch:extract": "node scripts/extract-stitch-content.mjs"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.61.8",
     "@hookform/resolvers": "^5.4.0",
     "@tanstack/react-query": "^5.100.14",
     "react": "^19.1.0",
