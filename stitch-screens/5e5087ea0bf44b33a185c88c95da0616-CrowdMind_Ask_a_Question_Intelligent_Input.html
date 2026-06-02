@@ -1,0 +1,389 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ask Question | CrowdMind</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#191b22",
+                        "on-secondary": "#00363a",
+                        "on-surface-variant": "#c2c6d7",
+                        "surface-container-high": "#282a30",
+                        "on-secondary-fixed": "#002022",
+                        "error-container": "#93000a",
+                        "surface-container": "#1e1f26",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "primary-container": "#558dff",
+                        "surface-container-lowest": "#0c0e14",
+                        "surface": "#111319",
+                        "secondary-container": "#00eefc",
+                        "on-primary-fixed": "#001944",
+                        "surface-tint": "#b0c6ff",
+                        "inverse-primary": "#0058ca",
+                        "surface-container-highest": "#33343b",
+                        "on-tertiary": "#3f008e",
+                        "outline-variant": "#424654",
+                        "inverse-surface": "#e2e2eb",
+                        "secondary-fixed": "#7df4ff",
+                        "on-tertiary-fixed": "#25005a",
+                        "on-error": "#690005",
+                        "surface-dim": "#111319",
+                        "surface-bright": "#373940",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "outline": "#8c90a0",
+                        "on-secondary-container": "#00686f",
+                        "primary": "#b0c6ff",
+                        "secondary": "#d3fbff",
+                        "tertiary-container": "#a476ff",
+                        "on-primary": "#002d6e",
+                        "on-primary-container": "#002761",
+                        "inverse-on-surface": "#2e3037",
+                        "primary-fixed": "#d9e2ff",
+                        "tertiary": "#d2bbff",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "on-background": "#e2e2eb",
+                        "on-tertiary-container": "#36007d",
+                        "surface-variant": "#33343b",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#eaddff",
+                        "on-surface": "#e2e2eb",
+                        "on-primary-fixed-variant": "#00429b",
+                        "background": "#111319"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "80px",
+                        "margin-mobile": "16px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Geist"],
+                        "display": ["Geist"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #111319;
+            color: #e2e2eb;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            border-color: rgba(176, 198, 255, 0.3);
+        }
+        .glow-input:focus-within {
+            box-shadow: 0 0 20px rgba(0, 238, 252, 0.15);
+            border-color: #00eefc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111319;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #33343b;
+            border-radius: 10px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #b0c6ff 0%, #00eefc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden custom-scrollbar">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-sm h-20">
+<div class="flex items-center justify-between px-margin-desktop max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md font-semibold text-primary">CrowdMind</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">FAQs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Discussions</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Ask Question</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:block relative">
+<input class="bg-surface-container-high border-none rounded-full px-6 py-2 w-64 text-sm focus:ring-2 focus:ring-primary/50 placeholder:text-outline" placeholder="Search knowledge base..." type="text">
+</div>
+<button class="p-2 text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-white/10">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional close-up headshot of a young data analyst with a friendly expression. The background is a blurred high-tech workspace with soft blue and purple lighting, creating a premium and futuristic feel consistent with a sophisticated AI knowledge platform. The lighting is crisp and modern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdSJ8urCd8xNmFWTjKQYRxxVAhfYDtOy-asYCKiDSkl4QHhW-BtBvnPhMOuKn5dxRdThZzb13Zw0YVIkXjW0CN1R0snsGi9dnXSF-5mJO-sh5wLwBlnVBiQPA6krYcFzrO68maykHv0WTb1q6Bqo4WuLvRfSzJAmAoTVKrdcymyGKPY29t2O6Jg-MLNN2886SllV1fXXRyh4XMDIfu5JPJbFO_t9G1Nx5aYtxmCmZjNFm7YN9D4kpOpENM4_u8MYWoIvWwSOshjI8Q">
+</div>
+</div>
+</div>
+</nav>
+<main class="pt-32 pb-section-gap px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- CENTER PANEL (8 Units) -->
+<div class="lg:col-span-8 space-y-unit*8">
+<header class="mb-12">
+<h1 class="font-display text-display text-on-surface mb-2">Ask a Question</h1>
+<p class="font-body-lg text-on-surface-variant">Let the community and AI help build collective knowledge.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8 glow-input">
+<!-- Intelligent Question Input -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<label class="font-label-md text-primary uppercase tracking-wider">Your Inquiry</label>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-[10px] text-outline uppercase tracking-tighter">Quality Score</p>
+<p class="font-label-md text-secondary-container">68/100</p>
+</div>
+<div class="w-12 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[68%]"></div>
+</div>
+</div>
+</div>
+<textarea class="w-full bg-transparent border-none text-headline-md font-headline-md text-on-surface placeholder:text-outline-variant focus:ring-0 resize-none p-0" placeholder="Can I change my team after Phase 1?" rows="4"></textarea>
+<div class="h-[1px] w-full bg-gradient-to-r from-primary/50 to-transparent"></div><div class="mt-4 p-4 rounded-lg bg-primary/5 border border-primary/20">
+<div class="flex items-center gap-2 text-primary mb-2">
+<span class="material-symbols-outlined text-[20px]">tips_and_updates</span>
+<span class="font-label-sm uppercase">Proactive Suggestions</span>
+</div>
+<ul class="space-y-1.5">
+<li class="text-body-md text-on-surface-variant flex items-center gap-2">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+            Add more context to help AI analysis
+        </li>
+<li class="text-body-md text-on-surface-variant flex items-center gap-2">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+            Mention specific phase or version numbers
+        </li>
+</ul>
+</div>
+</div>
+<!-- Category Selector -->
+<div class="space-y-4">
+<label class="font-label-md text-on-surface-variant">Select Category</label>
+<div class="flex flex-wrap gap-3">
+<button class="px-6 py-2 rounded-full border border-primary bg-primary/10 text-primary font-label-md transition-all active:scale-95">Internship</button>
+<button class="px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95">Team Formation</button>
+<button class="px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95">NOC</button>
+<button class="px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95">ViBe</button>
+<button class="px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95">Rosetta</button>
+</div>
+</div>
+<!-- Description Area (Optional but helpful) -->
+<div class="space-y-4">
+<label class="font-label-md text-on-surface-variant">Additional Context (Optional)</label>
+<div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30">
+<textarea class="w-full bg-transparent border-none text-body-md text-on-surface focus:ring-0 p-0" placeholder="Describe your situation in more detail for a better AI analysis..." rows="3"></textarea>
+</div>
+</div>
+<!-- Submit Action -->
+<div class="p-6 rounded-xl border border-secondary-container/30 bg-secondary-container/5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-secondary-container">
+<span class="material-symbols-outlined">verified</span>
+<span class="font-headline-md">Your question may already be answered here</span>
+</div>
+<span class="px-3 py-1 bg-secondary-container/20 text-secondary-container rounded-full text-[10px] font-bold tracking-widest uppercase">Best FAQ Match</span>
+</div>
+<div class="glass-card p-4 rounded-lg border-secondary-container/20 hover:border-secondary-container/50 cursor-pointer">
+<h4 class="font-headline-md text-on-surface mb-1">What is the procedure for mid-phase team transitions?</h4>
+<p class="text-body-md text-on-surface-variant">Team changes after Phase 1 are permitted only through a NOC request submitted by the project lead...</p>
+</div>
+</div><div class="flex items-center justify-between pt-4">
+<div class="flex items-center gap-2 text-label-sm text-outline">
+<span class="material-symbols-outlined text-[18px]">info</span>
+                            AI will scan for duplicates before posting
+                        </div>
+<button class="px-10 py-4 bg-primary text-on-primary font-headline-md rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(176,198,255,0.3)]">
+                            Submit Question
+                        </button>
+</div>
+</div>
+<!-- Recent Similar Questions (Below Main Panel) -->
+<section class="mt-16 space-y-6"><div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-on-surface">Intelligent Match Analysis</h2>
+<span class="font-label-sm text-primary">Scanning 4,200+ knowledge nodes</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-label-md text-outline uppercase">Similar FAQs</h3>
+<span class="text-[10px] text-secondary-container uppercase font-bold">98% Confidence</span>
+</div>
+<div class="glass-card rounded-xl p-6 border-l-2 border-l-secondary-container">
+<span class="font-label-sm text-secondary-fixed bg-secondary-fixed/10 px-2 py-1 rounded mb-4 inline-block">Governance</span>
+<h4 class="font-headline-md text-on-surface mb-2">Can team rosters be modified during active sprints?</h4>
+<p class="text-body-md text-on-surface-variant line-clamp-1">View detailed policy on roster management and NOC requirements.</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="font-label-md text-outline uppercase">Similar Discussions</h3>
+<span class="text-[10px] text-primary uppercase font-bold">82% Relevance</span>
+</div>
+<div class="glass-card rounded-xl p-6 border-l-2 border-l-primary">
+<span class="font-label-sm text-secondary-fixed bg-secondary-fixed/10 px-2 py-1 rounded mb-4 inline-block">ViBe</span>
+<h4 class="font-headline-md text-on-surface mb-2">Phase 1 Team Formation - Common issues and fixes</h4>
+<p class="text-body-md text-on-surface-variant line-clamp-1">Community-led thread discussing team synchronization issues.</p>
+</div>
+</div>
+</div></section>
+</div>
+<!-- RIGHT SIDEBAR (4 Units) -->
+<aside class="lg:col-span-4 space-y-gutter">
+<!-- Tips Card -->
+<div class="glass-card rounded-xl p-6 border-l-4 border-l-secondary-container">
+<div class="flex items-center gap-3 mb-4 text-secondary-container">
+<span class="material-symbols-outlined">lightbulb</span>
+<h3 class="font-headline-md">Writing Tips</h3>
+</div>
+<p class="font-body-md text-on-surface mb-4">Questions with more context receive better answers.</p>
+<ul class="space-y-3">
+<li class="flex gap-3 text-on-surface-variant font-body-md">
+<span class="text-secondary-container shrink-0">•</span>
+                            Be specific about the problem you are facing.
+                        </li>
+<li class="flex gap-3 text-on-surface-variant font-body-md">
+<span class="text-secondary-container shrink-0">•</span>
+                            Include any error codes or Phase numbers.
+                        </li>
+<li class="flex gap-3 text-on-surface-variant font-body-md">
+<span class="text-secondary-container shrink-0">•</span>
+                            Tag the appropriate category for faster routing.
+                        </li>
+</ul>
+</div>
+<!-- Examples Card -->
+<div class="glass-card rounded-xl p-6">
+<h3 class="font-headline-md text-on-surface mb-6">Example Questions</h3>
+<div class="space-y-6">
+<div class="space-y-1">
+<p class="font-label-sm text-outline uppercase tracking-wider">Infrastructure</p>
+<p class="text-on-surface italic">"How do I sync my Rosetta nodes manually?"</p>
+</div>
+<div class="space-y-1">
+<p class="font-label-sm text-outline uppercase tracking-wider">Policy</p>
+<p class="text-on-surface italic">"What happens if I miss the NOC deadline?"</p>
+</div>
+<div class="space-y-1">
+<p class="font-label-sm text-outline uppercase tracking-wider">Collaboration</p>
+<p class="text-on-surface italic">"Is there a limit on team members for ViBe?"</p>
+</div>
+</div>
+</div>
+<!-- AI Insight Card -->
+<div class="relative rounded-xl overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary-container/20 opacity-50"></div>
+<div class="relative p-6 border border-white/5 space-y-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<h4 class="font-headline-md text-on-surface">Instant AI Draft</h4>
+<p class="text-on-surface-variant text-sm">Our AI can draft a response immediately after you submit to get you started while the community chimes in.</p>
+<div class="h-24 w-full rounded-lg overflow-hidden grayscale opacity-40 group-hover:grayscale-0 group-hover:opacity-60 transition-all duration-700">
+<img alt="Data streams" class="w-full h-full object-cover" data-alt="An abstract visualization of digital data streams and neural pathways glowing in cyan and deep violet against a dark background. The scene represents artificial intelligence processing complex information with high-speed light trails and crystalline structures, reflecting a futuristic and high-tech atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTmlgeRDB17yd53ueNNUwtNiPDxV-mzX48bUy-U6ov4ArcwiUPu56Rgz3B2I2fkUwmzvs55YIYiXIqHX5qfG_yRksuzxdCKXMDtpFABtFvMB0v8HWUAnkxVyQa2pjvBiJqhG-yeWe7G6y-GTRa8HhfrLi1ZZqTtWKP5zGGh-OTGF1S0rUOI6I4ZUgtlOHuXKbv1ONh7apyWuDBQJiPW0uyktI_o46lyqLNUFMwZt52OEc2jv4pB3OpDNe38cvwSNzzUKZ_SDhTvO6H">
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap border-t border-outline-variant/30 bg-background">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter px-margin-desktop max-w-container-max mx-auto">
+<div class="md:col-span-4">
+<span class="font-headline-md text-headline-md font-bold text-on-surface block mb-4">CrowdMind AI</span>
+<p class="text-on-surface-variant font-body-md max-w-xs">Elevating collective intelligence through advanced AI orchestration and clarity.</p>
+</div>
+<div class="md:col-span-2">
+<h4 class="font-label-md text-primary mb-4 uppercase">Product</h4>
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="#">Features</a>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="#">Roadmap</a>
+</div>
+</div>
+<div class="md:col-span-2">
+<h4 class="font-label-md text-primary mb-4 uppercase">Community</h4>
+<div class="flex flex-col gap-2">
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="#">Discussions</a>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="#">Wiki</a>
+</div>
+</div>
+<div class="md:col-span-4 text-right">
+<p class="text-on-surface-variant font-label-sm">© 2024 CrowdMind AI. Cognitive Clarity in Crowd Intelligence.</p>
+<div class="flex justify-end gap-4 mt-4">
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interaction for category chips
+        document.querySelectorAll('.flex.flex-wrap.gap-3 button').forEach(button => {
+            button.addEventListener('click', function() {
+                document.querySelectorAll('.flex.flex-wrap.gap-3 button').forEach(b => {
+                    b.classList.remove('border-primary', 'bg-primary/10', 'text-primary');
+                    b.classList.add('border-outline-variant', 'text-on-surface-variant');
+                });
+                this.classList.remove('border-outline-variant', 'text-on-surface-variant');
+                this.classList.add('border-primary', 'bg-primary/10', 'text-primary');
+            });
+        });
+
+        // Interactive border effect for main panel on input
+        const questionArea = document.querySelector('textarea');
+        const glassCard = document.querySelector('.glow-input');
+        
+        questionArea.addEventListener('focus', () => {
+            glassCard.style.borderColor = 'rgba(0, 238, 252, 0.4)';
+        });
+        
+        questionArea.addEventListener('blur', () => {
+            glassCard.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+        });
+    </script>
+</body></html>

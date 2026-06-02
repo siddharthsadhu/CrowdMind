@@ -1,0 +1,126 @@
+@import 'tailwindcss';
+@import './styles/stitch-pages.css';
+
+@theme {
+  --color-primary: #b0c6ff;
+  --color-on-primary: #002d6e;
+  --color-primary-container: #558dff;
+  --color-on-primary-container: #002761;
+  --color-secondary: #d3fbff;
+  --color-secondary-fixed-dim: #00dbe9;
+  --color-secondary-container: #00eefc;
+  --color-tertiary: #d2bbff;
+  --color-tertiary-container: #a476ff;
+  --color-background: #111319;
+  --color-surface: #111319;
+  --color-on-background: #e2e2eb;
+  --color-on-surface: #e2e2eb;
+  --color-on-surface-variant: #c2c6d7;
+  --color-surface-container: #1e1f26;
+  --color-surface-container-low: #191b22;
+  --color-surface-container-lowest: #0c0e14;
+  --color-surface-container-high: #282a30;
+  --color-surface-container-highest: #33343b;
+  --color-surface-variant: #33343b;
+  --color-outline: #8c90a0;
+  --color-outline-variant: #424654;
+  --color-error: #ffb4ab;
+  --font-display: 'Geist', system-ui, sans-serif;
+  --font-headline: 'Geist', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'JetBrains Mono', monospace;
+  --spacing-margin-mobile: 16px;
+  --spacing-margin-desktop: 48px;
+  --spacing-gutter: 24px;
+  --spacing-container-max: 1280px;
+}
+
+@layer base {
+  body {
+    @apply bg-background text-on-background antialiased;
+    font-family: var(--font-body);
+  }
+}
+
+.glass-panel {
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass {
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #111319;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #424654;
+  border-radius: 10px;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+.knowledge-node::after {
+  content: '';
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, #b0c6ff, transparent);
+  width: 100%;
+  top: 50%;
+  left: 100%;
+  z-index: 0;
+}
+.knowledge-node:last-child::after {
+  display: none;
+}
+
+/* Header navbar search — icon stays inside the input (Profile + shared nav) */
+.stitch-page-root header .cm-nav-search {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.stitch-page-root header .cm-nav-search-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  line-height: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stitch-page-root header .relative:has(> input[placeholder*='Search']):not(.cm-nav-search),
+.stitch-page-root header .relative:has(> input[placeholder*='search']):not(.cm-nav-search) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.stitch-page-root header .relative:has(> input[placeholder*='Search']) > .material-symbols-outlined,
+.stitch-page-root header .relative:has(> input[placeholder*='search']) > .material-symbols-outlined {
+  position: absolute !important;
+  left: 0.75rem !important;
+  right: auto !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 1.25rem !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  line-height: 1 !important;
+  pointer-events: none;
+  z-index: 1;
+}

@@ -1,0 +1,405 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#0c0e14",
+                    "on-surface-variant": "#c2c6d7",
+                    "on-background": "#e2e2eb",
+                    "primary": "#b0c6ff",
+                    "on-tertiary-fixed-variant": "#5a00c6",
+                    "outline": "#8c90a0",
+                    "on-primary-fixed": "#001944",
+                    "surface-container": "#1e1f26",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed": "#002022",
+                    "tertiary": "#d2bbff",
+                    "surface": "#111319",
+                    "surface-container-low": "#191b22",
+                    "on-secondary": "#00363a",
+                    "surface-container-high": "#282a30",
+                    "error-container": "#93000a",
+                    "on-primary": "#002d6e",
+                    "background": "#111319",
+                    "surface-dim": "#111319",
+                    "secondary-container": "#00eefc",
+                    "primary-container": "#558dff",
+                    "surface-bright": "#373940",
+                    "on-secondary-container": "#00686f",
+                    "primary-fixed-dim": "#b0c6ff",
+                    "primary-fixed": "#d9e2ff",
+                    "inverse-surface": "#e2e2eb",
+                    "surface-variant": "#33343b",
+                    "surface-tint": "#b0c6ff",
+                    "inverse-on-surface": "#2e3037",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "on-surface": "#e2e2eb",
+                    "outline-variant": "#424654",
+                    "on-primary-fixed-variant": "#00429b",
+                    "tertiary-fixed-dim": "#d2bbff",
+                    "on-tertiary": "#3f008e",
+                    "error": "#ffb4ab",
+                    "tertiary-container": "#a476ff",
+                    "on-tertiary-fixed": "#25005a",
+                    "on-tertiary-container": "#36007d",
+                    "secondary-fixed": "#7df4ff",
+                    "on-error": "#690005",
+                    "inverse-primary": "#0058ca",
+                    "tertiary-fixed": "#eaddff",
+                    "surface-container-highest": "#33343b",
+                    "secondary": "#d3fbff",
+                    "on-primary-container": "#002761"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "unit": "8px",
+                    "section-gap": "80px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "display": ["Geist"],
+                    "body-lg": ["Inter"],
+                    "label-md": ["JetBrains Mono"],
+                    "headline-lg-mobile": ["Geist"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Geist"],
+                    "label-sm": ["JetBrains Mono"],
+                    "headline-lg": ["Geist"]
+            },
+            "fontSize": {
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 200ms ease-out;
+        }
+        .glass-card:hover {
+            border-color: rgba(176, 198, 255, 0.3);
+            background: rgba(26, 32, 41, 0.8);
+        }
+        .inner-glow {
+            box-shadow: inset 0 0 20px rgba(176, 198, 255, 0.05);
+        }
+        body {
+            background-color: #0A0C12;
+            color: #e2e2eb;
+            overflow-x: hidden;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111319;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #33343b;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-sm h-20">
+<div class="flex items-center justify-between px-margin-desktop max-w-container-max mx-auto h-full">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md font-semibold text-primary">CrowdMind</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="#">FAQs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="#">Discussions</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="#">Ask Question</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center bg-surface-container px-4 py-2 rounded-full border border-outline-variant/30 group focus-within:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" style="font-size: 18px;">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md text-on-surface w-48 placeholder:text-on-surface-variant/50" placeholder="Search insights..." type="text">
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant/50">
+<img alt="User profile menu" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBhrrJxLU_y1jmEgg3-0FFgGnisoNKhOD7UiHRk5P_faPIai9SdTmjca5OQ552qbLjyYNjbuntUzaJ3vPtvN7SSx4-xCxjSIHooYOUbeqijUs3DnNOUE8XRB246LbO4D0e4TNgald9Lq_4k4dcV3sT4j9RNRGpoCjJ7VAtNVqHSzzAZyJSjofv4V3ruKgCzsix33xAh6hNw9Gce4tHmFtV-SgxqPviNELzYnnYpEegMdXMg5TwAZpyq42bXzyXq1l68Y6LeVnBv-jPt">
+</div>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-section-gap px-margin-desktop max-w-container-max mx-auto">
+<!-- Hero Analysis Question -->
+<section class="mb-12">
+<div class="flex items-center gap-3 mb-4">
+<span class="font-label-sm text-label-sm text-primary-container bg-primary-container/10 px-3 py-1 rounded-full uppercase tracking-widest">Query Analysis</span>
+<span class="w-1 h-1 bg-outline-variant rounded-full"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">ID: CM-AI-9921</span>
+</div>
+<h1 class="font-display text-display text-on-surface mb-8 max-w-3xl leading-tight">
+                "Can I change my team after Phase 1?"
+            </h1>
+<!-- Top Status Card -->
+<div class="glass-card rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 border-l-4 border-l-error opacity-100">
+<div class="flex items-center gap-6">
+<div class="w-20 h-20 rounded-full border-4 border-surface-container-high flex items-center justify-center relative">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary transition-all duration-1000 ease-out" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213.6" stroke-dashoffset="59.8" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-label-md text-label-md text-primary">72%</span>
+</div>
+<div>
+<div class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">AI Confidence Score</div>
+<div class="font-headline-md text-headline-md text-on-surface">Substantial uncertainty detected</div>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-2 text-error mb-1">
+<span class="material-symbols-outlined" style="font-size: 20px;">error</span>
+<span class="font-label-md text-label-md font-bold uppercase">Status</span>
+</div>
+<div class="font-headline-md text-headline-md text-on-surface">No definitive FAQ found.</div>
+</div>
+</div>
+</section>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter items-start">
+<!-- Center Section: Similar FAQs -->
+<div class="md:col-span-8 space-y-gutter">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Similar FAQs Found</h2>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 relevant documents recovered</span>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<!-- Card 1 -->
+<div class="glass-card rounded-xl p-6 relative overflow-hidden group opacity-100">
+<div class="absolute top-0 right-0 p-4">
+<div class="text-primary font-label-md text-label-md bg-primary/10 px-3 py-1 rounded-full border border-primary/20">68% Match</div>
+</div>
+<div class="mb-4">
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">description</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Team Formation Rules</h3>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2 mb-6">
+                            Initial team formation occurs during the 'Pre-Phase' period. Teams must consist of 3-5 members...
+                        </p>
+<button class="flex items-center gap-2 text-primary font-label-md text-label-md group-hover:gap-3 transition-all">
+                            View Full Document <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</div>
+<!-- Card 2 -->
+<div class="glass-card rounded-xl p-6 relative overflow-hidden group opacity-100">
+<div class="absolute top-0 right-0 p-4">
+<div class="text-on-surface-variant font-label-md text-label-md bg-white/5 px-3 py-1 rounded-full border border-white/10">54% Match</div>
+</div>
+<div class="mb-4">
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">group_add</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Team Allocation Process</h3>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2 mb-6">
+                            The allocation process is automated based on research interests and skill matrices defined in Phase 1...
+                        </p>
+<button class="flex items-center gap-2 text-primary font-label-md text-label-md group-hover:gap-3 transition-all">
+                            View Full Document <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</div>
+<!-- Card 3 -->
+<div class="glass-card rounded-xl p-6 relative overflow-hidden group opacity-100">
+<div class="absolute top-0 right-0 p-4">
+<div class="text-on-surface-variant font-label-md text-label-md bg-white/5 px-3 py-1 rounded-full border border-white/10">42% Match</div>
+</div>
+<div class="mb-4">
+<span class="material-symbols-outlined text-primary mb-2" style="font-variation-settings: 'FILL' 1;">person_remove</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Team Member Changes</h3>
+</div>
+<p class="text-on-surface-variant font-body-md text-body-md line-clamp-2 mb-6">
+                            Member departures are handled on a case-by-case basis by the community moderator board...
+                        </p>
+<button class="flex items-center gap-2 text-primary font-label-md text-label-md group-hover:gap-3 transition-all">
+                            View Full Document <span class="material-symbols-outlined" style="font-size: 16px;">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: AI Draft -->
+<aside class="md:col-span-4 space-y-gutter">
+<div class="glass-card rounded-xl p-6 border-primary/20 bg-primary/5 opacity-100">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-label-md text-label-md text-primary font-bold uppercase tracking-widest">AI Draft Answer</h2>
+<span class="bg-secondary-container/20 text-secondary-fixed text-[10px] px-2 py-0.5 rounded font-bold uppercase">Beta</span>
+</div>
+<div class="mb-6 p-4 rounded-lg bg-surface-container-high/50 border border-white/5 italic text-on-surface-variant text-body-md leading-relaxed">
+                        "Based on general tournament guidelines (Ref: Rules v2.1), team locks typically occur at the start of Phase 2. However, explicit phrasing for 'Team Changes' post-Phase 1 is missing from the current CrowdMind repository."
+                    </div>
+<div class="space-y-4">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Confidence Meter</span>
+<span class="text-primary">72%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[72%]"></div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-white/5 flex items-center gap-3">
+<div class="bg-error/10 text-error px-3 py-1.5 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-size: 16px;">verified_user</span>
+<span class="font-label-sm text-label-sm font-bold">Needs Community Validation</span>
+</div>
+</div>
+</div>
+<!-- Abstract Visual Asset -->
+<div class="glass-card rounded-xl p-6 opacity-100">
+<h2 class="font-label-md text-label-md text-primary font-bold uppercase tracking-widest mb-6">Why This Result?</h2>
+<!-- AI Reasoning Path -->
+<div class="mb-8">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-4 tracking-wider">AI Reasoning Path</h3>
+<div class="flex items-center flex-wrap gap-2">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label-md text-secondary-fixed bg-secondary-fixed/10 px-2 py-0.5 rounded">Question</span>
+<span class="material-symbols-outlined text-secondary-fixed/50 text-sm">arrow_forward</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label-md text-secondary-fixed bg-secondary-fixed/10 px-2 py-0.5 rounded">FAQ Match</span>
+<span class="material-symbols-outlined text-secondary-fixed/50 text-sm">arrow_forward</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label-md text-secondary-fixed bg-secondary-fixed/10 px-2 py-0.5 rounded">Discussion Match</span>
+<span class="material-symbols-outlined text-secondary-fixed/50 text-sm">arrow_forward</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-label-md text-secondary-fixed bg-secondary-fixed/10 px-2 py-0.5 rounded">Confidence</span>
+<span class="material-symbols-outlined text-secondary-fixed/50 text-sm">arrow_forward</span>
+</div>
+<span class="text-[10px] font-label-md text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">Final Recommendation</span>
+</div>
+</div>
+<!-- Analyzed Sources -->
+<div class="mb-8">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-4 tracking-wider">Analyzed Sources</h3>
+<div class="grid grid-cols-2 gap-3 mb-4">
+<div class="bg-surface-container-low p-3 rounded-lg border border-white/5">
+<div class="text-headline-md text-on-surface font-bold">42</div>
+<div class="text-[10px] text-on-surface-variant uppercase">FAQs Scanned</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-white/5">
+<div class="text-headline-md text-on-surface font-bold">18</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Discussions</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="text-[10px] text-on-surface-variant uppercase mb-1">Categories Matched:</div>
+<div class="flex flex-wrap gap-2">
+<span class="bg-white/5 text-on-surface-variant text-[10px] px-2 py-0.5 rounded border border-white/10">Team Formation</span>
+<span class="bg-white/5 text-on-surface-variant text-[10px] px-2 py-0.5 rounded border border-white/10">Tournament Rules</span>
+</div>
+</div>
+</div>
+<!-- Confidence Breakdown -->
+<div class="pt-6 border-t border-white/5">
+<h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-2 tracking-wider">Confidence Breakdown</h3>
+<p class="text-body-md text-on-surface-variant text-sm leading-relaxed">
+            High semantic match in Rules v2.1, but no specific team-change clause found in current thread history. 72% reflects uncertainty regarding post-Phase 1 flexibility.
+        </p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Bottom Section: Recommended Action -->
+<section class="mt-section-gap">
+<div class="glass-card rounded-2xl p-10 flex flex-col items-center text-center max-w-4xl mx-auto border-t-2 border-t-primary/30 opacity-100">
+<span class="material-symbols-outlined text-primary text-5xl mb-6" style="font-variation-settings: 'FILL' 1;">psychology</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Recommended Action</h2>
+<p class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-2xl">
+                    Our AI couldn't find a high-certainty answer. We recommend escalating this to the community experts or refining your parameters.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold font-headline-md text-headline-md flex items-center justify-center gap-3 hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined">forum</span>
+                        Create Discussion Thread
+                    </button>
+<button class="border border-outline-variant text-on-surface px-8 py-4 rounded-xl font-bold font-headline-md text-headline-md flex items-center justify-center gap-3 hover:bg-white/5 active:scale-95 transition-all">
+<span class="material-symbols-outlined">edit</span>
+                        Refine Question
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap border-t border-outline-variant/30 bg-background">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter px-margin-desktop max-w-container-max mx-auto">
+<div class="md:col-span-4">
+<div class="font-headline-md text-headline-md font-bold text-on-surface mb-4">CrowdMind</div>
+<p class="text-on-surface-variant font-body-md text-body-md max-w-xs">
+                    © 2024 CrowdMind AI. Cognitive Clarity in Crowd Intelligence.
+                </p>
+</div>
+<div class="md:col-span-2">
+<div class="font-label-sm text-label-sm font-bold text-primary uppercase mb-6">Product</div>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Features</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">API</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Pricing</a></li>
+</ul>
+</div>
+<div class="md:col-span-2">
+<div class="font-label-sm text-label-sm font-bold text-primary uppercase mb-6">Community</div>
+<ul class="space-y-3">
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Discussions</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Resources</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Events</a></li>
+</ul>
+</div>
+<div class="md:col-span-4">
+<div class="font-label-sm text-label-sm font-bold text-primary uppercase mb-6">Legal</div>
+<ul class="flex flex-wrap gap-x-6 gap-y-3">
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Privacy</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Terms</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+</footer>
+<script>
+        // Micro-interactions for confidence meter animation on scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('opacity-100');
+                    }
+                });
+            });
+            document.querySelectorAll('.glass-card').forEach(card => observer.observe(card));
+        });
+    </script>
+</body></html>

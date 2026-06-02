@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Report #MOD-8921 Investigation | CrowdMind</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500&amp;family=Geist:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<!-- Use the provided Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-dim": "#111319",
+                "error": "#ffb4ab",
+                "secondary-container": "#00eefc",
+                "on-tertiary-fixed-variant": "#5a00c6",
+                "inverse-primary": "#0058ca",
+                "on-primary-fixed-variant": "#00429b",
+                "outline": "#8c90a0",
+                "on-surface": "#e2e2eb",
+                "on-secondary-fixed": "#002022",
+                "on-primary-fixed": "#001944",
+                "on-primary-container": "#002761",
+                "tertiary-fixed": "#eaddff",
+                "surface-container-low": "#191b22",
+                "outline-variant": "#424654",
+                "on-tertiary-container": "#36007d",
+                "error-container": "#93000a",
+                "on-surface-variant": "#c2c6d7",
+                "surface-tint": "#b0c6ff",
+                "on-tertiary": "#3f008e",
+                "secondary": "#d3fbff",
+                "on-secondary-fixed-variant": "#004f54",
+                "on-secondary-container": "#00686f",
+                "on-background": "#e2e2eb",
+                "on-secondary": "#00363a",
+                "primary-fixed": "#d9e2ff",
+                "background": "#111319",
+                "on-error-container": "#ffdad6",
+                "tertiary": "#d2bbff",
+                "surface-bright": "#373940",
+                "on-primary": "#002d6e",
+                "on-error": "#690005",
+                "surface-container": "#1e1f26",
+                "surface": "#111319",
+                "tertiary-container": "#a476ff",
+                "inverse-on-surface": "#2e3037",
+                "primary": "#b0c6ff",
+                "primary-container": "#558dff",
+                "tertiary-fixed-dim": "#d2bbff",
+                "primary-fixed-dim": "#b0c6ff",
+                "surface-variant": "#33343b",
+                "surface-container-lowest": "#0c0e14",
+                "surface-container-high": "#282a30",
+                "secondary-fixed": "#7df4ff",
+                "on-tertiary-fixed": "#25005a",
+                "inverse-surface": "#e2e2eb",
+                "secondary-fixed-dim": "#00dbe9",
+                "surface-container-highest": "#33343b"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "section-gap": "80px",
+                "margin-desktop": "48px",
+                "container-max": "1280px",
+                "unit": "8px",
+                "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                "body-md": ["Inter"],
+                "label-sm": ["JetBrains Mono"],
+                "label-md": ["JetBrains Mono"],
+                "body-lg": ["Inter"],
+                "display": ["Geist"],
+                "headline-lg": ["Geist"],
+                "headline-md": ["Geist"]
+            },
+            "fontSize": {
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "label-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .inner-glow-primary {
+            box-shadow: inset 0 0 12px rgba(176, 198, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111319;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #33343b;
+            border-radius: 10px;
+        }
+        .tooltip-trigger:hover .tooltip-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .tooltip-content {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(5px);
+            transition: all 0.2s ease;
+        }
+        .collapsible-content {
+            display: none;
+        }
+        .collapsible-open .collapsible-content {
+            display: block;
+        }
+        .collapsible-open .expand-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-md overflow-x-hidden custom-scrollbar">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full bg-surface/70 backdrop-blur-xl border-b border-white/10 z-50">
+<div class="flex justify-between items-center h-16 px-margin-desktop max-w-container-max mx-auto">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md font-bold text-primary">CrowdMind</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="#">FAQs</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="#">Discussions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="#">Ask Question</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<!-- Assigned To Dropdown -->
+<div class="relative group">
+<div class="flex items-center gap-3 bg-surface-container px-4 py-1.5 rounded-full border border-white/10 cursor-pointer hover:border-primary/50 transition-all">
+<div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="person">person</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] uppercase opacity-50 font-bold leading-none">Assigned To</span>
+<span class="text-label-sm font-bold text-on-surface">Felix Henderson</span>
+</div>
+<span class="material-symbols-outlined text-[18px] opacity-40 group-hover:text-primary transition-colors" data-icon="expand_more">expand_more</span>
+</div>
+<!-- Dropdown Menu Simulation -->
+<div class="absolute right-0 top-full mt-2 w-56 bg-surface-container-highest border border-white/10 rounded-xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 py-2">
+<div class="px-4 py-2 border-b border-white/5 mb-1">
+<span class="text-label-sm opacity-50">Reassign Case</span>
+</div>
+<button class="w-full text-left px-4 py-2 hover:bg-primary/10 hover:text-primary transition-colors flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-label-md">Sarah Chen</span>
+</button>
+<button class="w-full text-left px-4 py-2 hover:bg-primary/10 hover:text-primary transition-colors flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+<span class="text-label-md">Jameson Vance</span>
+</button>
+<button class="w-full text-left px-4 py-2 hover:bg-primary/10 hover:text-primary transition-colors flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-white/20"></div>
+<span class="text-label-md">Unassigned</span>
+</button>
+</div>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95" data-icon="account_circle">account_circle</button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar (Admin Workspace) -->
+<aside class="hidden lg:flex h-screen w-64 fixed left-0 top-0 bg-surface-container/80 backdrop-blur-2xl border-r border-white/5 flex-col gap-4 p-6 z-40 mt-16 shadow-sm">
+<div class="mb-4">
+<h2 class="font-display text-headline-md text-on-surface">Admin Workspace</h2>
+<p class="text-label-md text-on-surface-variant opacity-70">System Oversight</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-md">Mission Control</span>
+</a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant/50 rounded-lg transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-md">FAQ Management</span>
+</a>
+<a class="flex items-center gap-3 p-3 bg-primary-container text-on-primary-container rounded-lg font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-md">Moderation Queue</span>
+</a>
+</nav>
+<!-- Sidebar Metrics -->
+<div class="mt-8 pt-8 border-t border-white/5">
+<h4 class="text-label-sm uppercase tracking-widest opacity-50 mb-4">Operational Metrics</h4>
+<div class="space-y-4">
+<div class="bg-surface-container-low p-3 rounded-lg border border-white/5">
+<span class="text-label-sm opacity-60 block">SLA Time Remaining</span>
+<span class="font-bold text-primary font-display text-lg">02h : 45m</span>
+<div class="w-full h-1.5 bg-white/5 rounded-full mt-2">
+<div class="h-full bg-primary" style="width: 40%"></div>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-white/5">
+<span class="text-label-sm opacity-60 block">Total Response Time</span>
+<span class="font-bold text-on-surface">1h 14m</span>
+</div>
+</div>
+</div>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full py-3 bg-surface-container-high text-on-surface border border-white/10 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-surface-variant transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+                Audit Trail
+            </button>
+<button class="w-full py-3 bg-primary text-on-primary rounded-lg font-bold active:opacity-80 transition-all">Generate Report</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-48 px-margin-desktop min-h-screen max-w-container-max">
+<!-- Breadcrumb & Status Bar -->
+<header class="mb-8">
+<div class="flex items-center justify-between mb-4">
+<nav class="flex gap-2 text-label-md text-on-surface-variant">
+<span>Moderation Queue</span>
+<span>/</span>
+<span class="text-primary">Report #MOD-8921</span>
+</nav>
+<button class="flex items-center gap-2 text-label-md text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="share">share</span>
+                    Share Case
+                </button>
+</div>
+<!-- Horizontal Case Lifecycle Stepper -->
+<div class="mb-8 glass-card rounded-xl p-6 border border-white/5">
+<div class="flex items-center justify-between relative px-4">
+<!-- Base Connection Line -->
+<div class="absolute top-[15px] left-10 right-10 h-[2px] bg-white/10 z-0"></div>
+<!-- Progress Connection Line -->
+<div class="absolute top-[15px] left-10 w-[50%] h-[2px] bg-primary z-0 transition-all duration-500"></div>
+<!-- Step 1: Reported -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_0_12px_rgba(176,198,255,0.4)]">
+<span class="material-symbols-outlined text-[18px]" data-icon="check">check</span>
+</div>
+<span class="text-label-sm font-bold text-primary">Reported</span>
+</div>
+<!-- Step 2: AI Flagged -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_0_12px_rgba(176,198,255,0.4)]">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<span class="text-label-sm font-bold text-primary">AI Flagged</span>
+</div>
+<!-- Step 3: Under Review (ACTIVE) -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-10 h-10 -mt-1 rounded-full border-2 border-primary bg-primary/20 flex items-center justify-center text-primary animate-pulse shadow-[0_0_20px_rgba(176,198,255,0.3)]">
+<span class="material-symbols-outlined text-[20px]" data-icon="search">search</span>
+</div>
+<span class="text-label-sm font-bold text-primary">Under Review</span>
+</div>
+<!-- Step 4: Action Taken -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full border border-white/20 bg-surface-container flex items-center justify-center text-on-surface-variant opacity-40">
+<span class="material-symbols-outlined text-[18px]" data-icon="gavel">gavel</span>
+</div>
+<span class="text-label-sm text-on-surface-variant opacity-40">Action Taken</span>
+</div>
+<!-- Step 5: Closed -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full border border-white/20 bg-surface-container flex items-center justify-center text-on-surface-variant opacity-40">
+<span class="material-symbols-outlined text-[18px]" data-icon="lock">lock</span>
+</div>
+<span class="text-label-sm text-on-surface-variant opacity-40">Closed</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 p-8 glass-card rounded-xl border border-white/10 inner-glow-primary">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-4">
+<h1 class="font-display text-headline-lg text-on-surface">Report #MOD-8921</h1>
+<span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-label-sm font-bold">IN PROGRESS</span>
+<span class="px-3 py-1 bg-error-container text-on-error-container border border-error/30 rounded-full text-label-sm font-bold">CRITICAL</span>
+</div>
+<div class="flex items-center gap-6 text-on-surface-variant text-label-md">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]" data-icon="schedule">schedule</span> Reported 2 hours ago</span>
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-[18px]" data-icon="history">history</span> Time since report: 2h 14m</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1.5 mb-1 group relative tooltip-trigger">
+<span class="text-label-sm uppercase tracking-widest opacity-60">AI Risk Score</span>
+<span class="material-symbols-outlined text-[14px] opacity-40 cursor-help" data-icon="info">info</span>
+<!-- Tooltip -->
+<div class="tooltip-content absolute bottom-full mb-2 right-0 w-64 bg-surface-bright p-4 rounded-lg shadow-2xl border border-white/10 text-label-sm font-normal normal-case z-50">
+<p class="text-on-surface mb-2 font-bold">Flagging Reason:</p>
+<p class="text-on-surface-variant">High similarity to known misinformation clusters regarding energy physics. Pattern matches "Suppression Narrative" template.</p>
+</div>
+</div>
+<span class="font-display text-headline-lg text-primary">85%</span>
+</div>
+<div class="w-16 h-16 rounded-full border-4 border-primary/20 flex items-center justify-center relative">
+<svg class="absolute inset-0 -rotate-90 w-full h-full" viewbox="0 0 36 36">
+<circle class="text-primary" cx="18" cy="18" fill="none" r="16" stroke="currentColor" stroke-dasharray="85, 100" stroke-width="4"></circle>
+</svg>
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+</div>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Main Content (Left Column) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-8">
+<!-- Report Overview -->
+<section class="glass-card p-8 rounded-xl flex flex-col gap-4">
+<div class="flex items-center justify-between border-b border-white/5 pb-4 mb-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<h3 class="font-headline-md text-on-surface">Report Overview</h3>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-4 bg-surface-container-low rounded-lg border border-white/5">
+<span class="text-label-sm uppercase opacity-50 block mb-1">Content Type</span>
+<span class="font-body-lg text-on-surface">Discussion Post</span>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border border-white/5">
+<span class="text-label-sm uppercase opacity-50 block mb-1">Primary Violation</span>
+<span class="font-body-lg text-on-surface">Misinformation</span>
+</div>
+<div class="p-4 bg-surface-container-low rounded-lg border border-white/5">
+<span class="text-label-sm uppercase opacity-50 block mb-1">Reporter Count</span>
+<span class="font-body-lg text-on-surface">14 Unique Users</span>
+</div>
+</div>
+</section>
+<!-- Reported Content Viewer -->
+<section class="glass-card rounded-xl overflow-hidden flex flex-col">
+<div class="flex items-center justify-between p-6 bg-surface-container-high border-b border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error" data-icon="visibility">visibility</span>
+<h3 class="font-headline-md text-on-surface">Reported Content</h3>
+</div>
+<button class="text-primary hover:underline font-label-md flex items-center gap-1">
+                            Expand Full Context <span class="material-symbols-outlined text-[18px]" data-icon="open_in_full">open_in_full</span>
+</button>
+</div>
+<div class="p-8 font-body-lg text-on-surface leading-relaxed bg-surface-container/30">
+                        "The recent breakthroughs in <span class="bg-error/20 border-b-2 border-error text-error px-1">quantum entanglement synthesis</span> are being deliberately suppressed by the global consensus council. My research indicates that the <span class="bg-error/20 border-b-2 border-error text-error px-1">synthesis core can actually be stabilized using common atmospheric noble gases</span>, rendering the current energy infrastructure obsolete. This is not just a theory; we have prototype data showing 400% efficiency gains without radioactive decay."
+                    </div>
+</section>
+<!-- AI Investigation Summary -->
+<section class="glass-card p-8 rounded-xl border border-primary/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-[120px]" data-icon="neurology">neurology</span>
+</div>
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="neurology">neurology</span>
+<h3 class="font-headline-md text-on-surface">AI Investigation Summary</h3>
+</div>
+<div class="flex items-center gap-2 bg-primary/10 px-4 py-2 rounded-lg border border-primary/20">
+<span class="text-label-sm font-bold text-primary">System Confidence: 92%</span>
+</div>
+</div>
+<p class="font-body-lg text-on-surface-variant mb-6 relative z-10">
+                        System analysis identifies a <span class="text-primary font-bold">High Potential for Misinformation</span>. The claims regarding noble gas stabilization for quantum cores contradict established physical laws and match several known fringe-science disinformation patterns.
+                    </p>
+<div class="flex flex-col md:flex-row gap-8 relative z-10">
+<div class="flex-1">
+<h4 class="text-label-sm uppercase tracking-widest opacity-50 mb-3">Associated Entities</h4>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-high border border-white/10 rounded-md text-label-sm text-on-surface">Quantum Synthesis</span>
+<span class="px-2 py-1 bg-surface-container-high border border-white/10 rounded-md text-label-sm text-on-surface">Energy Conspiracy</span>
+</div>
+</div>
+<div class="flex-1">
+<h4 class="text-label-sm uppercase tracking-widest opacity-50 mb-3">Recommended Decision</h4>
+<div class="flex items-center gap-3 text-on-surface font-bold">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+                                Remove Content &amp; Warn User
+                            </div>
+</div>
+</div>
+</section>
+<!-- Similar Resolved Cases (COLLAPSIBLE) -->
+<section class="glass-card rounded-xl overflow-hidden collapsible-section">
+<button class="w-full p-8 flex items-center justify-between hover:bg-white/5 transition-all text-left" onclick="this.parentElement.classList.toggle('collapsible-open')">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="history_edu">history_edu</span>
+<h3 class="font-headline-md text-on-surface">Similar Resolved Cases</h3>
+</div>
+<span class="material-symbols-outlined expand-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="collapsible-content px-8 pb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="p-4 bg-surface-container-low border border-white/5 rounded-xl hover:border-primary/40 transition-all flex justify-between items-start group" href="#">
+<div>
+<span class="text-label-sm font-bold text-primary block mb-1">#MOD-8720 (Resolved)</span>
+<p class="text-label-md opacity-70">Claim: "Vacuum energy harvesting via salt."</p>
+<span class="mt-2 inline-block px-2 py-0.5 bg-error/10 text-error text-[10px] rounded uppercase font-bold">Decision: Permanent Ban</span>
+</div>
+<span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-all" data-icon="arrow_outward">arrow_outward</span>
+</a>
+<a class="p-4 bg-surface-container-low border border-white/5 rounded-xl hover:border-primary/40 transition-all flex justify-between items-start group" href="#">
+<div>
+<span class="text-label-sm font-bold text-primary block mb-1">#MOD-8641 (Resolved)</span>
+<p class="text-label-md opacity-70">Claim: "Solar flare suppression technology."</p>
+<span class="mt-2 inline-block px-2 py-0.5 bg-primary/10 text-primary text-[10px] rounded uppercase font-bold">Decision: Content Removal</span>
+</div>
+<span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 transition-all" data-icon="arrow_outward">arrow_outward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Resolution Notes -->
+<section class="glass-card p-8 rounded-xl border-l-4 border-primary">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+<h3 class="font-headline-md text-on-surface">Resolution Workflow</h3>
+</div>
+<span class="text-label-sm text-error font-bold uppercase tracking-wider">* Required to close case</span>
+</div>
+<p class="text-on-surface-variant text-label-md mb-4">Document the specific rationale for the enforcement action taken below.</p>
+<textarea class="w-full bg-surface-container-lowest border border-white/10 rounded-lg p-4 text-body-md focus:ring-1 focus:ring-primary outline-none min-h-[160px] custom-scrollbar focus:border-primary/50 transition-all" id="resolution-textarea" placeholder="Enter detailed resolution notes for audit trail..."></textarea>
+<div class="mt-6 flex justify-end">
+<button class="px-8 py-3 bg-primary text-on-primary rounded-lg font-bold disabled:opacity-30 disabled:cursor-not-allowed hover:brightness-110 transition-all flex items-center gap-2" disabled="" id="finalize-btn">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+        Finalize &amp; Close Case
+    </button>
+</div>
+</section>
+</div>
+<!-- Right Sidebar -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Risk Assessment -->
+<section class="glass-card p-6 rounded-xl border border-white/5">
+<h3 class="font-headline-md text-on-surface mb-6">Risk Assessment</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-label-md mb-2">
+<span>Misinformation</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 85%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-md mb-2">
+<span>Manipulation</span>
+<span class="text-secondary-fixed">72%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed" style="width: 72%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-md mb-2">
+<span>Toxicity</span>
+<span class="opacity-60">12%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-white/20" style="width: 12%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- User History Section (Collapsible - Polish) -->
+<section class="glass-card rounded-xl border border-white/5 overflow-hidden collapsible-section">
+<button class="w-full p-6 flex items-center justify-between hover:bg-white/5 transition-all text-left" onclick="this.parentElement.classList.toggle('collapsible-open')">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="person_search">person_search</span>
+<h3 class="font-headline-md text-on-surface">User Violation History</h3>
+</div>
+<span class="material-symbols-outlined expand-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="collapsible-content px-6 pb-6 space-y-4">
+<div class="flex items-center justify-between mb-4 p-3 bg-surface-container-low rounded-xl border border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/20">
+<img alt="User Avatar" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_5i49MH8TwENho6za0KiBVGGVx7VpRgdlWGP2crBAwySGODu7btmddIPUU2pU8YSzmej0zIwEsXzTCYF1ltYu6keGzYVDqKOAmgOYMCh0fMbu_UQ5mKB9mk5pZyX9M75gVDFjV7hpFlhdn4QPT9Da25h_fUSVk4lDUVwytIMJGb41x72oVCODARfWXwIlYjaJE6yIRzUGk4j75vlpCQoKcaV232QRx-3l6BHXmy-gI_zHXJ8iX0Fql30tnD14E7EXiTPyAmTBfmZj"/>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">@quantum_expert</h4>
+<span class="text-label-sm opacity-50">Trust Score: Low (D)</span>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<span class="px-2 py-0.5 bg-error/10 text-error border border-error/20 rounded text-[10px] font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_down">trending_down</span>
+            DECLINING
+        </span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div class="p-3 bg-error/10 border border-error/20 rounded-lg text-center">
+<span class="block text-xl font-bold text-error">2</span>
+<span class="text-[10px] uppercase opacity-70">Warnings</span>
+</div>
+<div class="p-3 bg-surface-container-high border border-white/10 rounded-lg text-center">
+<span class="block text-xl font-bold">0</span>
+<span class="text-[10px] uppercase opacity-70">Suspensions</span>
+</div>
+<div class="p-3 bg-surface-container-high border border-white/10 rounded-lg text-center">
+<span class="block text-xl font-bold">1</span>
+<span class="text-[10px] uppercase opacity-70">Previous Ban</span>
+</div>
+<div class="p-3 bg-surface-container-high border border-white/10 rounded-lg text-center">
+<span class="block text-xl font-bold">14</span>
+<span class="text-[10px] uppercase opacity-70">Reports</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Related Reports (COLLAPSIBLE) -->
+<section class="glass-card rounded-xl border border-white/5 overflow-hidden collapsible-section">
+<button class="w-full p-6 flex items-center justify-between hover:bg-white/5 transition-all text-left" onclick="this.parentElement.classList.toggle('collapsible-open')">
+<h3 class="font-headline-md text-on-surface">Related Reports</h3>
+<span class="material-symbols-outlined expand-icon transition-transform duration-300" data-icon="expand_more">expand_more</span>
+</button>
+<div class="collapsible-content px-6 pb-6 space-y-3">
+<div class="p-3 bg-surface-container-low rounded-lg border border-white/5 flex flex-col gap-1">
+<span class="text-label-sm text-primary font-bold">RE: Quantum Threads</span>
+<p class="text-label-md opacity-70 truncate text-on-surface">"The synthesis claims are baseless..."</p>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg border border-white/5 flex flex-col gap-1">
+<span class="text-label-sm text-primary font-bold">RE: Energy Future</span>
+<p class="text-label-md opacity-70 truncate text-on-surface">"Spreading noble gas myths again."</p>
+</div>
+</div>
+</section>
+<!-- Evidence Timeline -->
+<section class="glass-card p-6 rounded-xl">
+<h3 class="font-headline-md text-on-surface mb-6">Evidence Timeline</h3>
+<div class="relative pl-6 border-l-2 border-white/10 space-y-8 text-label-md">
+<div class="relative">
+<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-primary ring-4 ring-primary/20"></div>
+<h4 class="font-bold text-on-surface">Report Submitted</h4>
+<span class="text-label-sm opacity-50">14:02 Today</span>
+</div>
+<div class="relative">
+<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-primary"></div>
+<h4 class="font-bold text-on-surface">AI Flagged</h4>
+<p class="opacity-70">Risk score exceeded threshold.</p>
+<span class="text-label-sm opacity-50">14:03 Today</span>
+</div>
+<div class="relative">
+<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-primary"></div>
+<h4 class="font-bold text-on-surface">Human Review Started</h4>
+<span class="text-label-sm opacity-50">14:15 Today</span>
+</div>
+<div class="relative">
+<div class="absolute -left-[33px] top-0 w-4 h-4 rounded-full bg-secondary-fixed"></div>
+<h4 class="font-bold text-secondary-fixed">Action Applied</h4>
+<p class="opacity-70">Felix Henderson applied 'Remove Content'</p>
+<span class="text-label-sm opacity-50">16:10 Today</span>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Sticky Enforcement Bar (Compact Polish) -->
+<footer class="fixed bottom-0 left-0 lg:left-64 right-0 glass-card border-t border-white/10 h-20 z-50 px-8 flex items-center justify-between bg-surface-container/95 backdrop-blur-3xl">
+<div class="hidden md:flex flex-col">
+<div class="flex items-center gap-2">
+<span class="text-label-sm opacity-60">Recommends:</span>
+<span class="px-2 py-0.5 bg-primary/20 text-primary border border-primary/40 rounded text-[10px] font-bold">REMOVE</span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="material-symbols-outlined text-[14px] text-error" data-icon="timer">timer</span>
+<span class="text-[11px] font-bold text-error">SLA: 2h 45m</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-4 py-2 border border-white/10 rounded-lg text-label-sm font-bold hover:bg-white/5 transition-all">Dismiss</button>
+<button class="px-4 py-2 border border-primary/40 text-primary rounded-lg text-label-sm font-bold hover:bg-primary/10 transition-all flex items-center gap-2">
+    Warn <span class="px-1.5 py-0.5 bg-primary/20 rounded text-[10px] opacity-70">W</span>
+</button>
+<div class="h-6 w-[1px] bg-white/10 mx-1"></div>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg text-label-sm font-bold hover:brightness-110 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="delete">delete</span>
+    Remove <span class="px-1.5 py-0.5 bg-on-primary/20 rounded text-[10px] opacity-70">R</span>
+</button>
+<button class="px-4 py-2 border border-error/40 text-error rounded-lg text-label-sm font-bold hover:bg-error/10 transition-all flex items-center gap-2">
+    Suspend <span class="px-1.5 py-0.5 bg-error/20 rounded text-[10px] opacity-70">S</span>
+</button>
+<button class="px-4 py-2 bg-error-container text-on-error-container rounded-lg text-label-sm font-bold hover:brightness-110 transition-all flex items-center gap-2">
+    Ban <span class="px-1.5 py-0.5 bg-on-error-container/20 rounded text-[10px] opacity-70">B</span>
+</button>
+<button class="px-4 py-2 bg-tertiary text-on-tertiary rounded-lg text-label-sm font-bold hover:brightness-110 transition-all">Escalate</button>
+</div>
+</footer>
+<script>
+        // Handle resolution notes text area logic
+        const textarea = document.getElementById('resolution-textarea');
+        const finalizeBtn = document.getElementById('finalize-btn');
+        
+        textarea.addEventListener('input', (e) => {
+            if (e.target.value.trim().length > 5) {
+                finalizeBtn.disabled = false;
+            } else {
+                finalizeBtn.disabled = true;
+            }
+        });
+
+        // Simple micro-interactions
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('click', (e) => {
+                if(!el.onclick) console.log('Interaction detected on:', el.textContent.trim());
+            });
+        });
+
+        // Hover border effects
+        const glassCards = document.querySelectorAll('.glass-card');
+        glassCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.borderColor = 'rgba(176, 198, 255, 0.2)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+    </script>
+</body></html>

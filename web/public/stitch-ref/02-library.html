@@ -1,0 +1,505 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>CrowdMind AI | FAQ Repository</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#b0c6ff",
+                        "on-secondary-fixed": "#002022",
+                        "inverse-primary": "#0058ca",
+                        "on-tertiary-fixed": "#25005a",
+                        "tertiary-fixed": "#eaddff",
+                        "primary-container": "#558dff",
+                        "primary-fixed": "#d9e2ff",
+                        "primary": "#b0c6ff",
+                        "on-tertiary-container": "#36007d",
+                        "surface-dim": "#111319",
+                        "surface-container-high": "#282a30",
+                        "surface-variant": "#33343b",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "on-surface": "#e2e2eb",
+                        "outline-variant": "#424654",
+                        "outline": "#8c90a0",
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#d2bbff",
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "surface-container-highest": "#33343b",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "on-primary-container": "#002761",
+                        "secondary": "#d3fbff",
+                        "inverse-on-surface": "#2e3037",
+                        "tertiary-container": "#a476ff",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "surface-container-low": "#191b22",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#00686f",
+                        "secondary-container": "#00eefc",
+                        "on-background": "#e2e2eb",
+                        "surface-container-lowest": "#0c0e14",
+                        "surface-bright": "#373940",
+                        "on-primary-fixed": "#001944",
+                        "on-primary": "#002d6e",
+                        "surface-container": "#1e1f26",
+                        "on-surface-variant": "#c2c6d7",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#3f008e",
+                        "on-primary-fixed-variant": "#00429b",
+                        "inverse-surface": "#e2e2eb",
+                        "surface": "#111319",
+                        "background": "#111319",
+                        "on-secondary": "#00363a",
+                        "secondary-fixed": "#7df4ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "80px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-desktop": "48px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "display": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Geist"]
+                    },
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #111319; color: #e2e2eb; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(22, 27, 34, 0.7); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .radial-glow { background: radial-gradient(circle at 50% 0%, rgba(176, 198, 255, 0.1) 0%, transparent 70%); }
+        .accent-glow { background: radial-gradient(circle at center, rgba(0, 222, 233, 0.05) 0%, transparent 80%); }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #33343b; border-radius: 10px; }
+        .evolution-line { background: linear-gradient(90deg, #558dff 0%, #a476ff 100%); height: 2px; }
+        .premium-card-glow { position: relative; }
+        .premium-card-glow::after { content: ''; position: absolute; inset: -1px; background: linear-gradient(45deg, rgba(85, 141, 255, 0.3), transparent, rgba(164, 118, 255, 0.3)); border-radius: inherit; z-index: -1; }
+    </style>
+</head>
+<body class="selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 h-20 px-margin-desktop flex justify-between items-center bg-surface/70 backdrop-blur-xl border-b border-white/10">
+<div class="flex items-center gap-12">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">CrowdMind AI</span>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">FAQs</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Discussions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Ask Question</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-2 w-64 font-body-md text-sm focus:ring-1 focus:ring-secondary-fixed-dim focus:outline-none transition-all" placeholder="Global search..." type="text">
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden ring-2 ring-primary-container/20">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCH4w_JmfedyjvVpxQidY6XqVSx68KDq2gELghRRO6mQcanTYK_xncmZIU-1rVyGsjFYdawv7Eg5_ZRICaBAW-zzLl46pziS1M057k4oHKdJj-070_YBADwLryzS0qjgbteq6coes7gXI99SLR_X2Z4Nji-1p3905jq5CkltkTX5nvd5iaK-cWVpCrL5v2Q8emqcSBVbdBsevvMdFuX6NiBhZi2h49PdIOhDqrBPTvCpH_ALZ5Goqbo-jOBX_wDDEJz7dSJOwKhHPBB">
+</div>
+</div>
+</header>
+<main class="pt-32 pb-20 px-margin-desktop radial-glow min-h-screen">
+<!-- Header -->
+<div class="mb-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h1 class="font-display text-display text-on-surface tracking-tight mb-2">Knowledge Repository</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Explore community-validated and AI-evolved knowledge artifacts. Dynamic intelligence for the neural collective.</p>
+</div>
+<div class="flex gap-8 border-l border-outline-variant pl-8 h-fit">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total FAQs</span>
+<span class="font-headline-md text-headline-md text-primary">1,284</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">AI Verified</span>
+<span class="font-headline-md text-headline-md text-secondary-fixed-dim">98.4%</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Categories</span>
+<span class="font-headline-md text-headline-md text-tertiary">24</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Featured Knowledge Artifact -->
+<section class="mb-12">
+<h2 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest mb-4">Featured Knowledge Artifact</h2>
+<div class="glass premium-card-glow rounded-3xl p-8 flex flex-col md:flex-row gap-8 items-center border border-primary/20 bg-gradient-to-br from-primary/5 to-tertiary/5">
+<div class="flex-1">
+<div class="flex items-center gap-3 mb-4">
+<span class="px-3 py-1 bg-primary/20 text-primary rounded-full text-xs font-label-sm border border-primary/30 uppercase">Community Recommended</span>
+<span class="text-secondary-fixed-dim flex items-center gap-1 font-label-sm text-xs">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+                            Verified Protocol
+                        </span>
+</div>
+<h3 class="font-display text-3xl text-on-surface mb-4 leading-tight">How does the ViBe consensus mechanism prevent adversarial sybil attacks?</h3>
+<p class="font-body-lg text-on-surface-variant mb-6 line-clamp-2">The mechanism utilizes a multi-layered reputation weighting system combined with cryptographic proof-of-contribution, ensuring that node influence is tied to historical validation accuracy rather than raw computational or identity volume.</p>
+<div class="flex flex-wrap gap-6 items-center">
+<div class="flex items-center gap-2">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-on-surface-variant uppercase">AI Confidence</span>
+<span class="font-headline-md text-primary">98%</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-on-surface-variant uppercase">Community Agreement</span>
+<span class="font-headline-md text-secondary-fixed-dim">94%</span>
+</div>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<div class="flex gap-4">
+<div class="text-center">
+<span class="block font-label-sm text-[10px] text-on-surface-variant uppercase">Views</span>
+<span class="font-label-md text-on-surface">12.4k</span>
+</div>
+<div class="text-center">
+<span class="block font-label-sm text-[10px] text-on-surface-variant uppercase">Discussions</span>
+<span class="font-label-md text-on-surface">42</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full md:w-auto">
+<button class="w-full md:w-auto px-8 py-4 bg-primary text-on-primary rounded-xl font-label-md hover:shadow-[0_0_20px_rgba(176,198,255,0.4)] transition-all">Read Artifact</button>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Sidebar: Filters -->
+<aside class="col-span-3 flex flex-col gap-8">
+<div class="glass rounded-xl p-6">
+<h3 class="font-label-md text-label-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">filter_list</span> CATEGORIES
+                    </h3>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded bg-surface-container border-outline-variant text-primary focus:ring-primary ring-offset-surface-dim" type="checkbox">
+<span class="font-body-md text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Internship</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input checked="" class="rounded bg-surface-container border-outline-variant text-primary focus:ring-primary ring-offset-surface-dim" type="checkbox">
+<span class="font-body-md text-sm text-primary font-medium">Team Formation</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded bg-surface-container border-outline-variant text-primary focus:ring-primary ring-offset-surface-dim" type="checkbox">
+<span class="font-body-md text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">ViBe Protocol</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="rounded bg-surface-container border-outline-variant text-primary focus:ring-primary ring-offset-surface-dim" type="checkbox">
+<span class="font-body-md text-sm text-on-surface-variant group-hover:text-on-surface transition-colors">Rosetta Engine</span>
+</label>
+</div>
+</div>
+<div class="glass rounded-xl p-6">
+<h3 class="font-label-md text-label-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">verified</span> STATUS
+                    </h3>
+<div class="flex flex-col gap-3">
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="bg-surface-container border-outline-variant text-secondary focus:ring-secondary ring-offset-surface-dim" name="status" type="radio">
+<span class="font-body-md text-sm text-on-surface-variant">AI Verified</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<input class="bg-surface-container border-outline-variant text-secondary focus:ring-secondary ring-offset-surface-dim" name="status" type="radio">
+<span class="font-body-md text-sm text-on-surface-variant">Recently Updated</span>
+</label>
+</div>
+</div>
+</aside>
+<!-- Center Content: Search & FAQ Grid -->
+<section class="col-span-6 flex flex-col gap-6">
+<!-- Search Bar Section -->
+<div class="flex flex-col gap-4">
+<div class="relative">
+<input class="w-full bg-surface-container-high/50 border border-white/10 rounded-2xl py-4 px-12 font-body-lg text-on-surface focus:ring-2 focus:ring-primary/50 transition-all backdrop-blur-sm" placeholder="Search knowledge repository..." type="text">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary">search</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 flex-wrap">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Trending:</span>
+<span class="px-3 py-1 glass rounded-full font-label-sm text-xs text-secondary-fixed-dim hover:bg-secondary-fixed-dim/10 cursor-pointer transition-colors">#NOC</span>
+<span class="px-3 py-1 glass rounded-full font-label-sm text-xs text-on-surface-variant hover:bg-white/5 cursor-pointer transition-colors">#ViBe</span>
+</div>
+<!-- Sorting Controls -->
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-xs text-on-surface-variant">Sort by:</span>
+<select class="bg-surface-container-low border border-outline-variant rounded-lg px-3 py-1.5 font-label-sm text-xs text-on-surface focus:ring-primary focus:outline-none appearance-none cursor-pointer">
+<option>Most Relevant</option>
+<option>Most Viewed</option>
+<option>Highest Confidence</option>
+<option>Recently Updated</option>
+<option>Most Discussed</option>
+</select>
+</div>
+</div>
+</div>
+<!-- FAQ Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- FAQ Card 1 -->
+<div class="glass rounded-2xl p-5 group hover:border-primary/40 transition-all duration-300 flex flex-col border border-white/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-[10px] bg-primary-container/20 text-primary-fixed px-2 py-0.5 rounded w-fit">Team Formation</span>
+<span class="font-label-sm text-[10px] bg-secondary-fixed-dim/10 text-secondary-fixed-dim px-2 py-0.5 rounded border border-secondary-fixed-dim/20 w-fit">Verified</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-label-sm text-[10px] text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                    94% AI Confidence
+                                </span>
+<span class="font-label-sm text-[10px] text-secondary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">groups</span>
+                                    88% Community
+                                </span>
+</div>
+</div>
+<h4 class="font-headline-md text-md text-on-surface mb-2 group-hover:text-primary transition-colors leading-tight">Can I change my team after Phase 1 completion?</h4>
+<p class="font-body-md text-xs text-on-surface-variant mb-4 line-clamp-2">Team assignments are finalized post-Phase 1 validation. Mid-phase transfers require dual-mentor approval.</p>
+<div class="mt-auto">
+<div class="flex items-center gap-3 mb-4 text-[10px] text-on-surface-variant font-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">chat</span> 12 discussions</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">history</span> Updated 2d ago</span>
+</div>
+<div class="flex justify-between items-center border-t border-white/5 pt-3">
+<span class="font-label-sm text-[10px] text-on-surface-variant">3 Contributors</span>
+<button class="font-label-md text-xs text-primary hover:underline underline-offset-4">View FAQ</button>
+</div>
+</div>
+</div>
+<!-- FAQ Card 2 -->
+<div class="glass rounded-2xl p-5 group hover:border-tertiary/40 transition-all duration-300 flex flex-col border border-white/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-[10px] bg-tertiary-container/20 text-tertiary-fixed px-2 py-0.5 rounded w-fit">ViBe Protocol</span>
+<span class="font-label-sm text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded border border-primary/20 w-fit">Recently Updated</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-label-sm text-[10px] text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                    98% AI Confidence
+                                </span>
+<span class="font-label-sm text-[10px] text-secondary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">groups</span>
+                                    96% Community
+                                </span>
+</div>
+</div>
+<h4 class="font-headline-md text-md text-on-surface mb-2 group-hover:text-tertiary transition-colors leading-tight">What triggers a Reputation Reset in ViBe V3?</h4>
+<p class="font-body-md text-xs text-on-surface-variant mb-4 line-clamp-2">Reputation resets occur when a consensus failure exceeds the 15% threshold during three cycles.</p>
+<div class="mt-auto">
+<div class="flex items-center gap-3 mb-4 text-[10px] text-on-surface-variant font-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">chat</span> 28 discussions</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">history</span> Updated 5h ago</span>
+</div>
+<div class="flex justify-between items-center border-t border-white/5 pt-3">
+<span class="font-label-sm text-[10px] text-on-surface-variant">8 Contributors</span>
+<button class="font-label-md text-xs text-tertiary hover:underline underline-offset-4">View FAQ</button>
+</div>
+</div>
+</div>
+<!-- FAQ Card 3 -->
+<div class="glass rounded-2xl p-5 group hover:border-secondary/40 transition-all duration-300 flex flex-col border border-white/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-[10px] bg-secondary-container/20 text-on-secondary-container px-2 py-0.5 rounded w-fit">NOC</span>
+<span class="font-label-sm text-[10px] bg-yellow-500/10 text-yellow-500 px-2 py-0.5 rounded border border-yellow-500/20 w-fit">Under Review</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-label-sm text-[10px] text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                    91% AI Confidence
+                                </span>
+<span class="font-label-sm text-[10px] text-secondary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">groups</span>
+                                    72% Community
+                                </span>
+</div>
+</div>
+<h4 class="font-headline-md text-md text-on-surface mb-2 group-hover:text-secondary-fixed-dim transition-colors leading-tight">How to handle 'Null Pointer Evolution' errors?</h4>
+<p class="font-body-md text-xs text-on-surface-variant mb-4 line-clamp-2">This occurs when an agent attempts to evolve a knowledge node that has been deprecated in the current epoch.</p>
+<div class="mt-auto">
+<div class="flex items-center gap-3 mb-4 text-[10px] text-on-surface-variant font-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">chat</span> 6 discussions</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">history</span> Updated 1d ago</span>
+</div>
+<div class="flex justify-between items-center border-t border-white/5 pt-3">
+<span class="font-label-sm text-[10px] text-on-surface-variant">2 Contributors</span>
+<button class="font-label-md text-xs text-secondary-fixed-dim hover:underline underline-offset-4">View FAQ</button>
+</div>
+</div>
+</div>
+<!-- FAQ Card 4 -->
+<div class="glass rounded-2xl p-5 group hover:border-primary/40 transition-all duration-300 flex flex-col border border-white/5">
+<div class="flex justify-between items-start mb-4">
+<div class="flex flex-col gap-1.5">
+<span class="font-label-sm text-[10px] bg-primary-container/20 text-primary-fixed px-2 py-0.5 rounded w-fit">Certificates</span>
+<span class="font-label-sm text-[10px] bg-secondary-fixed-dim/10 text-secondary-fixed-dim px-2 py-0.5 rounded border border-secondary-fixed-dim/20 w-fit">Verified</span>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-label-sm text-[10px] text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                                    100% AI Confidence
+                                </span>
+<span class="font-label-sm text-[10px] text-secondary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">groups</span>
+                                    99% Community
+                                </span>
+</div>
+</div>
+<h4 class="font-headline-md text-md text-on-surface mb-2 group-hover:text-primary transition-colors leading-tight">Are blockchain-verified certificates printable?</h4>
+<p class="font-body-md text-xs text-on-surface-variant mb-4 line-clamp-2">Yes, although they contain a dynamic holographic QR code that confirms real-time validity.</p>
+<div class="mt-auto">
+<div class="flex items-center gap-3 mb-4 text-[10px] text-on-surface-variant font-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">chat</span> 15 discussions</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">history</span> Updated 3d ago</span>
+</div>
+<div class="flex justify-between items-center border-t border-white/5 pt-3">
+<span class="font-label-sm text-[10px] text-on-surface-variant">5 Contributors</span>
+<button class="font-label-md text-xs text-primary hover:underline underline-offset-4">View FAQ</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="flex justify-center items-center gap-2 mt-8">
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md text-sm">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">3</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">4</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">5</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</section>
+<!-- Right Sidebar: Stats & Updates -->
+<aside class="col-span-3 flex flex-col gap-8">
+<!-- Health Panel -->
+<div class="glass rounded-2xl p-6 accent-glow">
+<h3 class="font-label-md text-label-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">analytics</span> KNOWLEDGE HEALTH
+                    </h3>
+<div class="flex flex-col gap-6">
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-body-md text-xs text-on-surface-variant">Repository Accuracy</span>
+<span class="font-label-md text-sm text-secondary-fixed-dim">98.4%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[98.4%] h-full bg-secondary-fixed-dim shadow-[0_0_10px_rgba(0,222,233,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-body-md text-xs text-on-surface-variant">Community Consensus</span>
+<span class="font-label-md text-sm text-tertiary">89%</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[89%] h-full bg-tertiary"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Recently Updated -->
+<div class="glass rounded-2xl p-6">
+<h3 class="font-label-md text-label-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span> RECENT UPDATES
+                    </h3>
+<div class="flex flex-col gap-4">
+<div class="flex gap-3 group cursor-pointer">
+<div class="w-1 h-8 bg-primary rounded-full group-hover:scale-y-125 transition-transform"></div>
+<div>
+<h5 class="font-body-md text-sm text-on-surface group-hover:text-primary transition-colors">Phase 2 Onboarding Docs</h5>
+<span class="font-label-sm text-[10px] text-on-surface-variant">2 hours ago • V4.1</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer Consistency (Matching Landing Page) -->
+<footer class="bg-surface-container-lowest border-t border-white/5 pt-20 pb-10 px-margin-desktop">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+<div class="lg:col-span-2">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter block mb-6">CrowdMind AI</span>
+<p class="font-body-md text-on-surface-variant max-w-sm mb-8">Evolving the future of collective intelligence through community validation and AI orchestration.</p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full glass flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-sm">public</span></a>
+<a class="w-10 h-10 rounded-full glass flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-sm">terminal</span></a>
+<a class="w-10 h-10 rounded-full glass flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="#"><span class="material-symbols-outlined text-sm">share</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface mb-6 uppercase tracking-wider">Product</h4>
+<div class="flex flex-col gap-4">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Repository</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">ViBe Protocol</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Rosetta Engine</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">API Access</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface mb-6 uppercase tracking-wider">Community</h4>
+<div class="flex flex-col gap-4">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Discussions</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Governance</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Mentorship</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Wall of Fame</a>
+</div>
+</div>
+<div>
+<h4 class="font-label-md text-on-surface mb-6 uppercase tracking-wider">Legal</h4>
+<div class="flex flex-col gap-4">
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Cookie Policy</a>
+</div>
+</div>
+</div>
+<div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 gap-4">
+<p class="font-label-sm text-on-surface-variant">© 2024 CrowdMind AI. Neural Knowledge Protocol. All rights reserved.</p>
+<div class="flex gap-8">
+<span class="flex items-center gap-2 font-label-sm text-secondary-fixed-dim">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim animate-pulse"></span>
+                    Network Operational
+                </span>
+</div>
+</div>
+</footer>
+</body></html>

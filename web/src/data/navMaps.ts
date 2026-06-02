@@ -1,0 +1,47 @@
+/** Shared navigation text → route maps for Stitch button/link patching */
+export const commonUserNav: Record<string, string> = {
+  'crowdmind ai': '/',
+  crowdmind: '/',
+  faqs: '/library',
+  discussions: '/discussions',
+  'ask question': '/ask',
+  /** Top nav “Analytics” on user screens = Knowledge Evolution (public) */
+  analytics: '/evolution',
+  notifications: '/notifications',
+  'sign in': '/login',
+  login: '/login',
+  'create an account': '/register',
+  register: '/register',
+  profile: '/home',
+  'edit profile': '/home',
+  'browse faq': '/library',
+  repository: '/library',
+  library: '/library',
+  'get started': '/login',
+  'get started now': '/login',
+  'ask a question': '/ask',
+  home: '/home',
+  saved: '/saved',
+  'saved knowledge': '/saved',
+  contributions: '/contributions',
+  'my contributions': '/contributions',
+  evolution: '/evolution',
+  'explore faqs': '/library',
+  'view all': '/library',
+  'learn our methodology': '/evolution',
+}
+
+export const commonAdminNav: Record<string, string> = {
+  'mission control': '/admin',
+  overview: '/admin',
+  dashboard: '/admin',
+  moderation: '/admin/moderation',
+  'faq management': '/admin/faq',
+  /** Admin console analytics dashboard (distinct from user /evolution) */
+  analytics: '/admin/analytics',
+  settings: '/admin/settings',
+  'faq review': '/admin/faq-review/1024',
+  'faq candidate': '/admin/faq-review/1024',
+  reports: '/admin/moderation',
+  back: '/admin',
+}

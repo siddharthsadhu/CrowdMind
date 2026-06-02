@@ -1,0 +1,355 @@
+<!DOCTYPE html><html class="dark" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>CrowdMind | Join the Intelligence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;family=JetBrains+Mono:wght@100..900&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .knowledge-node::after {
+            content: '';
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, #b0c6ff, transparent);
+            width: 100%;
+            top: 50%;
+            left: 100%;
+            z-index: 0;
+        }
+        .knowledge-node:last-child::after {
+            display: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #111319;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #424654;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "primary": "#b0c6ff",
+                        "inverse-primary": "#0058ca",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "secondary-fixed": "#7df4ff",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#a476ff",
+                        "on-secondary-container": "#00686f",
+                        "on-background": "#e2e2eb",
+                        "primary-container": "#558dff",
+                        "primary-fixed": "#d9e2ff",
+                        "tertiary-fixed": "#eaddff",
+                        "tertiary": "#d2bbff",
+                        "surface-container-highest": "#33343b",
+                        "on-error": "#690005",
+                        "surface-variant": "#33343b",
+                        "surface-dim": "#111319",
+                        "surface-tint": "#b0c6ff",
+                        "on-error-container": "#ffdad6",
+                        "secondary-container": "#00eefc",
+                        "surface-container-high": "#282a30",
+                        "on-primary-fixed-variant": "#00429b",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "surface-bright": "#373940",
+                        "secondary": "#d3fbff",
+                        "on-primary-fixed": "#001944",
+                        "on-tertiary-container": "#36007d",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#c2c6d7",
+                        "inverse-surface": "#e2e2eb",
+                        "on-secondary-fixed": "#002022",
+                        "on-primary": "#002d6e",
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "on-tertiary": "#3f008e",
+                        "surface": "#111319",
+                        "on-surface": "#e2e2eb",
+                        "background": "#111319",
+                        "outline": "#8c90a0",
+                        "surface-container-lowest": "#0c0e14",
+                        "outline-variant": "#424654",
+                        "on-tertiary-fixed": "#25005a",
+                        "inverse-on-surface": "#2e3037",
+                        "surface-container-low": "#191b22",
+                        "surface-container": "#1e1f26",
+                        "on-secondary": "#00363a",
+                        "on-primary-container": "#002761"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "margin-desktop": "48px",
+                        "unit": "8px",
+                        "section-gap": "80px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "display": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Geist"],
+                        "headline-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "display": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["28px", { "lineHeight": "1.2", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "500" }],
+                        "headline-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background custom-scrollbar overflow-x-hidden selection:bg-primary/30">
+<main class="flex min-h-screen flex-col md:flex-row">
+<!-- LEFT SIDE: Brand Storytelling -->
+<section class="relative hidden md:flex md:w-1/2 flex-col justify-center px-margin-desktop bg-surface-container-lowest overflow-hidden">
+<!-- Atmospheric effects -->
+<div class="absolute inset-0 z-0">
+<div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary/10 rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] bg-tertiary-container/10 rounded-full blur-[100px]"></div>
+<!-- Grid Pattern -->
+<div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 40px 40px;"></div>
+</div>
+<div class="relative z-10 max-w-xl">
+<header class="mb-12">
+<h1 class="font-display text-display text-on-surface mb-6 tracking-tight leading-[1.1]">
+                        Join the Future of <br>
+<span class="text-primary italic">Collective Intelligence</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-lg">
+                        Help transform community discussions into verified, evolving knowledge through our high-signal AI-assisted platform.
+                    </p>
+</header>
+<!-- Knowledge Journey Timeline -->
+<div class="mb-16">
+<h3 class="font-label-md text-label-md text-primary mb-8 uppercase tracking-widest">Knowledge Journey</h3>
+<div class="flex items-center justify-between relative">
+<div class="flex flex-col items-center gap-2 knowledge-node relative">
+<div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-primary shadow-[0_0_20px_rgba(176,198,255,0.2)]">
+<span class="material-symbols-outlined">help_center</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Question</span>
+</div>
+<div class="flex flex-col items-center gap-2 knowledge-node relative">
+<div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-secondary-fixed-dim">
+<span class="material-symbols-outlined">forum</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Discussion</span>
+</div>
+<div class="flex flex-col items-center gap-2 knowledge-node relative">
+<div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined">verified</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Validation</span>
+</div>
+<div class="flex flex-col items-center gap-2 knowledge-node relative">
+<div class="w-12 h-12 rounded-full glass-panel flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">fact_check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">FAQ</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_0_30px_rgba(176,198,255,0.4)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Evolution</span>
+</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-gutter border-t border-white/10 pt-12">
+<div>
+<p class="font-display text-headline-lg text-on-surface">12.4K+</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Verified FAQs</p>
+</div>
+<div>
+<p class="font-display text-headline-lg text-on-surface">45K+</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Community Discussions</p>
+</div>
+<div>
+<p class="font-display text-headline-lg text-primary">98.4%</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Knowledge Accuracy</p>
+</div>
+<div>
+<p class="font-display text-headline-lg text-on-surface">3.1K+</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Contributors</p>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT SIDE: Authentication -->
+<section class="flex-1 flex flex-col items-center justify-center p-margin-mobile md:p-margin-desktop bg-background relative">
+<div class="w-full max-w-md relative z-10">
+<!-- Mobile Branding -->
+<div class="md:hidden flex flex-col items-center mb-10 text-center">
+<span class="font-display text-headline-lg font-bold text-primary tracking-tight">CrowdMind</span>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile mt-4">Join the Collective</h2>
+</div>
+<!-- Auth Card -->
+<div class="glass-panel rounded-xl p-8 shadow-2xl">
+<div class="hidden md:flex flex-col items-start mb-8">
+<span class="font-display text-headline-md font-bold text-primary tracking-tighter mb-4">CrowdMind</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Welcome Back</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Continue building trusted knowledge.</p>
+</div>
+<form class="space-y-6">
+<div class="space-y-2">
+<label class="font-label-md text-label-md text-on-surface-variant ml-1">Email Address</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline" placeholder="name@company.com" type="email">
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center ml-1">
+<label class="font-label-md text-label-md text-on-surface-variant">Password</label>
+<a class="font-label-sm text-label-sm text-primary hover:underline" href="#">Forgot?</a>
+</div>
+<input class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all placeholder:text-outline" placeholder="••••••••" type="password">
+</div>
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-lg hover:brightness-110 active:scale-[0.98] transition-all shadow-[0_4px_20px_rgba(0,88,202,0.3)] flex items-center justify-center gap-2" type="submit">
+<span>Sign In</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+</form>
+<div class="relative my-8 text-center">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<span class="relative px-4 bg-[#161B22] text-label-sm text-outline font-label-sm">OR CONTINUE WITH</span>
+</div>
+<button class="w-full py-3 glass-panel rounded-lg hover:bg-white/5 transition-all flex items-center justify-center gap-3 text-on-surface font-body-md border-outline-variant">
+<svg class="w-5 h-5" viewBox="0 0 24 24">
+<path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+<path d="M12 23c2.97 0 5.46-.98 7.28-2.65l-3.57-2.77c-.99.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+<path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+<path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 12-4.53z" fill="#EA4335"></path>
+</svg>
+<span>Google</span>
+</button>
+<div class="mt-8 text-center">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            New to CrowdMind? <a class="text-primary font-bold hover:underline" href="#">Create an Account</a>
+</p>
+</div>
+</div>
+<!-- Why Join? Section -->
+<div class="mt-12 space-y-4">
+<h4 class="font-label-md text-label-md text-on-surface-variant uppercase text-center tracking-widest mb-6">Why Join CrowdMind?</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">question_answer</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-tight">Ask questions</p>
+<p class="text-[10px] text-on-surface-variant font-label-sm">Get verified answers</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary-fixed-dim text-lg">groups</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-tight">Join discussions</p>
+<p class="text-[10px] text-on-surface-variant font-label-sm">Collaborate in real-time</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-tertiary text-lg">military_tech</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-tight">Earn reputation</p>
+<p class="text-[10px] text-on-surface-variant font-label-sm">Grow your influence</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-lg flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-tight">Contribute</p>
+<p class="text-[10px] text-on-surface-variant font-label-sm">Build lasting knowledge</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Trust Badges -->
+<div class="mt-12 pt-8 border-t border-white/5 flex flex-wrap justify-center gap-x-8 gap-y-4">
+<div class="flex items-center gap-1.5 opacity-50">
+<span class="material-symbols-outlined text-[14px]">shield</span>
+<span class="font-label-sm text-[10px] uppercase tracking-tighter">Community Moderated</span>
+</div>
+<div class="flex items-center gap-1.5 opacity-50">
+<span class="material-symbols-outlined text-[14px]">bolt</span>
+<span class="font-label-sm text-[10px] uppercase tracking-tighter">AI Assisted</span>
+</div>
+<div class="flex items-center gap-1.5 opacity-50">
+<span class="material-symbols-outlined text-[14px]">history</span>
+<span class="font-label-sm text-[10px] uppercase tracking-tighter">Version Controlled</span>
+</div>
+<div class="flex items-center gap-1.5 opacity-50">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+<span class="font-label-sm text-[10px] uppercase tracking-tighter">Knowledge Verified</span>
+</div>
+</div>
+</div>
+<!-- Subtle background branding element for auth side -->
+<div class="absolute top-10 right-10 opacity-5 select-none pointer-events-none">
+<span class="font-display text-[120px] font-extrabold text-white leading-none">C</span>
+</div>
+</section>
+</main>
+<footer class="md:hidden bg-surface-container-lowest py-8 px-margin-mobile border-t border-white/5 text-center">
+<p class="font-label-sm text-label-sm text-outline">© 2024 CrowdMind AI. All rights reserved.</p>
+</footer>
+<script>
+        // Micro-interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            const nodes = document.querySelectorAll('.knowledge-node');
+            nodes.forEach((node, index) => {
+                node.style.opacity = '0';
+                node.style.transform = 'translateY(10px)';
+                setTimeout(() => {
+                    node.style.transition = 'all 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                    node.style.opacity = '1';
+                    node.style.transform = 'translateY(0)';
+                }, 200 + (index * 150));
+            });
+
+            // Smooth focus states for inputs
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    input.parentElement.querySelector('label').classList.replace('text-on-surface-variant', 'text-primary');
+                });
+                input.addEventListener('blur', () => {
+                    input.parentElement.querySelector('label').classList.replace('text-primary', 'text-on-surface-variant');
+                });
+            });
+        });
+    </script>
+</body></html>

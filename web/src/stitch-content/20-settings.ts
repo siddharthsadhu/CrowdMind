@@ -1,0 +1,457 @@
+// Auto-generated from public/stitch-ref/20-settings.html — do not edit by hand
+export const pageStyles = `
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111319;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #33343b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #424654;
+        }
+        .glass-card {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .danger-zone {
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.05);
+        }
+    `
+export const bodyHtml = `<!-- TopAppBar -->
+<header class="w-full sticky top-0 z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-margin-desktop h-16">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md text-primary tracking-tighter cursor-pointer">CrowdMind</span>
+<div class="hidden md:flex items-center bg-surface-container-low border border-white/5 rounded-full px-4 py-1.5 gap-2 w-80">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-md w-full placeholder:text-on-surface-variant focus:ring-offset-2 focus:ring-offset-surface" placeholder="Search settings..." spellcheck="false" type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors duration-200">help_outline</button>
+<div class="h-8 w-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container cursor-pointer overflow-hidden border border-primary/20">
+<img alt="User" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfMEHSe_f855UsDgt6KGON71XyVBJGS3VaIWdMo_TZAhH9X4sqnuDF9lfMlaA_w2hOr8zkPIAhxQFER3iAS_TcQDg2NtTuyCjX1Qk8S5plKmD9MNFYYPwBP3fnlgAU7qx5dhUerwZtlqgO3bawUjvG9mOMBDmMhZltOgpDCNp7dx2ZR9f4KJbCwqa2EjVugj5XWYAU9PgnNsKGfgOYZV9pPaQJ4uJWoBcuLAGjUGnlVzIQfILAqH5iEL9toVRgzdaoqj-joQN17Voh"/>
+</div>
+</div>
+</header>
+<!-- Unsaved Changes Toast (Hidden by default) -->
+<div class="fixed top-20 right-8 z-[100] translate-x-[150%] transition-transform duration-300" id="unsaved-toast">
+<div class="bg-surface-container-highest border border-primary/20 rounded-lg px-4 py-3 shadow-2xl flex items-center gap-4">
+<div class="flex flex-col">
+<span class="text-label-md font-bold text-primary">Unsaved Changes</span>
+<span class="text-label-sm text-on-surface-variant">Don't forget to save your updates.</span>
+</div>
+<button class="bg-primary text-on-primary px-3 py-1 rounded text-label-sm font-bold hover:brightness-110" onclick="saveChanges()">Save</button>
+</div>
+</div><div class="fixed top-20 right-8 z-[100] translate-x-[150%] transition-transform duration-300" id="success-toast"><div class="bg-surface-container-highest border border-secondary/20 rounded-lg px-4 py-3 shadow-2xl flex items-center gap-3"><span class="material-symbols-outlined text-secondary">check_circle</span><div class="flex flex-col"><span class="text-label-md font-bold text-secondary">Changes Saved</span><span class="text-label-sm text-on-surface-variant">Your profile has been updated successfully.</span></div></div></div>
+<div class="flex flex-1 relative">
+<!-- Left SideNavBar (Tabs) -->
+<aside class="h-[calc(100vh-4rem)] sticky top-16 w-64 bg-surface-container-low/50 backdrop-blur-md border-r border-white/5 flex flex-col py-8 gap-1 overflow-y-auto">
+<div class="px-6 mb-6">
+<h2 class="font-headline-md text-headline-md text-primary">Settings</h2>
+<p class="font-label-sm text-on-surface-variant">Manage your preferences</p>
+</div>
+<nav class="flex flex-col" id="settings-tabs">
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-primary border-r-2 border-primary bg-primary/5 font-label-md transition-all duration-200" data-tab="profile" onclick="switchTab('profile')">
+<span class="material-symbols-outlined">person</span> Profile
+            </button>
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-md transition-all duration-200" data-tab="security" onclick="switchTab('security')">
+<span class="material-symbols-outlined">security</span> Security
+            </button>
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-md transition-all duration-200" data-tab="notifications" onclick="switchTab('notifications')">
+<span class="material-symbols-outlined">notifications</span> Notifications
+            </button>
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-md transition-all duration-200" data-tab="privacy" onclick="switchTab('privacy')">
+<span class="material-symbols-outlined">lock</span> Privacy
+            </button>
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-md transition-all duration-200" data-tab="ai" onclick="switchTab('ai')">
+<span class="material-symbols-outlined">psychology</span> AI Preferences
+            </button>
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-md transition-all duration-200" data-tab="appearance" onclick="switchTab('appearance')">
+<span class="material-symbols-outlined">palette</span> Appearance
+            </button>
+<button class="tab-btn flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface hover:bg-white/5 font-label-md transition-all duration-200" data-tab="integrations" onclick="switchTab('integrations')">
+<span class="material-symbols-outlined">api</span> Integrations
+            </button>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 px-12 py-10 max-w-4xl mx-auto pb-32">
+<!-- Profile Tab -->
+<div class="tab-content active space-y-12" id="profile">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">Profile Settings</h1>
+<p class="text-on-surface-variant text-body-lg">Public info and expertise.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8">
+<div class="flex items-center gap-8">
+<div class="relative group">
+<div class="w-24 h-24 rounded-full bg-surface-container-highest border-2 border-primary/20 flex items-center justify-center overflow-hidden">
+<img alt="Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLEuIWkirsIvhRXMMZIoa6TBt-2j1m_uPyWouOcgrUYIwRPq2Lp4wlfKSpCmtQTsQ6RFI0gbuBI92RGE82EpzcZcj77SvhqyTxDS6JePccaGXURIEefPJa_zIWGsniRwrv1eDGt5laEHorZsrwhNd3TEsgcRgnGQxxTihtbbdQhYqTWSL-r19V7TRcwVmmAIBRnF7I3ROje2iI7cOHg229axtsIaGydbfLz9JTDAIeeLQwkR22w_uIikVqLvM3MWwLo-6_exEEEQuT"/>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-on-primary rounded-full p-1.5 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">edit</span>
+</button>
+</div>
+<div class="flex-1"><label class="font-label-md text-primary">Avatar Profile</label><p class="text-on-surface-variant text-label-sm mb-3">PNG or JPG, max 2MB.</p><div class="flex gap-2"><button class="px-3 py-1.5 bg-surface-container-highest border border-white/10 rounded-lg text-label-sm hover:bg-white/10 transition-colors">Upload New</button><button class="px-3 py-1.5 border border-error/30 text-error rounded-lg text-label-sm hover:bg-error/10 transition-colors">Remove</button></div></div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label-md block text-on-surface-variant">Full Name</label>
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none focus:ring-offset-2 focus:ring-offset-surface" oninput="showToast()" spellcheck="false" type="text" value="Felix Henderson"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-md block text-on-surface-variant">Username</label>
+<input class="w-full bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none focus:ring-offset-2 focus:ring-offset-surface" oninput="showToast()" spellcheck="false" type="text" value="@fhenderson"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label-md block text-on-surface-variant">Bio</label>
+<textarea class="w-full bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-2.5 focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none focus:ring-offset-2 focus:ring-offset-surface" oninput="showToast()" rows="3" spellcheck="false">Senior AI Researcher focused on multi-agent collaboration and cognitive architectures.</textarea>
+</div>
+</div>
+</div>
+<!-- Security Tab -->
+<div class="tab-content space-y-12" id="security">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">Account Security</h1>
+<p class="text-on-surface-variant text-body-lg">Manage password, sessions, and authentication.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8">
+<div class="flex items-center justify-between pb-6 border-b border-white/5">
+<div class="space-y-1">
+<p class="font-body-md">Two-Factor Authentication (2FA)</p>
+<p class="text-on-surface-variant text-label-sm">Extra layer of protection via authenticator app.</p>
+</div>
+<button class="text-primary font-label-md">Enabled</button>
+</div>
+<div class="space-y-4">
+<h4 class="font-label-md text-on-surface-variant">Active Sessions</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">laptop_mac</span>
+<div>
+<p class="text-label-md">MacBook Pro - San Francisco, CA <span class="text-[10px] bg-primary/20 text-primary px-1.5 py-0.5 rounded ml-2">CURRENT</span></p>
+<p class="text-label-sm text-on-surface-variant">Chrome • Just now</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-white/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">smartphone</span>
+<div>
+<p class="text-label-md">iPhone 15 Pro - San Francisco, CA</p>
+<p class="text-label-sm text-on-surface-variant">Mobile App • 2 hours ago</p>
+</div>
+</div>
+<button class="text-error text-label-sm hover:underline">Revoke</button>
+</div>
+</div>
+<button class="w-full py-2.5 border border-error/30 text-error hover:bg-error/10 rounded-lg transition-colors text-label-md">
+                        Sign out from all devices
+                    </button>
+</div>
+</div>
+</div>
+<!-- Notifications Tab -->
+<div class="tab-content space-y-12" id="notifications">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">Notification Preferences</h1>
+<p class="text-on-surface-variant text-body-lg">Control how and when you're alerted.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-6">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md">Discussion Replies</p>
+<p class="text-on-surface-variant text-label-sm">When someone responds to your research threads.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-primary relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform translate-x-5"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md">Mentions</p>
+<p class="text-on-surface-variant text-label-sm">When someone @mentions you in a project.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-primary relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform translate-x-5"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md">FAQ Updates</p>
+<p class="text-on-surface-variant text-label-sm">News about system-wide changes and help docs.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-surface-variant relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md">Reputation Milestones</p>
+<p class="text-on-surface-variant text-label-sm">Notifications when you reach new ranking levels.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-primary relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform translate-x-5"></div>
+</button>
+</div>
+<div class="flex items-center justify-between pt-4 border-t border-white/5">
+<div>
+<p class="font-body-md">Weekly Digest</p>
+<p class="text-on-surface-variant text-label-sm">A summary of activity and trending research.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-primary relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform translate-x-5"></div>
+</button>
+</div>
+</div>
+</div>
+<!-- Privacy Tab -->
+<div class="tab-content space-y-12" id="privacy">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">Privacy &amp; Data</h1>
+<p class="text-on-surface-variant text-body-lg">Control visibility and your personal data.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md">Public Profile</p>
+<p class="text-on-surface-variant text-label-sm">Allow other researchers to find you.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-primary relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform translate-x-5"></div>
+</button>
+</div>
+<div class="pt-6 border-t border-white/5">
+<h4 class="font-label-md text-on-surface mb-4">Manage Your Data</h4>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg">
+<div>
+<p class="text-label-md">Export Data</p>
+<p class="text-label-sm text-on-surface-variant">Request a JSON file of your activity and profile.</p>
+</div>
+<button class="bg-surface-container-high px-4 py-2 rounded-lg text-label-sm hover:bg-white/5 border border-white/10">Request JSON</button>
+</div>
+</div>
+<div class="p-6 rounded-xl border border-error/30 bg-error/5 space-y-4"><div class="flex items-center gap-2 text-error"><span class="material-symbols-outlined font-variation-settings-['FILL'_1]">warning</span><h4 class="font-label-md uppercase tracking-wider font-bold">Critical Actions</h4></div><div class="flex flex-col gap-4"><div class="flex items-center justify-between p-4 bg-surface-container-low/50 rounded-lg border border-white/5"><div><p class="text-label-md">Delete Account</p><p class="text-label-sm text-on-surface-variant">Permanently remove all your research data. This cannot be undone.</p></div><button class="bg-error text-on-error px-4 py-2 rounded-lg text-label-sm font-bold shadow-lg shadow-error/20 hover:brightness-110 active:scale-95 transition-all">Delete Forever</button></div></div></div>
+</div>
+</div>
+<!-- AI Preferences Tab -->
+<div class="tab-content space-y-12" id="ai">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">AI Preferences</h1>
+<p class="text-on-surface-variant text-body-lg">Fine-tune your cognitive assistants.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8">
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md">AI Draft Assistance</p>
+<p class="text-on-surface-variant text-label-sm">Auto-generate summaries for findings.</p>
+</div>
+<button class="w-11 h-6 rounded-full bg-primary relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform translate-x-5"></div>
+</button>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<p class="font-body-md">Recommendation Strength</p>
+<span class="text-primary font-label-md" id="ai-label">Exploratory</span>
+</div>
+<input class="w-full accent-primary bg-surface-container-highest rounded-lg h-2" id="ai-range" max="100" min="0" type="range" value="80"/>
+<div class="flex justify-between text-label-sm text-on-surface-variant">
+<span>Precise</span>
+<span>Exploratory</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Appearance Tab -->
+<div class="tab-content space-y-12" id="appearance">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">Appearance &amp; Accessibility</h1>
+<p class="text-on-surface-variant text-body-lg">Customize the interface to suit your needs.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8">
+<div>
+<h4 class="font-label-md text-on-surface-variant mb-4">Theme Mode</h4>
+<div class="grid grid-cols-3 gap-4">
+<button class="flex flex-col items-center gap-2 p-4 bg-surface-container-low border border-primary rounded-xl">
+<span class="material-symbols-outlined text-primary">dark_mode</span>
+<span class="text-label-sm">Dark</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-4 bg-surface-container-low border border-white/5 rounded-xl hover:border-white/20">
+<span class="material-symbols-outlined">light_mode</span>
+<span class="text-label-sm">Light</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-4 bg-surface-container-low border border-white/5 rounded-xl hover:border-white/20">
+<span class="material-symbols-outlined">settings_brightness</span>
+<span class="text-label-sm">System</span>
+</button>
+</div>
+</div>
+<div class="space-y-6 pt-6 border-t border-white/5">
+<h4 class="font-label-md text-on-surface-variant">Accessibility</h4>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between text-label-sm">
+<span>Font Scaling</span>
+<span class="text-primary">100% (Default)</span>
+</div>
+<input class="w-full accent-primary bg-surface-container-highest h-2 rounded-full" type="range" value="50"/>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-body-md">Reduce Motion</p>
+<button class="w-11 h-6 rounded-full bg-surface-variant relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform"></div>
+</button>
+</div>
+<div class="flex items-center justify-between">
+<p class="text-body-md">High Contrast</p>
+<button class="w-11 h-6 rounded-full bg-surface-variant relative transition-colors duration-200" onclick="this.classList.toggle('bg-primary'); this.querySelector('div').classList.toggle('translate-x-5')">
+<div class="w-4 h-4 rounded-full bg-white absolute left-1 top-1 transition-transform"></div>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Integrations Tab -->
+<div class="tab-content space-y-12" id="integrations">
+<nav aria-label="Breadcrumb" class="flex mb-4 text-label-sm text-on-surface-variant/60 uppercase tracking-widest"><span class="hover:text-primary cursor-pointer transition-colors">Settings</span><span class="mx-2">/</span><span class="text-on-surface">Profile</span></nav><header>
+<h1 class="font-headline-lg text-headline-lg mb-2">Integrations &amp; API</h1>
+<p class="text-on-surface-variant text-body-lg">Connect external tools and manage API access.</p>
+</header>
+<div class="glass-card rounded-xl p-8 space-y-8">
+<div>
+<h4 class="font-label-md text-on-surface-variant mb-4">API Key Management</h4>
+<div class="flex gap-4 mb-4">
+<input class="flex-1 bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-2.5 font-label-sm focus:ring-offset-2 focus:ring-offset-surface" readonly="" spellcheck="false" type="text" value="cm_pk_•••••••••••••••••••••••••"/>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-sm font-bold">Generate New</button>
+</div>
+<p class="text-label-sm text-on-surface-variant">Use this key to access CrowdMind's research API. Keep it secure.</p>
+</div>
+<div class="space-y-4 pt-6 border-t border-white/5">
+<h4 class="font-label-md text-on-surface-variant">Connected Tools</h4>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-white/5 rounded flex items-center justify-center">
+<span class="material-symbols-outlined">code</span>
+</div>
+<div>
+<p class="text-label-md">GitHub</p>
+<p class="text-label-sm text-on-surface-variant">Sync repositories and pull requests.</p>
+</div>
+</div>
+<button class="text-primary text-label-sm font-bold">Connect</button>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-lg border border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-white/5 rounded flex items-center justify-center">
+<span class="material-symbols-outlined">terminal</span>
+</div>
+<div>
+<p class="text-label-md">Zotero Reference Manager</p>
+<p class="text-label-sm text-on-surface-variant">Import research bibliographies.</p>
+</div>
+</div>
+<button class="text-primary text-label-sm font-bold">Connect</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Right SideNavBar (Summary/Activity) -->
+<aside class="h-[calc(100vh-4rem)] sticky top-16 w-80 bg-surface-container-low/50 backdrop-blur-md border-l border-white/5 flex flex-col p-6 gap-6 overflow-y-auto">
+<div class="bg-surface-container-high rounded-xl p-5 border border-primary/20 mb-2"><div class="flex justify-between items-center mb-2"><span class="text-label-sm font-bold text-primary">Profile Strength</span><span class="text-label-sm text-primary">85%</span></div><div class="w-full bg-surface-container-lowest h-2 rounded-full overflow-hidden"><div class="bg-primary h-full rounded-full" style="width: 85%"></div></div><p class="text-[10px] text-on-surface-variant mt-2 italic">Complete your bio to reach 100%</p></div><h2 class="font-headline-md text-headline-md text-tertiary">Activity Summary</h2>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-high rounded-xl p-4 border border-white/5 flex flex-col items-center">
+<span class="text-primary text-headline-md font-bold">1.2k</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-wider">Contributions</span>
+</div>
+<div class="bg-surface-container-high rounded-xl p-4 border border-white/5 flex flex-col items-center">
+<span class="text-secondary text-headline-md font-bold">482</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-wider">Saved Knowledge</span>
+</div>
+</div>
+<!-- Health Score Card -->
+<div class="bg-surface-container-high rounded-xl p-5 border border-white/5 space-y-4">
+<div class="flex justify-between items-end">
+<span class="font-label-sm text-on-surface-variant">Account Health</span>
+<span class="text-headline-md font-bold text-primary">98%</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 98%"></div>
+</div>
+</div>
+<!-- Reputation Card -->
+<div class="bg-surface-container-high rounded-xl p-5 border border-white/5 space-y-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-label-md text-on-surface">Gold Contributor</span>
+</div>
+<p class="text-label-sm text-on-surface-variant leading-tight">Top 5% this month.</p>
+</div>
+<!-- Change History -->
+<div class="space-y-4">
+<h3 class="font-label-md text-on-surface-variant px-2">Change History</h3>
+<div class="space-y-4 px-2">
+<div class="flex gap-3 relative">
+<div class="absolute left-[11px] top-6 bottom-0 w-[1px] bg-white/10"></div>
+<div class="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center relative z-10">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+</div>
+<div>
+<p class="text-label-sm">Password Updated</p>
+<p class="text-[10px] text-on-surface-variant">3 months ago</p>
+</div>
+</div>
+<div class="flex gap-3 relative">
+<div class="absolute left-[11px] top-6 bottom-0 w-[1px] bg-white/10"></div>
+<div class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center relative z-10">
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface-variant/40"></div>
+</div>
+<div>
+<p class="text-label-sm">Profile Bio Edited</p>
+<p class="text-[10px] text-on-surface-variant">4 months ago</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-6 h-6 rounded-full bg-white/5 flex items-center justify-center relative z-10">
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface-variant/40"></div>
+</div>
+<div>
+<p class="text-label-sm">2FA Enabled</p>
+<p class="text-[10px] text-on-surface-variant">1 year ago</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Fixed Bottom Action Bar -->
+<footer class="fixed bottom-0 left-0 right-0 h-20 bg-surface/80 backdrop-blur-2xl border-t border-white/10 z-[60] flex items-center justify-end px-margin-desktop gap-4"><div class="mr-auto flex flex-col"><span class="text-label-sm text-on-surface-variant/60">Last saved 2 minutes ago</span></div>
+<button class="px-6 py-2.5 rounded-lg border border-white/10 hover:bg-white/5 text-on-surface font-label-md transition-all duration-200">
+        Reset Settings
+    </button>
+<button class="px-8 py-2.5 rounded-lg bg-primary text-on-primary font-label-md shadow-[0_0_20px_rgba(46,123,255,0.3)] hover:brightness-110 active:scale-[0.98] transition-all duration-200" id="save-btn" onclick="saveChanges()">
+        Save Changes
+    </button>
+</footer>`

@@ -1,0 +1,333 @@
+// Auto-generated from public/stitch-ref/21-faq-candidate-review.html — do not edit by hand
+export const pageStyles = `
+        .glass-card {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .active-nav-border {
+            border-bottom: 2px solid #b0c6ff;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #424654;
+            border-radius: 4px;
+        }
+        .text-glow-primary {
+            text-shadow: 0 0 12px rgba(176, 198, 255, 0.3);
+        }
+        .glow-border-active {
+            box-shadow: 0 0 15px -3px rgba(0, 238, 252, 0.2);
+            border-color: rgba(0, 238, 252, 0.5);
+        }
+    `
+export const bodyHtml = `<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex items-center justify-between px-margin-desktop max-w-container-max mx-auto h-20">
+<div class="flex items-center gap-8">
+<span class="font-display text-headline-md font-semibold text-primary">CrowdMind</span>
+<nav class="hidden md:flex gap-6 h-full items-center">
+<a class="font-body-md text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out active:scale-95" href="#">FAQs</a>
+<a class="font-body-md text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out active:scale-95" href="#">Discussions</a>
+<a class="font-body-md text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out active:scale-95" href="#">Ask Question</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md transition-all duration-200 ease-out" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2">notifications</button>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant bg-surface-container-high">
+<img alt="User profile menu" data-alt="A professional headshot of a middle-aged tech researcher with a focused and intelligent expression. The lighting is sophisticated and moody, using cool blue and deep grey tones that align with a high-end dark-themed AI platform. The background is softly blurred, showing a modern laboratory or workspace with subtle technological elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKNgMmZzsbNp51Fcg0-69Zk67Uc9rSFxekOzoxdkxqFBJyHMRkIxBMzmfkqSn_3_qr52HEj-E71fB5HM0IGwdNoOFZDI99HyiqX_eDheCgnu3o7UGABRv3IGAcjOqO3bE3L93nKVxs5-nUoG7L9wrhR-FfibPGFzIYRvUv0G87qxWccOWHs4elTYmAsI2DGVKkzIWUwbKSNKoBBxm2iAViV2WwxMZSJsComf5p2J9Yu4rurqI0IDgzd7jmomTjfVeeaLvmmjPgvxij">
+</div>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-section-gap px-margin-desktop max-w-container-max mx-auto">
+<!-- Header -->
+<header class="mb-10">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-md text-secondary tracking-widest uppercase">Admin Review Pending</span>
+</div>
+<h1 class="font-display text-display text-on-surface mb-2 tracking-tight">FAQ Candidate #1024</h1>
+<p class="font-body-lg text-on-surface-variant">Generated From: <span class="text-primary font-medium">14 related discussions</span> and cognitive synthesis.</p>
+</header>
+<!-- Three-Column Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-16 items-start">
+<!-- Left Panel: Discussion Summary -->
+<aside class="md:col-span-3 space-y-6">
+<div class="glass-card rounded-xl p-6 h-[600px] flex flex-col">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h2 class="font-headline-md text-on-surface text-lg">Synthesized Insights</h2>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar pr-2 space-y-6">
+<div>
+<h3 class="font-label-sm text-outline uppercase mb-2">Key Highlights</h3>
+<p class="font-body-md text-on-surface-variant leading-relaxed">Most users expressed confusion regarding the transition between Phase 1 and 2. The primary friction point is "team flexibility vs commitment."</p>
+</div>
+<div>
+<h3 class="font-label-sm text-outline uppercase mb-2">Community Consensus</h3>
+<div class="bg-surface-container-low border border-white/5 rounded-lg p-3">
+<p class="font-body-md text-on-surface italic">"Teams should be locked at the start of Phase 2 to prevent strategic hopping, but re-assignment should be possible in emergencies."</p>
+<div class="mt-2 text-right">
+<span class="text-xs text-primary font-label-sm">— Top Contributor (User #421)</span>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-label-sm text-outline uppercase mb-2">Semantic Sentiment</h3>
+<div class="flex items-center gap-3">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-fixed-dim" style="width: 72%;"></div>
+</div>
+<span class="font-label-sm text-secondary">72% Positive</span>
+</div>
+</div>
+<div class="pt-4 border-t border-white/5">
+<h3 class="font-label-sm text-outline uppercase mb-2">Metadata</h3>
+<ul class="space-y-2">
+<li class="flex justify-between text-xs">
+<span class="text-on-surface-variant">First Mentioned</span>
+<span class="text-on-surface">Oct 12, 2023</span>
+</li>
+<li class="flex justify-between text-xs">
+<span class="text-on-surface-variant">Active Authors</span>
+<span class="text-on-surface">31 Researchers</span>
+</li>
+</ul>
+</div>
+<div class="pt-4 border-t border-white/5">
+<h3 class="font-label-sm text-outline uppercase mb-2">AI Evidence Strength</h3>
+<div class="space-y-3">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface-variant">Quality Score</span>
+<span class="text-secondary">91%</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 91%;"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface-variant">Evidence Strength</span>
+<span class="text-primary">High</span>
+</div>
+<div class="flex gap-1">
+<div class="flex-1 h-1 bg-primary rounded-full"></div>
+<div class="flex-1 h-1 bg-primary rounded-full"></div>
+<div class="flex-1 h-1 bg-primary rounded-full"></div>
+<div class="flex-1 h-1 bg-surface-container-highest rounded-full"></div>
+</div>
+</div>
+</div>
+</div></div>
+</div>
+</aside>
+<!-- Center Panel: Main Workspace -->
+<section class="md:col-span-6">
+<div class="glass-card rounded-xl p-10 border-primary/20 shadow-xl shadow-primary/5">
+<div class="flex justify-between items-start mb-8">
+<div class="space-y-4">
+<h2 class="font-headline-lg text-on-surface leading-tight">Can a team be changed after Phase 1?</h2>
+<div class="flex gap-3">
+<span class="px-3 py-1 bg-primary/10 text-primary border border-primary/20 rounded-full font-label-sm">Operations</span>
+<span class="px-3 py-1 bg-tertiary/10 text-tertiary border border-tertiary/20 rounded-full font-label-sm">Phase Transition</span>
+</div>
+</div>
+</div>
+<div class="prose prose-invert max-w-none space-y-6 text-on-surface-variant font-body-md leading-relaxed">
+<p>No, teams are generally finalized at the conclusion of <strong>Phase 1: Discovery</strong>. Once the project moves into Phase 2: Execution, the structural roster is locked to ensure accountability and resource allocation stability.</p>
+<div class="p-4 bg-surface-container-low border-l-4 border-secondary rounded-r-lg">
+<p class="font-medium text-secondary">Exception Criteria:</p>
+<ul class="list-disc ml-5 mt-2 space-y-1">
+<li>Major medical or logistical emergencies (requires Admin approval).</li>
+<li>Consensual team dissolution (all 4+ members must sign off).</li>
+<li>Platform-initiated realignment due to project cancellation.</li>
+</ul>
+</div>
+<p>To request a special exemption, navigate to the <span class="text-primary underline cursor-pointer">Administrative Hub</span> and file a "Structural Change Request" (Form #77-B). Note that this may delay your milestone disbursement by up to 14 days.</p>
+</div>
+<div class="mt-10 pt-10 border-t border-white/10">
+<h3 class="font-label-md text-outline uppercase mb-4">Knowledge Diff Viewer</h3>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-outline">history</span>
+<span class="text-xs font-label-md text-outline">CURRENT FAQ (LEGACY)</span>
+</div>
+<div class="p-4 rounded bg-surface-container-lowest/50 border border-white/5 font-body-md text-on-surface-variant text-sm italic opacity-70">
+                Teams are locked once the project starts. Changes require manual admin override and can only happen in the first week.
+            </div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-primary">auto_awesome</span>
+<span class="text-xs font-label-md text-primary">NEW CANDIDATE</span>
+</div>
+<div class="p-4 rounded bg-surface-container-low border border-primary/20 font-body-md text-on-surface text-sm">
+<span class="bg-error/20 text-error line-through">Once the project starts</span>
+<span class="bg-secondary/20 text-secondary">At the conclusion of Phase 1: Discovery</span>. Once the project moves into Phase 2: Execution, the structural roster is <span class="underline decoration-primary/50 text-primary">locked to ensure accountability</span>.
+            </div>
+</div>
+</div>
+</div><div class="mt-12 grid grid-cols-2 gap-6 pt-10 border-t border-white/10">
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-outline">Confidence Score</span>
+<span class="font-label-sm text-secondary">94%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full">
+<div class="h-full bg-secondary-container rounded-full shadow-[0_0_8px_rgba(0,238,252,0.5)]" style="width: 94%;"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-outline">Community Agreement</span>
+<span class="font-label-sm text-primary">88%</span>
+</div>
+<div class="h-1.5 bg-surface-container-highest rounded-full">
+<div class="h-full bg-primary-container rounded-full shadow-[0_0_8px_rgba(85,141,255,0.5)]" style="width: 88%;"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Panel: Review Actions -->
+<aside class="md:col-span-3 sticky top-28">
+<div class="glass-card rounded-xl p-6 space-y-4">
+<h3 class="font-headline-md text-on-surface text-lg mb-4">Review Actions</h3>
+<button class="w-full py-4 bg-primary text-on-primary font-bold rounded-lg flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">check_circle</span>
+<span>Approve FAQ</span>
+</button>
+<button class="w-full py-3 bg-surface-container-highest border border-white/10 text-on-surface font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-surface-bright active:scale-95 transition-all">
+<span class="material-symbols-outlined text-outline">edit</span>
+<span>Edit FAQ</span>
+</button>
+<button class="w-full py-3 border border-error/30 text-error font-medium rounded-lg flex items-center justify-center gap-2 hover:bg-error/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined">cancel</span>
+<span>Reject FAQ</span>
+</button>
+<div class="pt-6 border-t border-white/5">
+<button class="w-full py-3 text-on-surface-variant font-medium rounded-lg flex items-center justify-center gap-2 hover:text-primary transition-all text-sm">
+<span class="material-symbols-outlined text-sm">forum</span>
+<span>Request More Discussion</span>
+</button>
+</div>
+<div class="mt-6 p-4 rounded-lg bg-surface-container-low/50 border border-white/5">
+<p class="text-xs text-outline leading-tight">By approving, this answer will be published to the Global FAQ Repository and indexed by the Neural Search Engine.</p>
+</div>
+</div>
+</aside>
+</div>
+<!-- Bottom Section: Source Discussions -->
+<section class="mt-section-gap">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">source</span>
+<h2 class="font-headline-md text-on-surface">FAQ Generation Sources</h2>
+</div>
+<button class="text-primary font-label-md hover:underline flex items-center gap-1">
+            View Detailed Audit Log <span class="material-symbols-outlined text-sm">history</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="glass-card p-6 rounded-xl border-white/5">
+<span class="text-outline font-label-sm uppercase block mb-1">Sources Used</span>
+<div class="flex items-baseline gap-2">
+<span class="text-display text-3xl font-bold">14</span>
+<span class="text-on-surface-variant text-sm font-body-md">Discussions</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-white/5">
+<span class="text-outline font-label-sm uppercase block mb-1">Contributors</span>
+<div class="flex items-baseline gap-2">
+<span class="text-display text-3xl font-bold text-secondary">31</span>
+<span class="text-on-surface-variant text-sm font-body-md">Researchers</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-white/5">
+<span class="text-outline font-label-sm uppercase block mb-1">Votes Analyzed</span>
+<div class="flex items-baseline gap-2">
+<span class="text-display text-3xl font-bold">482</span>
+<span class="text-on-surface-variant text-sm font-body-md">Total</span>
+</div>
+</div>
+<div class="glass-card p-6 rounded-xl border-primary/20 bg-primary/5">
+<span class="text-primary font-label-sm uppercase block mb-1">Agreement</span>
+<div class="flex items-baseline gap-2">
+<span class="text-display text-3xl font-bold text-primary">88%</span>
+<span class="text-on-surface-variant text-sm font-body-md">Consensus</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="glass-card p-5 rounded-xl group cursor-pointer hover:glow-border-active transition-all">
+<div class="flex justify-between mb-3"><span class="font-label-sm text-outline">#DS-882</span><span class="material-symbols-outlined text-secondary text-sm">trending_up</span></div>
+<h4 class="font-body-md text-on-surface font-semibold mb-3 group-hover:text-secondary">Team Lock-in Protocols for Phase 2</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline">chat</span><span class="font-label-sm text-on-surface-variant">124</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline" style="font-variation-settings: 'FILL' 1;">favorite</span><span class="font-label-sm text-on-surface-variant">42</span></div>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl group cursor-pointer hover:glow-border-active transition-all">
+<div class="flex justify-between mb-3"><span class="font-label-sm text-outline">#DS-901</span><span class="material-symbols-outlined text-primary text-sm">verified</span></div>
+<h4 class="font-body-md text-on-surface font-semibold mb-3 group-hover:text-primary">Emergency Re-assignments Policy</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline">chat</span><span class="font-label-sm text-on-surface-variant">89</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline" style="font-variation-settings: 'FILL' 1;">favorite</span><span class="font-label-sm text-on-surface-variant">12</span></div>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl group cursor-pointer hover:glow-border-active transition-all">
+<div class="flex justify-between mb-3"><span class="font-label-sm text-outline">#DS-102</span><span class="material-symbols-outlined text-tertiary text-sm">history</span></div>
+<h4 class="font-body-md text-on-surface font-semibold mb-3 group-hover:text-tertiary">Strategic Team Hopping Concerns</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline">chat</span><span class="font-label-sm text-on-surface-variant">211</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline" style="font-variation-settings: 'FILL' 1;">favorite</span><span class="font-label-sm text-on-surface-variant">67</span></div>
+</div>
+</div>
+<div class="glass-card p-5 rounded-xl group cursor-pointer hover:glow-border-active transition-all">
+<div class="flex justify-between mb-3"><span class="font-label-sm text-outline">#DS-754</span><span class="material-symbols-outlined text-outline text-sm">scatter_plot</span></div>
+<h4 class="font-body-md text-on-surface font-semibold mb-3">Phase 1 Exit Criteria: Roster Check</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline">chat</span><span class="font-label-sm text-on-surface-variant">45</span></div>
+<div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-outline" style="font-variation-settings: 'FILL' 1;">favorite</span><span class="font-label-sm text-on-surface-variant">8</span></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-section-gap bg-background border-t border-outline-variant/30">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter px-margin-desktop max-w-container-max mx-auto">
+<div class="md:col-span-6 space-y-4">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">CrowdMind AI</span>
+<p class="font-body-md text-on-surface-variant max-w-md">Cognitive Clarity in Crowd Intelligence. Empowering analysts through synthesized collaborative insights.</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">© 2024 CrowdMind AI. All rights reserved.</p>
+</div>
+<div class="md:col-span-6 flex flex-wrap gap-8 md:justify-end items-start">
+<div class="space-y-4">
+<span class="font-label-md text-primary uppercase">Platform</span>
+<nav class="flex flex-col gap-2">
+<a class="font-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Product</a>
+<a class="font-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Community</a>
+<a class="font-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Resources</a>
+</nav>
+</div>
+<div class="space-y-4">
+<span class="font-label-md text-primary uppercase">Legal</span>
+<nav class="flex flex-col gap-2">
+<a class="font-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms</a>
+</nav>
+</div>
+</div>
+</div>
+</footer>`

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Moderation Queue | CrowdMind Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #111319;
+            color: #e2e2eb;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(22, 27, 34, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.2);
+        }
+        .inner-glow-primary {
+            box-shadow: inset 0 0 12px rgba(176, 198, 255, 0.1);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        .risk-gradient {
+            background: linear-gradient(90deg, #b0c6ff 0%, #00eefc 100%);
+        }
+        .active-tab-indicator {
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 24px;
+            background: #b0c6ff;
+            border-radius: 0 4px 4px 0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#002022",
+                        "background": "#111319",
+                        "on-secondary-container": "#00686f",
+                        "on-tertiary-fixed": "#25005a",
+                        "on-tertiary-fixed-variant": "#5a00c6",
+                        "on-primary-container": "#002761",
+                        "on-background": "#e2e2eb",
+                        "inverse-primary": "#0058ca",
+                        "surface": "#111319",
+                        "tertiary-container": "#a476ff",
+                        "on-surface-variant": "#c2c6d7",
+                        "primary-fixed": "#d9e2ff",
+                        "surface-container-highest": "#33343b",
+                        "tertiary-fixed": "#eaddff",
+                        "secondary-fixed": "#7df4ff",
+                        "surface-variant": "#33343b",
+                        "surface-container-lowest": "#0c0e14",
+                        "on-primary-fixed": "#001944",
+                        "primary-container": "#558dff",
+                        "surface-container": "#1e1f26",
+                        "on-primary": "#002d6e",
+                        "surface-container-low": "#191b22",
+                        "on-primary-fixed-variant": "#00429b",
+                        "surface-dim": "#111319",
+                        "on-tertiary-container": "#36007d",
+                        "on-tertiary": "#3f008e",
+                        "error-container": "#93000a",
+                        "secondary-container": "#00eefc",
+                        "tertiary-fixed-dim": "#d2bbff",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#00dbe9",
+                        "secondary": "#d3fbff",
+                        "outline": "#8c90a0",
+                        "primary": "#b0c6ff",
+                        "surface-container-high": "#282a30",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#373940",
+                        "on-surface": "#e2e2eb",
+                        "primary-fixed-dim": "#b0c6ff",
+                        "error": "#ffb4ab",
+                        "tertiary": "#d2bbff",
+                        "inverse-surface": "#e2e2eb",
+                        "inverse-on-surface": "#2e3037",
+                        "surface-tint": "#b0c6ff",
+                        "on-secondary-fixed-variant": "#004f54",
+                        "on-secondary": "#00363a",
+                        "outline-variant": "#424654"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "section-gap": "80px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Inter"],
+                        "display": ["Geist"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Geist"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-body-md text-on-surface bg-background"><header class="bg-surface/70 dark:bg-surface/70 backdrop-blur-xl docked full-width top-0 sticky border-b border-white/10 shadow-sm z-50"><div class="flex justify-between items-center w-full px-margin-desktop h-16 max-w-container-max mx-auto"><div class="flex items-center gap-6"><span class="text-headline-md font-headline-md font-bold tracking-tight text-primary">CrowdMind</span><nav class="hidden md:flex gap-6"><a class="text-on-surface-variant hover:text-primary transition-colors text-label-md font-label-md" href="#">FAQs</a><a class="text-on-surface-variant hover:text-primary transition-colors text-label-md font-label-md" href="#">Discussions</a><a class="text-on-surface-variant hover:text-primary transition-colors text-label-md font-label-md" href="#">Ask Question</a><a class="text-on-surface-variant hover:text-primary transition-colors text-label-md font-label-md" href="#">Analytics</a></nav></div><div class="flex items-center gap-4"><div class="hidden md:flex items-center bg-surface-container-high px-3 py-1.5 rounded-lg border border-white/5"><span class="material-symbols-outlined text-outline text-[20px] mr-2">search</span><input class="bg-transparent border-none focus:ring-0 text-label-md font-label-md text-on-surface placeholder:text-outline w-48" placeholder="Search..." type="text"/></div><button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-lg transition-all active:scale-95">notifications</button><button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant/50 p-2 rounded-lg transition-all active:scale-95">settings</button><img alt="Admin Profile" class="w-8 h-8 rounded-full border border-primary/20 bg-surface-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvv4oXFkQwVNBGcz5j4Fdl2nKupOSMgS_slKHbnpm5ERkC9k4OAdktd2B0LHhUVmxOebkDBoFgl2QAWoPg9bybFd2WkY7J5y9_yhE-8sYYpJ3gzGyTb5u48_qcWPydAtMr0ZkqBxvmTFfQt2_3OojTVRYTZDRkF78u0EMdjG1Tq5EmtjDBrSWvubelZ632Y2HU1_Xme6NXji0Tns_AESEXv5PIH2UmwdmC9rsSWysy-VocfF7CQ1ZjbSRz_TNqJZhUytQJML9L2Pdz"/></div></div></header>
+<!-- Sidebar Navigation -->
+<!-- Main Content Canvas -->
+<main class="min-h-screen px-margin-desktop py-8 max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-10">
+<div><div class="flex items-center gap-3 mb-1"><h2 class="font-display text-headline-lg text-on-surface">Moderation Queue</h2><span class="flex items-center gap-1.5 text-secondary-fixed-dim text-label-sm ml-2"><span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim"></span>Moderation Systems Active</span></div><div class="flex items-center gap-1 bg-surface-container-high p-1 rounded-xl mt-4 w-fit border border-white/5"><button class="px-4 py-1.5 rounded-lg text-label-sm font-bold text-outline hover:text-on-surface transition-colors">Mission Control</button><button class="px-4 py-1.5 rounded-lg text-label-sm font-bold text-outline hover:text-on-surface transition-colors">FAQ Management</button><button class="px-4 py-1.5 rounded-lg text-label-sm font-bold bg-primary text-on-primary shadow-sm">Moderation Queue</button></div><p class="text-on-surface-variant font-body-md mt-2">Review reports, resolve violations, and maintain knowledge integrity.</p></div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant rounded-lg text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+<span class="font-label-md text-label-md">Log History</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:brightness-110">
+<span class="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>
+                    Bulk Actions
+                </button>
+</div>
+</header>
+<!-- Metrics Grid -->
+<section class="grid grid-cols-5 gap-gutter mb-10">
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-primary/40">
+<p class="text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider mb-1">Open Reports</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-display text-[32px]">17</span>
+<span class="text-error text-label-sm font-label-md">+2h</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-secondary-container/40">
+<p class="text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider mb-1">AI Flagged</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-display text-[32px]">42</span>
+<span class="text-primary text-label-sm font-label-md">Pending</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-tertiary-container/40">
+<p class="text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider mb-1">Resolved Today</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-display text-[32px]">89</span>
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-outline/20">
+<p class="text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider mb-1">Spam Accuracy</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-display text-[32px]">99.1%</span>
+</div>
+</div>
+<div class="glass-panel p-5 rounded-xl border-l-4 border-l-primary/40">
+<p class="text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider mb-1">Community Trust</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display text-display text-[32px]">96%</span>
+</div>
+</div>
+</section>
+<!-- System Alert Banner -->
+<div class="mb-10 bg-error-container/20 border border-error/30 rounded-xl p-4 flex items-center gap-4 animate-pulse">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div class="flex-1">
+<p class="text-error font-bold font-label-md">Mass Reporting Anomaly detected</p>
+<p class="text-error/80 text-label-sm">Sudden spike in reports from IP cluster 192.168.0.x targeting Discussion ID: #9942.</p>
+</div>
+<button class="bg-error text-on-error px-4 py-1.5 rounded-lg text-label-sm font-bold uppercase tracking-tight">Investigate</button>
+</div>
+<!-- Three-Column Layout Core -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Central Moderation Area (8 cols) -->
+<div class="col-span-8 flex flex-col gap-6">
+<!-- Filter Bar -->
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-label-md focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Search reports by ID or user..." type="text"/>
+</div>
+<select class="bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-label-md text-on-surface-variant outline-none focus:border-primary">
+<option>Severity: All</option>
+<option>Critical</option>
+<option>High</option>
+</select>
+<select class="bg-surface-container-low border border-outline-variant rounded-lg px-3 py-2 text-label-md text-on-surface-variant outline-none focus:border-primary">
+<option>Status: Pending</option>
+<option>Resolved</option>
+<option>Archived</option>
+</select>
+</div>
+<!-- Moderation Table -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/50 border-b border-white/5">
+<tr>
+<th class="p-4 text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider">Report ID</th>
+<th class="p-4 text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider">Type</th>
+<th class="p-4 text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider">Reason</th>
+<th class="p-4 text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider">Severity</th>
+<th class="p-4 text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider text-center">AI Risk</th>
+<th class="p-4 text-on-surface-variant font-label-md text-label-sm uppercase tracking-wider text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<!-- Example Row 1 -->
+<tr class="hover:bg-white/[0.02] transition-colors group">
+<td class="p-4">
+<span class="font-label-md text-primary">#MOD-8921</span>
+<p class="text-[10px] text-on-surface-variant opacity-60">2m ago</p>
+</td>
+<td class="p-4 text-label-md">Discussion</td>
+<td class="p-4 text-label-md">Misinformation</td>
+<td class="p-4">
+<span class="px-2 py-0.5 rounded bg-error/20 text-error border border-error/30 text-[11px] font-bold uppercase">Critical</span>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-2 justify-center">
+<div class="w-12 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-error w-[85%]"></div>
+</div>
+<span class="text-label-sm font-label-md text-error">85%</span>
+</div>
+</td>
+<td class="p-4 text-right">
+<button class="bg-surface-container-high p-2 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Example Row 2 -->
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="p-4">
+<span class="font-label-md text-primary">#MOD-8919</span>
+<p class="text-[10px] text-on-surface-variant opacity-60">12m ago</p>
+</td>
+<td class="p-4 text-label-md">FAQ Comment</td>
+<td class="p-4 text-label-md">Spam</td>
+<td class="p-4">
+<span class="px-2 py-0.5 rounded bg-secondary-container/20 text-secondary-fixed border border-secondary-container/30 text-[11px] font-bold uppercase">Medium</span>
+</td>
+<td class="p-4 text-center">
+<div class="flex items-center gap-2 justify-center">
+<div class="w-12 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[42%]"></div>
+</div>
+<span class="text-label-sm font-label-md text-primary">42%</span>
+</div>
+</td>
+<td class="p-4 text-right">
+<button class="bg-surface-container-high p-2 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<!-- Example Row 3 -->
+<tr class="hover:bg-white/[0.02] transition-colors">
+<td class="p-4">
+<span class="font-label-md text-primary">#MOD-8915</span>
+<p class="text-[10px] text-on-surface-variant opacity-60">45m ago</p>
+</td>
+<td class="p-4 text-label-md">Profile Bio</td>
+<td class="p-4 text-label-md">Inappropriate</td>
+<td class="p-4">
+<span class="px-2 py-0.5 rounded bg-primary/20 text-primary border border-primary/30 text-[11px] font-bold uppercase">High</span>
+</td>
+<td class="p-4 text-center">
+<div class="flex items-center gap-2 justify-center">
+<div class="w-12 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[71%]"></div>
+</div>
+<span class="text-label-sm font-label-md text-primary">71%</span>
+</div>
+</td>
+<td class="p-4 text-right">
+<button class="bg-surface-container-high p-2 rounded-lg hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 border-t border-white/5 flex justify-center">
+<button class="text-primary text-label-sm font-label-md hover:underline">View All 17 Open Reports</button>
+</div>
+</div>
+<!-- Bottom Visualization Section -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Escalation Pipeline -->
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-display text-headline-md text-on-surface mb-6">Escalation Pipeline</h3>
+<div class="flex items-center justify-between relative">
+<!-- Visual Line -->
+<div class="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 -translate-y-1/2 z-0"></div>
+<div class="z-10 bg-surface p-2 rounded-full border border-primary/30 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-primary" data-icon="campaign">campaign</span>
+</div>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">Reported</span>
+</div>
+<div class="z-10 bg-surface p-2 rounded-full border border-secondary-container/30 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-secondary-container/20 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-secondary-container" data-icon="psychology">psychology</span>
+</div>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">AI Triaged</span>
+</div>
+<div class="z-10 bg-surface p-2 rounded-full border border-tertiary-container/30 flex flex-col items-center">
+<div class="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="person_search">person_search</span>
+</div>
+<span class="text-[10px] font-label-md uppercase tracking-tighter">Human Review</span>
+</div>
+</div>
+</div>
+<!-- Policy Violation Breakdown -->
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-display text-headline-md text-on-surface mb-4">Policy Breakdown</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-label-sm mb-1">
+<span>Misinformation</span>
+<span>52%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[52%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm mb-1">
+<span>Spam Content</span>
+<span>28%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[28%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-sm mb-1">
+<span>Outdated Knowledge</span>
+<span>20%</span>
+</div>
+<div class="h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[20%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar Panel (4 cols) -->
+<div class="col-span-4 flex flex-col gap-6">
+<!-- Moderation Health -->
+<div class="glass-panel p-6 rounded-xl relative overflow-hidden">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/5 rounded-full blur-3xl"></div>
+<h3 class="font-display text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="health_metrics">monitoring</span>
+                        System Health
+                    </h3>
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-label-md">Avg Resolution</span>
+<span class="text-on-surface font-display text-[20px]">12.4m</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-on-surface-variant font-label-md">Community Trust</span>
+<span class="text-primary font-display text-[20px]">96%</span>
+</div>
+<div class="w-full h-24 bg-surface-container-low rounded-lg border border-white/5 relative flex items-end p-2 gap-1">
+<!-- Mini Graph Mockup -->
+<div class="flex-1 bg-primary/20 h-[40%] rounded-sm"></div>
+<div class="flex-1 bg-primary/30 h-[60%] rounded-sm"></div>
+<div class="flex-1 bg-primary/20 h-[30%] rounded-sm"></div>
+<div class="flex-1 bg-primary/40 h-[80%] rounded-sm"></div>
+<div class="flex-1 bg-primary/60 h-[70%] rounded-sm"></div>
+<div class="flex-1 bg-primary/40 h-[50%] rounded-sm"></div>
+<div class="flex-1 bg-primary/50 h-[90%] rounded-sm"></div>
+<div class="flex-1 bg-primary/30 h-[60%] rounded-sm"></div>
+<div class="flex-1 bg-primary/80 h-[100%] rounded-sm"></div>
+</div>
+</div>
+</div>
+<!-- AI Safety Scan Panel -->
+<div class="glass-panel p-6 rounded-xl border border-secondary-container/20">
+<h3 class="font-display text-headline-md text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container" data-icon="security" style="font-variation-settings: 'FILL' 1;">security</span>
+                        AI Safety Scan
+                    </h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-high/40 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="block">block</span>
+<span class="font-label-md">Spam Detection</span>
+</div>
+<span class="text-secondary-container font-label-md">Active</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-high/40 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="sentiment_very_dissatisfied">sentiment_very_dissatisfied</span>
+<span class="font-label-md">Toxicity Level</span>
+</div>
+<span class="text-primary font-label-md">Low</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-high/40 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="error_outline">error_outline</span>
+<span class="font-label-md">Misinformation</span>
+</div>
+<span class="text-error font-label-md">Elevated</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-high/40 rounded-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="hub">hub</span>
+<span class="font-label-md">Manipulation</span>
+</div>
+<span class="text-on-surface-variant font-label-md">Safe</span>
+</div>
+</div>
+</div>
+<!-- Recent Actions Feed -->
+<div class="glass-panel p-6 rounded-xl flex-1 flex flex-col">
+<h3 class="font-display text-headline-md text-on-surface mb-4">Recent Actions</h3>
+<div class="space-y-6 overflow-y-auto custom-scrollbar pr-2 h-[300px]">
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]" data-icon="check">check</span>
+</div>
+<div>
+<p class="text-label-md">MOD-8911 <span class="text-on-surface-variant">was marked as resolved by AI.</span></p>
+<p class="text-[10px] text-on-surface-variant mt-1">Just now • Automated</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]" data-icon="gavel">gavel</span>
+</div>
+<div>
+<p class="text-label-md">User <span class="text-primary">Admin_Sarah</span> <span class="text-on-surface-variant">banned user @troll_king.</span></p>
+<p class="text-[10px] text-on-surface-variant mt-1">14m ago • Manual Action</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]" data-icon="edit">edit</span>
+</div>
+<div>
+<p class="text-label-md"><span class="text-on-surface-variant">Policy "Misinformation V2" was updated.</span></p>
+<p class="text-[10px] text-on-surface-variant mt-1">1h ago • System Update</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]" data-icon="flag">flag</span>
+</div>
+<div>
+<p class="text-label-md">MOD-8902 <span class="text-on-surface-variant">escalated to Tier 3 human review.</span></p>
+<p class="text-[10px] text-on-surface-variant mt-1">2h ago • Auto-Escalation</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Micro-interactions Script -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Simple hover effect for table rows
+            const rows = document.querySelectorAll('tr');
+            rows.forEach(row => {
+                row.addEventListener('mouseenter', () => {
+                    row.classList.add('inner-glow-primary');
+                });
+                row.addEventListener('mouseleave', () => {
+                    row.classList.remove('inner-glow-primary');
+                });
+            });
+
+            // Smooth scale interaction for buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.addEventListener('mousedown', () => btn.style.transform = 'scale(0.98)');
+                btn.addEventListener('mouseup', () => btn.style.transform = 'scale(1)');
+            });
+        });
+    </script>
+</body></html>
