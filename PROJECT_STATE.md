@@ -66,7 +66,7 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 | Documentation | 100% |
 | UI Design (Stitch) | 100% |
 | **Frontend shell** | **~90%** (correct screen HTML mapping, routing, mock auth) |
-| Backend | 0% |
+| Backend | 20% (skeleton + models + core) |
 | Git / GitHub | Initial commit pushed |
 
 ---
@@ -92,14 +92,31 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 3. **Git initialized** — initial commit `feat: initial project setup with documentation and frontend shell`
 4. **Push to GitHub** — `https://github.com/siddharthsadhu/CrowdMind.git` (branch `main`)
 
+**Date: 2026-06-02 (Phase A)**
+
+1. **A1: Visual QA** — verified all 21 routes map to correct stitch content
+2. **A2: Avatar dropdown** — replaced sign-in/sign-out with avatar dropdown (profile, contributions, saved, settings, sign out)
+3. **A3: State management** — installed Zustand + TanStack Query; created `stores/authStore.ts`, `providers/QueryProvider.tsx`, `services/api/client.ts` + 7 service modules
+4. **A4: Form management** — installed React Hook Form + Zod; created `lib/schemas.ts` for questions, discussions, replies
+5. `npm run build` passes
+
+**Date: 2026-06-02 (Phase B)**
+
+1. **B1: Project scaffold** — created `backend/` with `pyproject.toml`, module structure (core, models, schemas, api, services, repositories, infrastructure, tests, scripts)
+2. **B2: Core layer** — `config.py` (pydantic-settings), `database.py` (async SQLAlchemy), `security.py` (Clerk JWT verification), `dependencies.py` (dependency injection)
+3. **B3: Database models** — 25 SQLAlchemy 2.0 models: User, UserProfile, Category, Question, Discussion, Reply, Vote, ConsensusSignal, FaqCandidate, PublishedFaq, FaqContributor, FaqSource, FaqVersion, EvolutionEvent, Collection, CollectionItem, SavedKnowledge, Report, ModerationAction, InvestigationNote, ModerationAuditLog, ReputationHistory, Achievement, UserAchievement, Notification, NotificationPreference, AnalyticsEvent, DailyAnalytics, AiRequest, VectorEmbedding, SearchHistory
+4. **B4: Alembic setup** — initialized with async template, configured `env.py` with models metadata
+5. **B5: Infrastructure stubs** — Docker Compose, Makefile, .env.example, seed script
+6. `pytest tests/test_health.py` passes
+
 ---
 
 # Execution Plan (Phases A–J)
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| A | Frontend Polish & Tooling | **In Progress** |
-| B | Backend Skeleton & Core Layer | Pending |
+| A | Frontend Polish & Tooling | **Done** |
+| B | Backend Skeleton & Core Layer | **Done** |
 | C | Questions Module (API + Frontend) | Pending |
 | D | Clerk Auth + User Module | Pending |
 | E | Discussions, Replies & Voting | Pending |
@@ -125,12 +142,14 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 
 ---
 
-# Immediate Next Steps (Phase A)
+# Immediate Next Steps (Phase C)
 
-1. **A1: Visual QA** — verify all 21 routes render correct Stitch HTML in browser
-2. **A2: Custom Avatar Dropdown** — replace login/register buttons in AppHeader
-3. **A3: State Management** — install Zustand + TanStack Query, create stores/ and services/api/
-4. **A4: Form Management** — install React Hook Form + Zod
+1. **C1: Questions Schemas** — Pydantic create/update/response models
+2. **C2: Questions Repository** — SQLAlchemy CRUD with pagination + filters
+3. **C3: Questions Service** — business logic, duplicate detection
+4. **C4: Questions API** — FastAPI endpoints (POST/GET/PATCH/DELETE)
+5. **C5: Questions Tests** — pytest integration tests
+6. **C6: Questions Frontend** — wire AskQuestionPage to real API
 
 ---
 
