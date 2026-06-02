@@ -57,12 +57,12 @@ export default function AskQuestionPage() {
           submitBtn.setAttribute('disabled', 'true')
 
           try {
-            await questionsApi.create({
+            const q = await questionsApi.create({
               title,
               description: descInput?.value?.trim() || undefined,
               category_id: selectedCategory || undefined,
             })
-            navigate('/analysis/new')
+            navigate(`/analysis/${q.id}`)
           } catch {
             submitBtn.textContent = 'Submit Question'
             submitBtn.removeAttribute('disabled')
