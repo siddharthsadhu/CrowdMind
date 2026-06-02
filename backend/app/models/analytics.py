@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, date
 
 from sqlalchemy import String, Integer, Date, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -16,7 +16,7 @@ class AnalyticsEvent(Base):
     user_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     entity_type: Mapped[str | None] = mapped_column(String, nullable=True)
     entity_id: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), nullable=True)
-    meta_data: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True, default=None)
+    meta_data: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True, default=None)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow, index=True)
 
 

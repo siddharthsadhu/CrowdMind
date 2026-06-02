@@ -5,6 +5,7 @@ import logging
 
 from app.core.config import settings
 from app.core.database import engine
+from app.api.questions import router as questions_router
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(questions_router)
 
 
 @app.get("/health")

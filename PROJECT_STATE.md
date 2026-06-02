@@ -109,6 +109,16 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 5. **B5: Infrastructure stubs** — Docker Compose, Makefile, .env.example, seed script
 6. `pytest tests/test_health.py` passes
 
+**Date: 2026-06-02 (Phase C)**
+
+1. **C1: Questions schemas** — QuestionCreate, QuestionUpdate, QuestionResponse, QuestionListResponse
+2. **C2: Questions repository** — SQLAlchemy CRUD with pagination, category/status filters, soft delete
+3. **C3: Questions service** — business logic with authorization checks (owner-only update/delete)
+4. **C4: Questions API** — `POST /api/v1/questions`, `GET /api/v1/questions`, `GET /api/v1/questions/{id}`, `PATCH /api/v1/questions/{id}`, `DELETE /api/v1/questions/{id}`
+5. **C5: Questions tests** — 4 pytest tests pass (health, list, create auth, 404)
+6. **Test infrastructure** — SQLite in-memory DB override for tests (avoids PostgreSQL requirement)
+7. `npm run build` passes
+
 ---
 
 # Execution Plan (Phases A–J)
@@ -117,7 +127,7 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 |-------|-------|--------|
 | A | Frontend Polish & Tooling | **Done** |
 | B | Backend Skeleton & Core Layer | **Done** |
-| C | Questions Module (API + Frontend) | Pending |
+| C | Questions Module (API + Frontend) | **Done** |
 | D | Clerk Auth + User Module | Pending |
 | E | Discussions, Replies & Voting | Pending |
 | F | FAQ Module & Knowledge Pipeline | Pending |
@@ -142,14 +152,11 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 
 ---
 
-# Immediate Next Steps (Phase C)
+# Immediate Next Steps (Phase D)
 
-1. **C1: Questions Schemas** — Pydantic create/update/response models
-2. **C2: Questions Repository** — SQLAlchemy CRUD with pagination + filters
-3. **C3: Questions Service** — business logic, duplicate detection
-4. **C4: Questions API** — FastAPI endpoints (POST/GET/PATCH/DELETE)
-5. **C5: Questions Tests** — pytest integration tests
-6. **C6: Questions Frontend** — wire AskQuestionPage to real API
+1. **D1: Clerk Frontend Setup** — install @clerk/clerk-react, wrap app, replace AuthContext
+2. **D2: Clerk Backend Webhook** — user sync on sign-up, JWT verification
+3. **D3: User Module API** — GET /me, GET /users/{id}, PATCH /me
 
 ---
 

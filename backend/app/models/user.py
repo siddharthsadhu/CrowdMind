@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import String, Boolean, Text, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
@@ -37,8 +37,8 @@ class UserProfile(Base):
     website: Mapped[str | None] = mapped_column(String, nullable=True)
     linkedin_url: Mapped[str | None] = mapped_column(String, nullable=True)
     github_url: Mapped[str | None] = mapped_column(String, nullable=True)
-    expertise: Mapped[dict | None] = mapped_column(JSONB, nullable=True, default=None)
-    preferences: Mapped[dict | None] = mapped_column(JSONB, nullable=True, default=None)
+    expertise: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
+    preferences: Mapped[dict | None] = mapped_column(JSON, nullable=True, default=None)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime | None] = mapped_column(onupdate=datetime.utcnow, nullable=True)
 

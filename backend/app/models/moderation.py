@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import String, Text, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID, JSONB
+from sqlalchemy.dialects.postgresql import UUID, JSON
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.database import Base
@@ -54,5 +54,5 @@ class ModerationAuditLog(Base):
     entity_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False)
     action: Mapped[str] = mapped_column(String, nullable=False)
     performed_by: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
-    meta_data: Mapped[dict | None] = mapped_column("metadata", JSONB, nullable=True, default=None)
+    meta_data: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True, default=None)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
