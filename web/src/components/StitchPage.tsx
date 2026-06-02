@@ -1,24 +1,17 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { useAuth } from '@/context/AuthContext'
 
 export type StitchPageProps = {
   bodyHtml: string
   pageStyles?: string
   title: string
   navMap?: Record<string, string>
-  onAuthSubmit?: boolean
 }
 
-/**
- * Renders verbatim Stitch <body> markup inside the React tree (not an iframe).
- * Tailwind utilities come from CDN + stitch-tailwind.js in index.html.
- */
-export function StitchPage({ bodyHtml, pageStyles = '', title, navMap = {}, onAuthSubmit }: StitchPageProps) {
+export function StitchPage({ bodyHtml, pageStyles = '', title, navMap = {} }: StitchPageProps) {
   const rootRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const { signIn } = useAuth()
   const q = searchParams.get('q')
 
   useEffect(() => {
@@ -44,19 +37,6 @@ export function StitchPage({ bodyHtml, pageStyles = '', title, navMap = {}, onAu
 
     root.querySelectorAll('a[href]').forEach(wire)
     root.querySelectorAll('button').forEach(wire)
-
-    if (onAuthSubmit) {
-      const form = root.querySelector('form')
-      const handler = (e: Event) => {
-        e.preventDefault()
-        const emailInput = root.querySelector('input[type="email"]') as HTMLInputElement | null
-        const email = emailInput?.value?.trim() || 'user@crowdmind.ai'
-        signIn(email)
-        navigate(email.includes('admin') ? '/admin' : '/home')
-      }
-      form?.addEventListener('submit', handler)
-      root.querySelector('button[type="submit"]')?.addEventListener('click', handler)
-    }
 
     if (q) {
       const searchInput = root.querySelector(
@@ -90,7 +70,7 @@ export function StitchPage({ bodyHtml, pageStyles = '', title, navMap = {}, onAu
         el.style.transform = 'translateY(0)'
       }, 200 + index * 150)
     })
-  }, [bodyHtml, navMap, navigate, signIn, onAuthSubmit, q])
+  }, [bodyHtml, navMap, navigate, q])
 
   return (
     <div className="stitch-page-root min-h-screen bg-background text-on-background">

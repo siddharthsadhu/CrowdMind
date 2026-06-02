@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
+import { useClerk } from '@clerk/clerk-react'
 
 const screens = [
   { n: '01', label: 'Landing', path: '/' },
@@ -26,11 +27,11 @@ const screens = [
   { n: '20', label: 'Settings', path: '/admin/settings' },
 ]
 
-/** Compact screen picker for demo / QA — matches frozen 20-screen architecture */
 export function ScreenIndex() {
   const [open, setOpen] = useState(false)
   const location = useLocation()
-  const { role, signIn, signOut } = useAuth()
+  const { role, signOut } = useAuth()
+  const clerk = useClerk()
 
   return (
     <div className="fixed bottom-4 right-4 z-[9999] font-[family-name:var(--font-label)] text-xs">
@@ -48,16 +49,9 @@ export function ScreenIndex() {
             <button
               type="button"
               className="flex-1 rounded bg-primary-container/30 py-1 text-[10px] text-primary"
-              onClick={() => signIn('user@crowdmind.ai')}
+              onClick={() => clerk.openSignIn()}
             >
-              User
-            </button>
-            <button
-              type="button"
-              className="flex-1 rounded bg-tertiary-container/30 py-1 text-[10px] text-tertiary"
-              onClick={() => signIn('admin@crowdmind.ai')}
-            >
-              Admin
+              Sign In
             </button>
             <button type="button" className="rounded px-2 py-1 text-[10px] text-outline" onClick={signOut}>
               Out

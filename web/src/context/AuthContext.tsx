@@ -1,4 +1,6 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext } from 'react'
+import { useUser, useAuth as useClerkAuth, useClerk } from '@clerk/clerk-react'
+import type { ReactNode } from 'react'
 
 export type UserRole = 'guest' | 'user' | 'admin'
 
@@ -6,7 +8,8 @@ type AuthState = {
   role: UserRole
   email: string | null
   name: string
-  signIn: (email: string) => void
+  isLoaded: boolean
+  signIn: (email?: string) => void
   signOut: () => void
   setAdmin: () => void
 }
@@ -14,26 +17,64 @@ type AuthState = {
 const AuthContext = createContext<AuthState | null>(null)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<UserRole>('guest')
-  const [email, setEmail] = useState<string | null>(null)
-  const [name, setName] = useState('Guest')
+  const { isSignedIn, user, isLoaded: userLoaded } = useUser()
+  const { signOut: clerkSignOut } = useClerkAuth()
+  const clerk = useClerk()
 
-  const signIn = (userEmail: string) => {
-    setEmail(userEmail)
-    setName(userEmail.split('@')[0] ?? 'Member')
-    setRole(userEmail.includes('admin') ? 'admin' : 'user')
+  if (!userLoaded) {
+    return (
+      <AuthContext.Provider
+        value={{
+          role: 'guest',
+          email: null,
+          name: 'Guest',
+          isLoaded: false,
+          signIn: () => {},
+          signOut: () => {},
+          setAdmin: () => {},
+        }}
+      >
+        {children}
+      </AuthContext.Provider>
+    )
+  }
+
+  const role: UserRole = !isSignedIn
+    ? 'guest'
+    : (user?.publicMetadata?.role === 'admin' ? 'admin' : 'user')
+  const email = user?.primaryEmailAddress?.emailAddress ?? null
+  const displayName =
+    user?.fullName ??
+    user?.firstName ??
+    user?.username ??
+    email?.split('@')[0] ??
+    'Member'
+
+  const signIn = () => {
+    clerk.openSignIn()
   }
 
   const signOut = () => {
-    setRole('guest')
-    setEmail(null)
-    setName('Guest')
+    clerkSignOut()
+    localStorage.removeItem('clerk-token')
   }
 
-  const setAdmin = () => setRole('admin')
+  const setAdmin = () => {
+    // Admin role is set via Clerk user metadata (backend webhook)
+  }
 
   return (
-    <AuthContext.Provider value={{ role, email, name, signIn, signOut, setAdmin }}>
+    <AuthContext.Provider
+      value={{
+        role,
+        email,
+        name: displayName,
+        isLoaded: true,
+        signIn,
+        signOut,
+        setAdmin,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )
