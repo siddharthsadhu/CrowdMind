@@ -1,4 +1,5 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { useState, useRef, useEffect } from 'react'
 import { Icon } from './Icon'
 import { useAuth } from '@/context/AuthContext'
 
@@ -13,8 +14,27 @@ export function AppHeader({ variant = 'app' }: { variant?: 'app' | 'minimal' }) 
   const { role, name, signOut } = useAuth()
   const navigate = useNavigate()
   const isAdmin = role === 'admin'
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+        setMenuOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClick)
+    return () => document.removeEventListener('mousedown', handleClick)
+  }, [])
 
   if (variant === 'minimal') return null
+
+  const menuItems = [
+    { label: 'Profile', path: '/home', icon: 'person' },
+    { label: 'My Contributions', path: '/contributions', icon: 'history' },
+    { label: 'Saved Knowledge', path: '/saved', icon: 'bookmark' },
+    ...(isAdmin ? [{ label: 'Settings', path: '/admin/settings', icon: 'settings' }] : []),
+  ]
 
   return (
     <header className="fixed top-0 left-0 z-50 flex h-20 w-full items-center justify-between border-b border-white/10 bg-surface/70 px-4 backdrop-blur-xl md:px-12">
@@ -66,22 +86,48 @@ export function AppHeader({ variant = 'app' }: { variant?: 'app' | 'minimal' }) 
             Sign In
           </Link>
         ) : (
-          <Link to="/home" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-container text-sm font-bold text-on-primary-container">
-              {name.charAt(0).toUpperCase()}
-            </div>
+          <div ref={menuRef} className="relative">
             <button
               type="button"
-              onClick={(e) => {
-                e.preventDefault()
-                signOut()
-                navigate('/')
-              }}
-              className="hidden text-xs text-outline hover:text-primary md:block"
+              onClick={() => setMenuOpen((prev) => !prev)}
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-container text-sm font-bold text-on-primary-container transition-all hover:brightness-110"
             >
-              Sign out
+              {name.charAt(0).toUpperCase()}
             </button>
-          </Link>
+            {menuOpen && (
+              <div className="absolute right-0 top-full mt-2 w-56 rounded-xl border border-white/10 bg-surface py-2 shadow-2xl backdrop-blur-xl">
+                <div className="px-4 py-2 text-sm font-medium text-on-surface">{name}</div>
+                <div className="mx-3 mb-1 border-t border-white/10" />
+                {menuItems.map((item) => (
+                  <button
+                    key={item.path}
+                    type="button"
+                    onClick={() => {
+                      navigate(item.path)
+                      setMenuOpen(false)
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-2 text-sm text-on-surface-variant transition-colors hover:bg-surface-variant hover:text-on-surface"
+                  >
+                    <Icon name={item.icon} className="text-base" />
+                    {item.label}
+                  </button>
+                ))}
+                <div className="mx-3 my-1 border-t border-white/10" />
+                <button
+                  type="button"
+                  onClick={() => {
+                    signOut()
+                    setMenuOpen(false)
+                    navigate('/')
+                  }}
+                  className="flex w-full items-center gap-3 px-4 py-2 text-sm text-error transition-colors hover:bg-surface-variant"
+                >
+                  <Icon name="logout" className="text-base" />
+                  Sign Out
+                </button>
+              </div>
+            )}
+          </div>
         )}
       </div>
     </header>
