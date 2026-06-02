@@ -7,6 +7,7 @@ from app.core.config import settings
 from app.core.database import engine
 from app.api.questions import router as questions_router
 from app.api.webhooks import router as webhooks_router
+from app.api.users import router as users_router
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +35,7 @@ app.add_middleware(
 
 app.include_router(questions_router)
 app.include_router(webhooks_router)
+app.include_router(users_router)
 
 
 @app.get("/health")
