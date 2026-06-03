@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/03-faq-detail'
 import { commonUserNav } from '@/data/navMaps'
 import { faqsApi } from '@/services/api/faqs'
+import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function FaqDetailPage() {
   const navigate = useNavigate()
@@ -19,8 +20,14 @@ export default function FaqDetailPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const contentCard = root.querySelector('.grid.gap-8')
+      if (!contentCard) return
+
+      const clearLoading = showLoading(contentCard as HTMLElement)
+
       try {
         const faq = await faqsApi.getById(id)
+        clearLoading()
         const title = faq.title
         document.title = `CrowdMind | ${title}`
 
@@ -48,7 +55,8 @@ export default function FaqDetailPage() {
           if (w) (agreementBar as HTMLElement).style.width = `${faq.community_agreement_score ?? 0}%`
         }
       } catch {
-        // FAQ not found — keep static content
+        clearLoading()
+        showError(contentCard as HTMLElement)
       }
     }, 100)
 

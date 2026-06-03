@@ -56,8 +56,8 @@ export default function CreateDiscussionPage() {
       title="CrowdMind | Create Discussion"
       navMap={{
         ...commonUserNav,
-        publish: '/discussions/d1',
-        submit: '/discussions/d1',
+        publish: '/discussions',
+        submit: '/discussions',
         cancel: '/discussions',
       }}
     />

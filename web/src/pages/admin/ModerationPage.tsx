@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/17-moderation'
 import { commonAdminNav } from '@/data/navMaps'
 import { moderationApi } from '@/services/api/moderation'
+import { showLoading, showError, showEmpty } from '@/utils/pageStatus'
 
 export default function ModerationPage() {
   const navigate = useNavigate()
@@ -17,8 +18,12 @@ export default function ModerationPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const reportSection = root.querySelector('.space-y-4')
+      const clearLoading = reportSection ? showLoading(reportSection as HTMLElement) : () => {}
+
       try {
         const res = await moderationApi.listReports({ page_size: '10', status: 'OPEN' })
+        clearLoading()
         const openCountEl = root.querySelector('.border-l-primary\\/40 .text-headline-md')
         if (openCountEl) openCountEl.textContent = res.total.toString()
 
@@ -37,9 +42,12 @@ export default function ModerationPage() {
               container.appendChild(card)
             })
           }
+        } else if (reportList) {
+          showEmpty(reportList as HTMLElement)
         }
       } catch {
-        // keep static
+        clearLoading()
+        if (reportSection) showError(reportSection as HTMLElement)
       }
     }, 100)
 

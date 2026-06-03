@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/01-landing'
 import { commonUserNav } from '@/data/navMaps'
 import { analyticsApi } from '@/services/api/analytics'
+import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function LandingPage() {
   const navigate = useNavigate()
@@ -17,8 +18,12 @@ export default function LandingPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const statsRow = root.querySelector('.grid.grid-cols-2.md\\:grid-cols-4')
+      const clearLoading = statsRow ? showLoading(statsRow as HTMLElement) : () => {}
+
       try {
         const dash = await analyticsApi.getDashboard()
+        clearLoading()
         const stats = root.querySelectorAll('.glass-card .font-headline-md')
         if (stats.length >= 4) {
           stats[0].textContent = dash.total_faqs.toString()
@@ -27,7 +32,8 @@ export default function LandingPage() {
           stats[3].textContent = dash.total_users.toString()
         }
       } catch {
-        // keep static values
+        clearLoading()
+        if (statsRow) showError(statsRow as HTMLElement)
       }
     }, 100)
 
@@ -41,9 +47,14 @@ export default function LandingPage() {
       title="CrowdMind | Landing"
       navMap={{
         ...commonUserNav,
-        'explore knowledge': '/library',
-        'join the collective': '/login',
-        trending: '/library',
+        'read more': '/library',
+        'learn more': '/evolution',
+        features: '/',
+        integrations: '/',
+        leaderboard: '/',
+        contributors: '/',
+        api: '/',
+        'help center': '/',
       }}
     />
   )

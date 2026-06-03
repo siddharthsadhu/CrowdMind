@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/07-discussions'
 import { commonUserNav } from '@/data/navMaps'
 import { discussionsApi, DiscussionResponse } from '@/services/api/discussions'
+import { showLoading, showError, showEmpty } from '@/utils/pageStatus'
 
 export default function DiscussionsPage() {
   const navigate = useNavigate()
@@ -20,15 +21,24 @@ export default function DiscussionsPage() {
       const feed = root.querySelector('.lg\\:col-span-8.space-y-6')
       if (!feed) return
 
+      const clearLoading = showLoading(feed as HTMLElement)
+
       let discussions: DiscussionResponse[] = []
       try {
         const res = await discussionsApi.list({ page_size: '20' })
         discussions = res.items
       } catch {
+        clearLoading()
+        showError(feed as HTMLElement)
         return
       }
 
-      if (discussions.length === 0) return
+      clearLoading()
+
+      if (discussions.length === 0) {
+        showEmpty(feed as HTMLElement)
+        return
+      }
 
       const template = feed.querySelector('article.glass-card')
       if (!template) return
@@ -70,11 +80,11 @@ export default function DiscussionsPage() {
       title="CrowdMind | Discussions"
       navMap={{
         ...commonUserNav,
-        'start a discussion': '/discussions/new',
-        'new discussion': '/discussions/new',
-        create: '/discussions/new',
-        view: '/discussions/d1',
-        thread: '/discussions/d1',
+        'start discussion': '/discussions/new',
+        'open questions': '/discussions',
+        answered: '/discussions',
+        trending: '/discussions',
+        'ai escalated': '/discussions',
       }}
     />
   )

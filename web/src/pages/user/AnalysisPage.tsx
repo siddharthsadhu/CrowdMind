@@ -55,7 +55,7 @@ export default function AnalysisPage() {
         ...commonUserNav,
         discussion: '/discussions',
         'start discussion': '/discussions/new',
-        'view discussion': '/discussions/d1',
+        'view discussion': '/discussions',
         continue: '/discussions',
       }}
     />

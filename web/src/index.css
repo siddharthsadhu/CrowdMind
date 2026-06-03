@@ -83,6 +83,12 @@
   display: none;
 }
 
+/* Status overlays for loading / error / empty states */
+.cm-status { @apply flex items-center justify-center gap-2 py-8 text-center text-sm; }
+.cm-loading { @apply text-primary; }
+.cm-error { @apply text-error; }
+.cm-empty { @apply text-outline; }
+
 /* Header navbar search — icon stays inside the input (Profile + shared nav) */
 .stitch-page-root header .cm-nav-search {
   position: relative;

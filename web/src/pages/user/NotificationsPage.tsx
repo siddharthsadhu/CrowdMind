@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/11-notifications'
 import { commonUserNav } from '@/data/navMaps'
 import { notificationsApi } from '@/services/api/notifications'
+import { showError, showEmpty } from '@/utils/pageStatus'
 
 export default function NotificationsPage() {
   const navigate = useNavigate()
@@ -33,9 +34,12 @@ export default function NotificationsPage() {
               feed.appendChild(card)
             })
           }
+        } else if (feed && res.items.length === 0) {
+          showEmpty(feed as HTMLElement)
         }
       } catch {
-        // keep static
+        const feed = root.querySelector('.space-y-4 .flex.flex-col')
+        if (feed) showError(feed as HTMLElement)
       }
     }, 100)
 

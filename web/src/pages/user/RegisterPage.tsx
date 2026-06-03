@@ -1,3 +1,6 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
 import { SignUp } from '@clerk/clerk-react'
 
 const clerkAppearance = {
@@ -33,6 +36,17 @@ const clerkAppearance = {
 }
 
 export default function RegisterPage() {
+  const { role, isLoaded } = useAuth()
+  const navigate = useNavigate()
+  const authed = role !== 'guest'
+
+  useEffect(() => {
+    if (isLoaded && authed) navigate('/home', { replace: true })
+  }, [isLoaded, authed, navigate])
+
+  if (!isLoaded) return null
+  if (authed) return null
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <div className="w-full max-w-md rounded-xl border border-white/10 bg-surface p-8 shadow-2xl">

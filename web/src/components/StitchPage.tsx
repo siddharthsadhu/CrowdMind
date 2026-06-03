@@ -1,5 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
+
+const avatarAlts = ['user profile menu', 'user avatar', 'user profile', 'profile pic', 'user', 'admin profile', 'researcher profile']
 
 export type StitchPageProps = {
   bodyHtml: string
@@ -12,6 +15,7 @@ export function StitchPage({ bodyHtml, pageStyles = '', title, navMap = {} }: St
   const rootRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
+  const { name, isLoaded } = useAuth()
   const q = searchParams.get('q')
 
   useEffect(() => {
@@ -37,6 +41,18 @@ export function StitchPage({ bodyHtml, pageStyles = '', title, navMap = {} }: St
 
     root.querySelectorAll('a[href]').forEach(wire)
     root.querySelectorAll('button').forEach(wire)
+
+    /* Wire header avatar images to navigate to /home and show real user */
+    if (isLoaded) {
+      const avatar = Array.from(root.querySelectorAll<HTMLImageElement>('header img, nav img')).find(
+        (img) => avatarAlts.some((a) => (img.alt ?? '').toLowerCase().includes(a)),
+      )
+      if (avatar) {
+        avatar.style.cursor = 'pointer'
+        avatar.addEventListener('click', () => navigate('/home'))
+        avatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=b0c6ff&color=002d6e&bold=true&size=128`
+      }
+    }
 
     if (q) {
       const searchInput = root.querySelector(

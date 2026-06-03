@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/14-evolution'
 import { commonUserNav } from '@/data/navMaps'
 import { faqsApi } from '@/services/api/faqs'
+import { showLoading, showError, showEmpty } from '@/utils/pageStatus'
 
 export default function EvolutionPage() {
   const navigate = useNavigate()
@@ -17,18 +18,31 @@ export default function EvolutionPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const timeline = root.querySelector('.space-y-4 .flex.flex-col.md\\:flex-row')
+      if (!timeline) return
+
+      const parent = timeline.parentElement
+      if (!parent) return
+
+      const clearLoading = showLoading(parent as HTMLElement)
+
       try {
         const res = await faqsApi.list({ page_size: '3' })
-        const timeline = root.querySelector('.space-y-4 .flex.flex-col.md\\:flex-row')
-        if (timeline && res.items.length > 0) {
-          for (let i = 0; i < Math.min(res.items.length, 3); i++) {
-            const faq = res.items[i]
-            const titleEl = root.querySelectorAll('.font-headline-md.text-on-surface')
-            if (titleEl[i]) titleEl[i].textContent = faq.title
-          }
+        clearLoading()
+
+        if (res.items.length === 0) {
+          showEmpty(parent as HTMLElement)
+          return
+        }
+
+        for (let i = 0; i < Math.min(res.items.length, 3); i++) {
+          const faq = res.items[i]
+          const titleEl = root.querySelectorAll('.font-headline-md.text-on-surface')
+          if (titleEl[i]) titleEl[i].textContent = faq.title
         }
       } catch {
-        // keep static
+        clearLoading()
+        showError(parent as HTMLElement)
       }
     }, 100)
 

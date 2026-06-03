@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/18-analytics'
 import { commonAdminNav } from '@/data/navMaps'
 import { analyticsApi } from '@/services/api/analytics'
+import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function AnalyticsPage() {
   const navigate = useNavigate()
@@ -17,8 +18,12 @@ export default function AnalyticsPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const metricsRow = root.querySelector('section .grid.grid-cols-1')
+      const clearLoading = metricsRow ? showLoading(metricsRow as HTMLElement) : () => {}
+
       try {
         const dash = await analyticsApi.getDashboard()
+        clearLoading()
         const metrics = root.querySelectorAll('.glass-card .font-headline-md')
         if (metrics.length >= 4) {
           const vals = [dash.total_users, dash.total_questions, dash.total_discussions, dash.total_faqs]
@@ -27,7 +32,8 @@ export default function AnalyticsPage() {
           })
         }
       } catch {
-        // keep static
+        clearLoading()
+        if (metricsRow) showError(metricsRow as HTMLElement)
       }
     }, 100)
 

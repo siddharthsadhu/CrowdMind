@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/16-faq-mgmt'
 import { commonAdminNav } from '@/data/navMaps'
 import { faqsApi } from '@/services/api/faqs'
+import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function FaqManagementPage() {
   const navigate = useNavigate()
@@ -17,11 +18,15 @@ export default function FaqManagementPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const mainGrid = root.querySelector('[class*="grid"]')
+      const clearLoading = mainGrid ? showLoading(mainGrid as HTMLElement) : () => {}
+
       try {
         const [faqRes, candRes] = await Promise.all([
           faqsApi.list({ page_size: '5' }),
           faqsApi.candidates.list({ page_size: '5' }),
         ])
+        clearLoading()
 
         const publishedEl = root.querySelector('[class*="grid"] .glass-card')
         if (publishedEl && faqRes.items.length > 0) {
@@ -41,7 +46,8 @@ export default function FaqManagementPage() {
           if (statusEl) statusEl.textContent = cand.status
         }
       } catch {
-        // keep static
+        clearLoading()
+        if (mainGrid) showError(mainGrid as HTMLElement)
       }
     }, 100)
 

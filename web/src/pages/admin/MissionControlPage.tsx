@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/15-mission-control'
 import { commonAdminNav, commonUserNav } from '@/data/navMaps'
 import { analyticsApi } from '@/services/api/analytics'
+import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function MissionControlPage() {
   const navigate = useNavigate()
@@ -17,8 +18,12 @@ export default function MissionControlPage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const metricsRow = root.querySelector('section .grid.grid-cols-1')
+      const clearLoading = metricsRow ? showLoading(metricsRow as HTMLElement) : () => {}
+
       try {
         const dash = await analyticsApi.getDashboard()
+        clearLoading()
         const cards = root.querySelectorAll('.glass-card .text-headline-md.font-headline-md')
         if (cards.length >= 4) {
           const values = [dash.total_faqs, dash.total_questions, dash.total_discussions, dash.total_reports_open]
@@ -33,7 +38,8 @@ export default function MissionControlPage() {
           })
         }
       } catch {
-        // keep static
+        clearLoading()
+        if (metricsRow) showError(metricsRow as HTMLElement)
       }
     }, 100)
 

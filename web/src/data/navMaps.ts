@@ -29,6 +29,17 @@ export const commonUserNav: Record<string, string> = {
   'explore faqs': '/library',
   'view all': '/library',
   'learn our methodology': '/evolution',
+  settings: '/settings',
+  'notification preferences': '/settings',
+  documentation: '/',
+  'api reference': '/',
+  'help center': '/',
+  roadmap: '/',
+  pricing: '/',
+  'about us': '/',
+  contact: '/',
+  status: '/',
+  security: '/',
 }
 
 export const commonAdminNav: Record<string, string> = {

@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/02-library'
 import { commonUserNav } from '@/data/navMaps'
 import { faqsApi, PublishedFaqResponse } from '@/services/api/faqs'
+import { showLoading, showError, showEmpty } from '@/utils/pageStatus'
 
 export default function LibraryPage() {
   const navigate = useNavigate()
@@ -21,6 +22,7 @@ export default function LibraryPage() {
       const gridContainer = root.querySelector('.col-span-6 .grid.grid-cols-1')
 
       if (totalFaqEl) totalFaqEl.textContent = 'Loading...'
+      const clearLoading = gridContainer ? showLoading(gridContainer as HTMLElement) : () => {}
 
       let faqs: PublishedFaqResponse[] = []
       try {
@@ -28,8 +30,13 @@ export default function LibraryPage() {
         faqs = res.items
         if (totalFaqEl) totalFaqEl.textContent = res.total.toString()
       } catch {
+        clearLoading()
         if (totalFaqEl) totalFaqEl.textContent = '—'
+        if (gridContainer) showError(gridContainer as HTMLElement)
+        return
       }
+
+      clearLoading()
 
       if (gridContainer && faqs.length > 0) {
         const template = gridContainer.querySelector('.glass.rounded-2xl')
@@ -57,6 +64,8 @@ export default function LibraryPage() {
 
           gridContainer.appendChild(card)
         })
+      } else if (gridContainer) {
+        showEmpty(gridContainer as HTMLElement)
       }
 
     }, 100)

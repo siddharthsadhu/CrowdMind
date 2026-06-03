@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/12-saved'
 import { commonUserNav } from '@/data/navMaps'
 import { faqsApi } from '@/services/api/faqs'
+import { showLoading, showError, showEmpty } from '@/utils/pageStatus'
 
 export default function SavedKnowledgePage() {
   const navigate = useNavigate()
@@ -17,16 +18,29 @@ export default function SavedKnowledgePage() {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
+      const savedGrid = root.querySelector('.grid.gap-6')
+      if (!savedGrid) return
+
+      const clearLoading = showLoading(savedGrid as HTMLElement)
+
       try {
         const res = await faqsApi.list({ page_size: '4' })
-        const cards = root.querySelectorAll('.glass-card .font-headline-md')
-        if (cards.length > 0 && res.items.length > 0) {
+        clearLoading()
+
+        if (res.items.length === 0) {
+          showEmpty(savedGrid as HTMLElement)
+          return
+        }
+
+        const cards = savedGrid.querySelectorAll('.glass-card .font-headline-md')
+        if (cards.length > 0) {
           res.items.forEach((faq, i) => {
             if (cards[i]) cards[i].textContent = faq.title
           })
         }
       } catch {
-        // keep static
+        clearLoading()
+        showError(savedGrid as HTMLElement)
       }
     }, 100)
 
