@@ -1,70 +1,91 @@
 # IMPLEMENTATION_PLAN.md
 # CrowdMind — Production SaaS Transformation Plan
-# Version: 1.1
+# Version: 1.2
 # Date: 2026-06-03
 # Status: PENDING REVIEW
 
-## 1. Current State Analysis & Identified Issues
+## 1. Current State Analysis & Gaps
 
-### Issue A: Avatar in Header is Non-Clickable and Doesn't Update
-- **Root Cause**: In `web/src/components/StitchPage.tsx`, the `useEffect` that wires up the avatar click listener and sets `avatar.src` to a dynamic UI-avatar is missing `isLoaded` and `name` from its dependency array.
-- **Result**: When the page first mounts, Clerk authentication is still loading (`isLoaded` is `false`). When Clerk finishes loading and `isLoaded` becomes `true`, the `useEffect` does not re-run, leaving the avatar static, un-clickable, and displaying the placeholder URL from the static HTML files.
+We need to transform the static, template-cloned elements of the frontend screens into a fully interactive, real-time database-driven system.
 
-### Issue B: Authentication Redirects and `/login` Behavior
-- **Behavior**: Currently, after login/signup, the user is redirected by Clerk to the landing page (`/`) by default, rather than their dashboard or profile (`/home`). If they are logged in and navigate to `/login` again, the login page redirects them to `/home` (which is `ProfilePage`).
-- **Gaps**: We need to ensure Clerk components explicitly redirect to `/home` post-authentication and that the navigation header updates dynamically to hide login/signup and show the user avatar once signed in.
-
-### Issue C: Static/Hardcoded Avatar on Profile Page
-- **Root Cause**: `ProfilePage.tsx` successfully fetches the logged-in user details from the backend and updates the text fields (name, email, role), but it does not update the large profile avatar image. It remains hardcoded as the template image of "Alex Rivera".
-
-### Issue D: Missing Role-Aware Navigation Elements for Guests
-- **Behavior**: The static HTML contains headers showing the avatar, settings, and notifications by default, even if the user is a guest. Guests should see "Sign In" and "Sign Up" buttons instead, and user-only links like "Ask Question" should be hidden.
+### Identified Gaps:
+- **Landing Page**: Trending FAQs and active peer reviews (discussions) are hardcoded.
+- **Library Page**: Search input is UI-only. Filter checkboxes (categories and status) and the sorting dropdown do not filter or sort the FAQs.
+- **FAQ Detail Page**:
+  - Bookmarking is UI-only and does not persist.
+  - Helpful/Not Helpful feedback buttons are non-functional.
+  - The "Knowledge Evolution" timeline is static and does not show actual FAQ versions.
+- **Saved Knowledge Page**: Displays the first few FAQs from the API instead of user-bookmarked items.
+- **Discussion Creation Flow**: Creating a discussion from a question does not carry over the question title or context, and does not link the discussion to the original question.
+- **Discussion Thread Page**:
+  - Only the first reply is displayed (static template text replacement).
+  - Users cannot submit replies (the text input does not trigger any action).
+  - Reply upvoting/downvoting is non-functional.
+- **Notifications Page**: "Mark all as read" does not update the database status or the UI.
 
 ---
 
-## 2. Proposed Changes
+## 2. Proposed Changes & Implementation Strategy
 
-### Component 1: `StitchPage.tsx`
-- **Path**: [StitchPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/components/StitchPage.tsx)
+### Component 1: `LandingPage.tsx`
+- **Path**: [LandingPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/LandingPage.tsx)
 - **Modifications**:
-  1. Add `isLoaded`, `name`, and `role` to the `useEffect` dependency array.
-  2. Implement dynamic DOM modifications in the header/nav based on the user's role:
-     - **For Guest (`role === 'guest'`)**:
-       - Hide the avatar container element.
-       - Hide user-only links/buttons (e.g. "Ask Question", "notifications", "settings" in the top header).
-       - Programmatically create and append "Sign In" and "Sign Up" buttons inside the header/nav matching the styling of the platform.
-     - **For Registered User/Admin (`role === 'user' || role === 'admin'`)**:
-       - Ensure the avatar container is visible, clickable, and navigates to `/home`.
-       - Update the avatar source to `https://ui-avatars.com/api/?name=${name}...`.
-       - Remove any temporary guest login buttons if they were appended.
+  - Retrieve the first 3 FAQs from `faqsApi.list` and render them dynamically in the "Trending FAQs" section.
+  - Retrieve the first 2 discussions from `discussionsApi.list` and render them dynamically in the "Active Peer Reviews" section.
 
-### Component 2: `LoginPage.tsx` & `RegisterPage.tsx`
-- **Paths**: [LoginPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/LoginPage.tsx), [RegisterPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/RegisterPage.tsx)
+### Component 2: `LibraryPage.tsx`
+- **Path**: [LibraryPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/LibraryPage.tsx)
 - **Modifications**:
-  - Configure the `<SignIn />` and `<SignUp />` components with `fallbackRedirectUrl="/home"` and `forceRedirectUrl="/home"` props to guarantee they route straight to the user profile/dashboard after a successful login/signup.
+  - Implement dynamic local filtering and sorting.
+  - Filter by category checkboxes (Internship, Team Formation, ViBe Protocol, Rosetta Engine) dynamically by mapping check states to API requests or client-side filtering.
+  - Wire search input to filter items by keyword matching titles and content.
+  - Sort the list client-side based on view count, confidence score, and updated timestamp.
 
-### Component 3: `ProfilePage.tsx`
-- **Path**: [ProfilePage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/ProfilePage.tsx)
+### Component 3: `FaqDetailPage.tsx`
+- **Path**: [FaqDetailPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/FaqDetailPage.tsx)
 - **Modifications**:
-  - Locate the large avatar image (`img` inside the profile header section) and dynamically replace its `src` with the logged-in user's personalized UI-avatar.
+  - **Bookmarking**: Load bookmark state from `localStorage`. Wire the bookmark button to toggle saving the FAQ's ID to `localStorage['saved-faqs']` and update the icon dynamically.
+  - **Helpful Feedback**: Wire the "Yes" and "No" buttons. Toggling them increments the client-side count, updates UI styling to active state, and updates `localStorage['faq-feedback']`.
+  - **Evolution Timeline**: Fetch version history using `faqsApi.getVersions(id)` and dynamically insert timeline nodes.
+
+### Component 4: `SavedKnowledgePage.tsx`
+- **Path**: [SavedKnowledgePage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/SavedKnowledgePage.tsx)
+- **Modifications**:
+  - Retrieve bookmarked FAQ IDs from `localStorage`.
+  - Fetch all corresponding FAQ objects from the database and populate the grid dynamically. Show an empty state if no bookmarks exist.
+
+### Component 5: `AnalysisPage.tsx` & `CreateDiscussionPage.tsx`
+- **Paths**: [AnalysisPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/AnalysisPage.tsx), [CreateDiscussionPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/CreateDiscussionPage.tsx)
+- **Modifications**:
+  - Wire "Create Discussion Thread" button to navigate to `/discussions/new?question_id=${id}`.
+  - In `CreateDiscussionPage.tsx`, parse the `question_id` query parameter. If present, query the question details from the API to pre-fill the discussion Title and Context inputs and pass the `question_id` to `discussionsApi.create`.
+
+### Component 6: `DiscussionThreadPage.tsx`
+- **Path**: [DiscussionThreadPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/DiscussionThreadPage.tsx)
+- **Modifications**:
+  - Fetch all replies via `repliesApi.listByDiscussion(id)`.
+  - Populate the replies feed dynamically by cloning the reply card template, showing user names, initials, reply timestamps, and contents.
+  - Wire up the comment textarea and the "Reply" button to invoke `repliesApi.create` and refresh the list in the UI immediately.
+  - Wire up reply voting: clicking upvote/downvote executes `votesApi.createOrUpdate` and updates the counts.
+
+### Component 7: `NotificationsPage.tsx`
+- **Path**: [NotificationsPage.tsx](file:///c:/Users/siddh/Desktop/IIT_Ropar/CrowdMind/web/src/pages/user/NotificationsPage.tsx)
+- **Modifications**:
+  - Wire the "Mark all as read" button to invoke `notificationsApi.markAllRead` and refresh.
+  - Add click listeners on each notification to call `notificationsApi.markRead(id)` and visually mark them as read.
 
 ---
 
 ## 3. Verification Plan
 
+### Automated Verification
+- Run frontend build to ensure type checking and asset packaging succeed:
+  `npm run build`
+- Run backend test suite to ensure API compliance:
+  `backend\.venv\Scripts\python -m pytest`
+
 ### Manual Verification
-1. **Clear Session & Guest View**:
-   - Log out or open an incognito window.
-   - Go to `/` (Landing Page). Verify the avatar, settings, and notifications are hidden from the header.
-   - Verify that "Sign In" and "Sign Up" buttons are present in the header.
-   - Verify that "Ask Question" is hidden from the guest navbar.
-2. **Sign In Redirect**:
-   - Click "Sign In" in the header.
-   - Sign in using test credentials.
-   - Verify you are immediately redirected to `/home` (Profile Page).
-3. **Profile Verification**:
-   - On the profile page, verify that both the header avatar and the main profile page avatar display a personalized avatar based on your name.
-   - Verify that clicking the header avatar successfully navigates back to `/home`.
-4. **Already Logged In Redirect**:
-   - While signed in, manually type `/login` in the address bar.
-   - Verify that the app immediately redirects you back to `/home` without flashing the login form or the landing page.
+1. Verify landing page loads real trending articles and discussions.
+2. Verify searching and filtering on the Library Page dynamically adjusts the FAQ list.
+3. Verify adding a bookmark on the FAQ Details page correctly updates the Saved Knowledge page.
+4. Verify asking a question, viewing the analysis, escalating to a discussion, posting replies, and upvoting replies are fully functional and persist to the database.
