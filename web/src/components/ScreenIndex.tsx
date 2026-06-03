@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
-import { useClerk } from '@clerk/clerk-react'
 
 const screens = [
   { n: '01', label: 'Landing', path: '/' },
@@ -30,8 +29,7 @@ const screens = [
 export function ScreenIndex() {
   const [open, setOpen] = useState(false)
   const location = useLocation()
-  const { role, signOut } = useAuth()
-  const clerk = useClerk()
+  const { role, signOut, signIn } = useAuth()
 
   return (
     <div className="fixed bottom-4 right-4 z-[9999] font-[family-name:var(--font-label)] text-xs">
@@ -49,7 +47,7 @@ export function ScreenIndex() {
             <button
               type="button"
               className="flex-1 rounded bg-primary-container/30 py-1 text-[10px] text-primary"
-              onClick={() => clerk.openSignIn()}
+              onClick={() => signIn()}
             >
               Sign In
             </button>

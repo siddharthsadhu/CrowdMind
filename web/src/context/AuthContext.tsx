@@ -80,6 +80,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   )
 }
 
+/** Fallback when Clerk is unavailable (no valid publishable key). */
+export function GuestOnlyProvider({ children }: { children: ReactNode }) {
+  return (
+    <AuthContext.Provider
+      value={{
+        role: 'guest',
+        email: null,
+        name: 'Guest',
+        isLoaded: true,
+        signIn: () => { alert('Clerk not configured — sign-in unavailable') },
+        signOut: () => {},
+        setAdmin: () => { alert('Set role to admin for dev testing') },
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  )
+}
+
 export function useAuth() {
   const ctx = useContext(AuthContext)
   if (!ctx) throw new Error('useAuth must be used within AuthProvider')
