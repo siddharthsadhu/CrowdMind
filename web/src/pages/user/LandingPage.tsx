@@ -6,6 +6,7 @@ import { commonUserNav } from '@/data/navMaps'
 import { analyticsApi } from '@/services/api/analytics'
 import { faqsApi } from '@/services/api/faqs'
 import { discussionsApi } from '@/services/api/discussions'
+import { categoriesApi, CategoryResponse } from '@/services/api/categories'
 import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function LandingPage() {
@@ -22,6 +23,13 @@ export default function LandingPage() {
 
       const statsRow = root.querySelector('.grid.grid-cols-2.md\\:grid-cols-4')
       const clearLoading = statsRow ? showLoading(statsRow as HTMLElement) : () => {}
+
+      let categoriesList: CategoryResponse[] = []
+      try {
+        categoriesList = await categoriesApi.list()
+      } catch (err) {
+        console.error(err)
+      }
 
       try {
         const dash = await analyticsApi.getDashboard()
@@ -54,7 +62,10 @@ export default function LandingPage() {
                 const viewsEl = card.querySelector('.flex.items-center.gap-2')
 
                 if (titleEl) titleEl.textContent = faq.title
-                if (categoryEl) categoryEl.textContent = faq.category_id ? faq.category_id.toUpperCase() : 'GENERAL'
+                
+                const catObj = categoriesList.find(c => c.id === faq.category_id)
+                if (categoryEl) categoryEl.textContent = catObj ? catObj.name.toUpperCase() : 'GENERAL'
+                
                 if (viewsEl) {
                   viewsEl.innerHTML = `<span class="material-symbols-outlined text-sm">verified</span> ${faq.confidence_score ?? 100}% AI Confidence`
                 }

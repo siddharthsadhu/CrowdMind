@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/05-ask'
 import { commonUserNav } from '@/data/navMaps'
 import { questionsApi } from '@/services/api/questions'
+import { categoriesApi } from '@/services/api/categories'
 
 export default function AskQuestionPage() {
   const navigate = useNavigate()
@@ -13,13 +14,13 @@ export default function AskQuestionPage() {
     if (initialized.current) return
     initialized.current = true
 
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
       const titleInput = root.querySelector('textarea[placeholder*="change my team"]') as HTMLTextAreaElement | null
       const descInput = root.querySelector('textarea[placeholder*="Describe your situation"]') as HTMLTextAreaElement | null
-      const categoryBtns = root.querySelectorAll('.glass-card button') as NodeListOf<HTMLButtonElement>
+      const catWrapper = root.querySelector('.space-y-4 .flex-wrap.gap-3') as HTMLElement | null
       const submitBtn = Array.from(root.querySelectorAll('button')).find(
         (b) => b.textContent?.trim() === 'Submit Question',
       )
@@ -27,31 +28,39 @@ export default function AskQuestionPage() {
 
       let selectedCategory: string | null = null
 
-      const categoryMap: Record<string, string> = {
-        Internship: 'internship',
-        'Team Formation': 'team-formation',
-        NOC: 'noc',
-        ViBe: 'vibe',
-        Rosetta: 'rosetta',
-      }
-
-      categoryBtns.forEach((btn) => {
-        btn.addEventListener('click', () => {
-          categoryBtns.forEach((b) => {
-            b.className =
-              'px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95'
+      if (catWrapper) {
+        try {
+          const cats = await categoriesApi.list()
+          catWrapper.innerHTML = ''
+          cats.forEach((cat, idx) => {
+            const btn = document.createElement('button')
+            btn.className = 'px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95'
+            btn.textContent = cat.name
+            btn.addEventListener('click', (e) => {
+              e.preventDefault()
+              catWrapper.querySelectorAll('button').forEach((b) => {
+                b.className = 'px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95'
+              })
+              btn.className = 'px-6 py-2 rounded-full border border-primary bg-primary/10 text-primary font-label-md transition-all active:scale-95'
+              selectedCategory = cat.id
+            })
+            catWrapper.appendChild(btn)
+            
+            // Set the first category as default selected
+            if (idx === 0) {
+              btn.click()
+            }
           })
-          btn.className =
-            'px-6 py-2 rounded-full border border-primary bg-primary/10 text-primary font-label-md transition-all active:scale-95'
-          selectedCategory = categoryMap[btn.textContent?.trim() ?? ''] ?? null
-        })
-      })
+        } catch (err) {
+          console.error('Failed to load categories', err)
+        }
+      }
 
       if (submitBtn) {
         submitBtn.addEventListener('click', async (e) => {
           e.preventDefault()
           const title = titleInput?.value?.trim()
-          if (!title || title.length < 5) return
+          if (!title || title.length < 10) return // Match API schema min_length=10
 
           submitBtn.textContent = 'Submitting...'
           submitBtn.setAttribute('disabled', 'true')

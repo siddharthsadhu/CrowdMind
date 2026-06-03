@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/03-faq-detail'
 import { commonUserNav } from '@/data/navMaps'
 import { faqsApi } from '@/services/api/faqs'
+import { categoriesApi } from '@/services/api/categories'
 import { showLoading, showError } from '@/utils/pageStatus'
 
 export default function FaqDetailPage() {
@@ -26,7 +27,11 @@ export default function FaqDetailPage() {
       const clearLoading = showLoading(contentCard as HTMLElement)
 
       try {
-        const faq = await faqsApi.getById(id)
+        const [faq, categories] = await Promise.all([
+          faqsApi.getById(id),
+          categoriesApi.list().catch(() => []),
+        ])
+        
         clearLoading()
         const title = faq.title
         document.title = `CrowdMind | ${title}`
@@ -41,7 +46,10 @@ export default function FaqDetailPage() {
         const agreementBar = root.querySelector('.space-y-2:nth-child(2) .bg-secondary-fixed-dim')
 
         if (titleEl) titleEl.textContent = title
-        if (catEl) catEl.textContent = faq.category_id ? faq.category_id.toUpperCase() : 'GENERAL'
+        
+        const catObj = categories.find((c) => c.id === faq.category_id)
+        if (catEl) catEl.textContent = catObj ? catObj.name.toUpperCase() : 'GENERAL'
+        
         if (verEl) verEl.textContent = `v${faq.version_number}`
         if (contentEl) contentEl.textContent = faq.content
         if (confidenceVal) confidenceVal.textContent = `${faq.confidence_score ?? 100}%`

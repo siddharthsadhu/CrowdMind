@@ -4,6 +4,7 @@ import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/12-saved'
 import { commonUserNav } from '@/data/navMaps'
 import { faqsApi, PublishedFaqResponse } from '@/services/api/faqs'
+import { categoriesApi } from '@/services/api/categories'
 import { showLoading, showError, showEmpty } from '@/utils/pageStatus'
 
 export default function SavedKnowledgePage() {
@@ -37,8 +38,11 @@ export default function SavedKnowledgePage() {
         }
 
         try {
-          const faqPromises = savedIds.map((id) => faqsApi.getById(id).catch(() => null))
-          const resolved = await Promise.all(faqPromises)
+          const [resolved, categories] = await Promise.all([
+            Promise.all(savedIds.map((id) => faqsApi.getById(id).catch(() => null))),
+            categoriesApi.list().catch(() => []),
+          ])
+          
           const validFaqs = resolved.filter(Boolean) as PublishedFaqResponse[]
 
           clearLoading()
@@ -64,7 +68,10 @@ export default function SavedKnowledgePage() {
 
             if (titleEl) titleEl.textContent = faq.title
             if (descEl) descEl.textContent = (faq.content?.slice(0, 120) ?? '') + '...'
-            if (catTag) catTag.textContent = faq.category_id ? faq.category_id.toUpperCase() : 'GENERAL'
+            
+            const catObj = categories.find(c => c.id === faq.category_id)
+            if (catTag) catTag.textContent = catObj ? catObj.name.toUpperCase() : 'GENERAL'
+            
             if (confidenceEl) confidenceEl.textContent = `${faq.confidence_score ?? 100}%`
             if (agreementEl) agreementEl.textContent = `${faq.community_agreement_score ?? 90}%`
 
