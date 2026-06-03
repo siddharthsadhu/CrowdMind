@@ -1,19 +1,22 @@
 import { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/09-create-discussion'
 import { commonUserNav } from '@/data/navMaps'
 import { discussionsApi } from '@/services/api/discussions'
+import { questionsApi } from '@/services/api/questions'
 
 export default function CreateDiscussionPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const questionId = searchParams.get('question_id')
   const initialized = useRef(false)
 
   useEffect(() => {
     if (initialized.current) return
     initialized.current = true
 
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
       const root = document.querySelector('.stitch-page-root')
       if (!root) return
 
@@ -22,6 +25,16 @@ export default function CreateDiscussionPage() {
       const submitBtn = Array.from(root.querySelectorAll('button')).find(
         (b) => b.textContent?.trim() === 'Publish Discussion',
       )
+
+      if (questionId) {
+        try {
+          const q = await questionsApi.getById(questionId)
+          if (titleInput) titleInput.value = q.title
+          if (descTextarea) descTextarea.value = q.description || ''
+        } catch (err) {
+          console.error('Failed to fetch question details', err)
+        }
+      }
 
       if (submitBtn) {
         submitBtn.addEventListener('click', async (e) => {
@@ -36,6 +49,7 @@ export default function CreateDiscussionPage() {
             const disc = await discussionsApi.create({
               title,
               description: descTextarea?.value?.trim() || undefined,
+              question_id: questionId || undefined,
             })
             navigate(`/discussions/${disc.id}`)
           } catch {
@@ -47,7 +61,7 @@ export default function CreateDiscussionPage() {
     }, 100)
 
     return () => clearTimeout(timer)
-  }, [navigate])
+  }, [navigate, questionId])
 
   return (
     <StitchPage

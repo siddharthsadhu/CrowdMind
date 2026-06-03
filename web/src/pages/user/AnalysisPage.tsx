@@ -53,8 +53,8 @@ export default function AnalysisPage() {
       title="CrowdMind | AI Analysis"
       navMap={{
         ...commonUserNav,
-        discussion: '/discussions',
-        'start discussion': '/discussions/new',
+        'create discussion thread': `/discussions/new?question_id=${id}`,
+        'refine question': '/ask',
         'view discussion': '/discussions',
         continue: '/discussions',
       }}
