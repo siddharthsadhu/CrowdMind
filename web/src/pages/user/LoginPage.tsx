@@ -54,7 +54,7 @@ export default function LoginPage() {
         <h1 className="mb-6 text-center font-[family-name:var(--font-headline)] text-2xl font-bold text-primary">
           Sign In to CrowdMind
         </h1>
-        <SignIn appearance={clerkAppearance} />
+        <SignIn appearance={clerkAppearance} fallbackRedirectUrl="/home" forceRedirectUrl="/home" />
       </div>
     </div>
   )

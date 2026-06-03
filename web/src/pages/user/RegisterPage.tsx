@@ -53,7 +53,7 @@ export default function RegisterPage() {
         <h1 className="mb-6 text-center font-[family-name:var(--font-headline)] text-2xl font-bold text-primary">
           Create Your CrowdMind Account
         </h1>
-        <SignUp appearance={clerkAppearance} />
+        <SignUp appearance={clerkAppearance} fallbackRedirectUrl="/home" forceRedirectUrl="/home" />
       </div>
     </div>
   )

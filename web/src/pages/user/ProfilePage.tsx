@@ -26,6 +26,12 @@ export default function ProfilePage() {
         if (nameEl) nameEl.textContent = user.full_name || user.username
         if (roleEl) roleEl.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1)
         if (emailEl) emailEl.textContent = user.email
+
+        const mainAvatar = root.querySelector('img[alt="Alex Rivera"]') as HTMLImageElement | null
+        if (mainAvatar) {
+          mainAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || user.username)}&background=b0c6ff&color=002d6e&bold=true&size=256`
+          mainAvatar.alt = user.full_name || user.username
+        }
       } catch {
         // keep static
       }
