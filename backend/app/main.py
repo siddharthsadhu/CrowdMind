@@ -16,6 +16,7 @@ from app.api.reports import router as reports_router
 from app.api.notifications import router as notifications_router
 from app.api.analytics import router as analytics_router
 from app.api.categories import router as categories_router
+from app.api.saved import router as saved_router
 
 logger = logging.getLogger(__name__)
 
@@ -53,6 +54,7 @@ app.include_router(reports_router)
 app.include_router(notifications_router)
 app.include_router(analytics_router)
 app.include_router(categories_router)
+app.include_router(saved_router)
 
 
 @app.get("/health")

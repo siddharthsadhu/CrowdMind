@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import require_auth
+from app.core.uuid_utils import parse_uuid
 from app.repositories.faqs import FaqCandidateRepository, PublishedFaqRepository, FaqVersionRepository
 from app.services.faqs import FaqCandidateService, PublishedFaqService, FaqVersionService
 from app.schemas.faqs import (
@@ -42,6 +43,7 @@ async def get_candidate(
     candidate_id: str,
     service: FaqCandidateService = Depends(get_candidate_service),
 ):
+    parse_uuid(candidate_id, "candidate_id")
     return await service.get_by_id(candidate_id)
 
 
@@ -51,6 +53,7 @@ async def review_candidate(
     data: FaqCandidateReview,
     service: FaqCandidateService = Depends(get_candidate_service),
 ):
+    parse_uuid(candidate_id, "candidate_id")
     return await service.review(candidate_id, data.status)
 
 
@@ -78,6 +81,7 @@ async def get_faq(
     faq_id: str,
     service: PublishedFaqService = Depends(get_published_service),
 ):
+    parse_uuid(faq_id, "faq_id")
     return await service.get_by_id(faq_id)
 
 
@@ -108,6 +112,7 @@ async def update_faq(
     user_id: str = Depends(require_auth),
     service: PublishedFaqService = Depends(get_published_service),
 ):
+    parse_uuid(faq_id, "faq_id")
     return await service.update(faq_id, data, user_id)
 
 
@@ -116,6 +121,7 @@ async def delete_faq(
     faq_id: str,
     service: PublishedFaqService = Depends(get_published_service),
 ):
+    parse_uuid(faq_id, "faq_id")
     await service.delete(faq_id)
 
 
@@ -125,4 +131,5 @@ async def list_versions(
     faq_id: str,
     service: FaqVersionService = Depends(get_version_service),
 ):
+    parse_uuid(faq_id, "faq_id")
     return await service.list_by_faq(faq_id)

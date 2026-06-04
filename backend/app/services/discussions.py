@@ -58,3 +58,20 @@ class DiscussionService:
         if str(discussion.created_by) != user_id:
             raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Not authorized to delete this discussion")
         await self.repo.soft_delete(discussion_id)
+
+    async def accept_reply(self, discussion_id: str, reply_id: str, user_id: str) -> DiscussionResponse:
+        discussion = await self.repo.get_by_id(discussion_id)
+        if not discussion:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Discussion not found")
+        if str(discussion.created_by) != user_id:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the discussion author can accept a reply")
+        reply = await self.repo.get_reply_by_id(reply_id)
+        if not reply:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Reply not found")
+        if str(reply.discussion_id) != discussion_id:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Reply does not belong to this discussion")
+        await self.repo.unaccept_all_replies(discussion_id)
+        await self.repo.accept_reply(reply_id)
+        await self.repo.update(discussion_id, {"status": "ANSWERED"})
+        updated = await self.repo.get_by_id(discussion_id)
+        return DiscussionResponse.model_validate(updated)

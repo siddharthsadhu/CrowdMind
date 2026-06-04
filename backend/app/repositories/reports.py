@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.moderation import Report
+from app.models.moderation import Report, ModerationAction
 
 
 class ReportRepository:
@@ -52,11 +52,34 @@ class ReportRepository:
         items = list(result.scalars().all())
         return items, total
 
-    async def resolve(self, report_id: str, status: str) -> Report | None:
+    async def resolve(self, report_id: str, status: str, action_taken: str | None = None,
+                      resolution_notes: str | None = None, resolved_by: str | None = None) -> Report | None:
         report = await self.get_by_id(report_id)
         if not report:
             return None
         report.status = status
+        if action_taken is not None:
+            report.action_taken = action_taken
+        if resolution_notes is not None:
+            report.resolution_notes = resolution_notes
+        if status in ("RESOLVED", "DISMISSED"):
+            report.resolved_at = datetime.now(timezone.utc)
+            if resolved_by:
+                report.resolved_by = uuid.UUID(resolved_by)
         report.updated_at = datetime.now(timezone.utc)
         await self.session.flush()
         return report
+
+    async def create_moderation_action(self, report_id: str, target_user_id: str, moderator_id: str,
+                                       action_type: str, action_reason: str | None) -> ModerationAction:
+        ma = ModerationAction(
+            id=uuid.uuid4(),
+            report_id=uuid.UUID(report_id),
+            target_user_id=uuid.UUID(target_user_id),
+            moderator_id=uuid.UUID(moderator_id),
+            action_type=action_type,
+            action_reason=action_reason,
+        )
+        self.session.add(ma)
+        await self.session.flush()
+        return ma

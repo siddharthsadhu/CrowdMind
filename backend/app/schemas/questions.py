@@ -1,6 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 
+from app.schemas.base import BaseSchema
+
 
 class QuestionCreate(BaseModel):
     title: str = Field(..., min_length=10, max_length=200)
@@ -15,7 +17,7 @@ class QuestionUpdate(BaseModel):
     status: str | None = None
 
 
-class QuestionResponse(BaseModel):
+class QuestionResponse(BaseSchema):
     id: str
     user_id: str
     title: str
@@ -25,8 +27,6 @@ class QuestionResponse(BaseModel):
     ai_analysis_status: str
     created_at: datetime
     updated_at: datetime | None
-
-    model_config = {"from_attributes": True}
 
 
 class QuestionListResponse(BaseModel):

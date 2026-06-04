@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useStitchData } from '@/hooks/useStitchData'
 import { useNavigate } from 'react-router-dom'
 import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/10-profile'
@@ -7,37 +7,26 @@ import { usersApi } from '@/services/api/users'
 
 export default function ProfilePage() {
   const navigate = useNavigate()
-  const initialized = useRef(false)
 
-  useEffect(() => {
-    if (initialized.current) return
-    initialized.current = true
+  useStitchData(async (root) => {
+    try {
+      const user = await usersApi.getMe()
+      const nameEl = root.querySelector('.font-display.text-display')
+      const roleEl = root.querySelector('.bg-primary\\/10.text-primary.font-label-sm')
+      const emailEl = root.querySelector('.text-on-surface-variant .font-body-md')
 
-    const timer = setTimeout(async () => {
-      const root = document.querySelector('.stitch-page-root')
-      if (!root) return
+      if (nameEl) nameEl.textContent = user.full_name || user.username
+      if (roleEl) roleEl.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1)
+      if (emailEl) emailEl.textContent = user.email
 
-      try {
-        const user = await usersApi.getMe()
-        const nameEl = root.querySelector('.font-display.text-display')
-        const roleEl = root.querySelector('.bg-primary\\/10.text-primary.font-label-sm')
-        const emailEl = root.querySelector('.text-on-surface-variant .font-body-md')
-
-        if (nameEl) nameEl.textContent = user.full_name || user.username
-        if (roleEl) roleEl.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1)
-        if (emailEl) emailEl.textContent = user.email
-
-        const mainAvatar = root.querySelector('img[alt="Alex Rivera"]') as HTMLImageElement | null
-        if (mainAvatar) {
-          mainAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || user.username)}&background=b0c6ff&color=002d6e&bold=true&size=256`
-          mainAvatar.alt = user.full_name || user.username
-        }
-      } catch {
-        // keep static
+      const mainAvatar = root.querySelector('img[alt="Alex Rivera"]') as HTMLImageElement | null
+      if (mainAvatar) {
+        mainAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || user.username)}&background=b0c6ff&color=002d6e&bold=true&size=256`
+        mainAvatar.alt = user.full_name || user.username
       }
-    }, 100)
-
-    return () => clearTimeout(timer)
+    } catch {
+      // keep static
+    }
   }, [navigate])
 
   return (

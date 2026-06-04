@@ -1,8 +1,10 @@
 from datetime import datetime
 from pydantic import BaseModel
 
+from app.schemas.base import BaseSchema
 
-class UserResponse(BaseModel):
+
+class UserResponse(BaseSchema):
     id: str
     clerk_user_id: str
     username: str
@@ -13,5 +15,3 @@ class UserResponse(BaseModel):
     reputation_score: int = 0
     role: str = "user"
     created_at: datetime | None = None
-
-    model_config = {"from_attributes": True}

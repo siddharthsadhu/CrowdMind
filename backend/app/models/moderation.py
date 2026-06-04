@@ -19,6 +19,10 @@ class Report(Base):
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     severity: Mapped[str] = mapped_column(String, nullable=False, default="MEDIUM")
     status: Mapped[str] = mapped_column(String, nullable=False, default="OPEN", index=True)
+    action_taken: Mapped[str | None] = mapped_column(String, nullable=True)
+    resolution_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
+    resolved_at: Mapped[datetime | None] = mapped_column(nullable=True, default=None)
+    resolved_by: Mapped[uuid.UUID | None] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
     updated_at: Mapped[datetime | None] = mapped_column(onupdate=datetime.utcnow, nullable=True)
 

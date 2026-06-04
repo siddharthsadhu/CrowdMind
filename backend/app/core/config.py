@@ -12,7 +12,17 @@ class Settings(BaseSettings):
     clerk_publishable_key: str = ""
     clerk_webhook_secret: str = ""
 
-    cors_origins: list[str] = ["http://localhost:5173"]
+    cors_origins: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:5175",
+        "http://localhost:5176",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+        "http://127.0.0.1:5175",
+        "http://127.0.0.1:5176",
+    ]
 
     gemini_api_key: str = ""
     groq_api_key: str = ""

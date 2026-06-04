@@ -41,6 +41,9 @@ export const discussionsApi = {
   update: (id: string, data: { title?: string; description?: string; status?: string }) =>
     api.patch<DiscussionResponse>(`/api/v1/discussions/${id}`, data),
 
+  acceptReply: (id: string, reply_id: string) =>
+    api.patch<DiscussionResponse>(`/api/v1/discussions/${id}/accept-reply`, { reply_id }),
+
   delete: (id: string) =>
     api.delete<void>(`/api/v1/discussions/${id}`),
 }

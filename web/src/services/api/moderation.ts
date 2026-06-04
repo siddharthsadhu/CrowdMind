@@ -16,6 +16,10 @@ export type ReportResponse = {
   severity: string
   status: string
   reported_by: string
+  action_taken: string | null
+  resolution_notes: string | null
+  resolved_at: string | null
+  resolved_by: string | null
   created_at: string | null
 }
 
@@ -24,6 +28,17 @@ export type ReportListResponse = {
   total: number
   page: number
   page_size: number
+}
+
+export type ModerationActionResponse = {
+  id: string
+  report_id: string | null
+  target_user_id: string
+  moderator_id: string
+  action_type: string
+  action_reason: string | null
+  expires_at: string | null
+  created_at: string | null
 }
 
 export const moderationApi = {
@@ -36,6 +51,15 @@ export const moderationApi = {
   createReport: (data: ReportCreate) =>
     api.post<ReportResponse>('/api/v1/reports', data),
 
-  resolveReport: (id: string, data: { status: 'RESOLVED' | 'DISMISSED'; action?: string }) =>
+  resolveReport: (
+    id: string,
+    data: { status: 'RESOLVED' | 'DISMISSED'; action?: string; resolution_notes?: string }
+  ) =>
     api.patch<ReportResponse>(`/api/v1/reports/${id}`, data),
+
+  applyAction: (
+    id: string,
+    data: { action: 'WARN' | 'HIDE' | 'DELETE' | 'ESCALATE' | 'NO_ACTION'; notes?: string }
+  ) =>
+    api.post<ModerationActionResponse>(`/api/v1/reports/${id}/actions`, data),
 }

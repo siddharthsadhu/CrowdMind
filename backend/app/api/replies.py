@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import require_auth
+from app.core.uuid_utils import parse_uuid
 from app.repositories.replies import ReplyRepository
 from app.services.replies import ReplyService
 from app.schemas.replies import ReplyCreate, ReplyUpdate, ReplyResponse, ReplyListResponse
@@ -42,6 +43,7 @@ async def get_reply(
     reply_id: str,
     service: ReplyService = Depends(get_service),
 ):
+    parse_uuid(reply_id, "reply_id")
     return await service.get_by_id(reply_id)
 
 
@@ -52,6 +54,7 @@ async def update_reply(
     user_id: str = Depends(require_auth),
     service: ReplyService = Depends(get_service),
 ):
+    parse_uuid(reply_id, "reply_id")
     return await service.update(reply_id, data, user_id)
 
 
@@ -61,4 +64,5 @@ async def delete_reply(
     user_id: str = Depends(require_auth),
     service: ReplyService = Depends(get_service),
 ):
+    parse_uuid(reply_id, "reply_id")
     await service.delete(reply_id, user_id)

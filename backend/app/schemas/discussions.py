@@ -1,6 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 
+from app.schemas.base import BaseSchema
+
 
 class DiscussionCreate(BaseModel):
     question_id: str | None = None
@@ -14,7 +16,11 @@ class DiscussionUpdate(BaseModel):
     status: str | None = None
 
 
-class DiscussionResponse(BaseModel):
+class AcceptReplyRequest(BaseModel):
+    reply_id: str
+
+
+class DiscussionResponse(BaseSchema):
     id: str
     question_id: str | None
     created_by: str
@@ -27,8 +33,6 @@ class DiscussionResponse(BaseModel):
     consensus_score: float | None
     created_at: datetime
     updated_at: datetime | None
-
-    model_config = {"from_attributes": True}
 
 
 class DiscussionListResponse(BaseModel):

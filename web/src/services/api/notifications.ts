@@ -6,6 +6,7 @@ export type NotificationResponse = {
   title: string
   body: string | null
   read: boolean
+  archived: boolean
   created_at: string | null
 }
 
@@ -17,7 +18,7 @@ export type NotificationListResponse = {
 }
 
 export const notificationsApi = {
-  list: (params?: { page?: string; page_size?: string }) =>
+  list: (params?: { page?: string; page_size?: string; filter?: 'all' | 'unread' | 'archived' }) =>
     api.get<NotificationListResponse>('/api/v1/notifications', params),
 
   markRead: (id: string) =>
@@ -25,4 +26,13 @@ export const notificationsApi = {
 
   markAllRead: () =>
     api.patch<void>('/api/v1/notifications/read-all'),
+
+  archive: (id: string) =>
+    api.patch<void>(`/api/v1/notifications/${id}/archive`),
+
+  unarchive: (id: string) =>
+    api.patch<void>(`/api/v1/notifications/${id}/unarchive`),
+
+  delete: (id: string) =>
+    api.delete<void>(`/api/v1/notifications/${id}`),
 }

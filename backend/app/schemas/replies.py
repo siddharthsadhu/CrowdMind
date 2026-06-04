@@ -1,6 +1,8 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 
+from app.schemas.base import BaseSchema
+
 
 class ReplyCreate(BaseModel):
     content: str = Field(..., min_length=1, max_length=10000)
@@ -11,7 +13,7 @@ class ReplyUpdate(BaseModel):
     content: str | None = Field(None, min_length=1, max_length=10000)
 
 
-class ReplyResponse(BaseModel):
+class ReplyResponse(BaseSchema):
     id: str
     discussion_id: str
     parent_reply_id: str | None
@@ -22,8 +24,6 @@ class ReplyResponse(BaseModel):
     downvote_count: int
     created_at: datetime
     updated_at: datetime | None
-
-    model_config = {"from_attributes": True}
 
 
 class ReplyListResponse(BaseModel):

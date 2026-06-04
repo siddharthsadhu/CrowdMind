@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.core.dependencies import require_auth, get_optional_user
+from app.core.uuid_utils import parse_uuid
 from app.repositories.questions import QuestionRepository
 from app.services.questions import QuestionService
 from app.schemas.questions import QuestionCreate, QuestionUpdate, QuestionResponse, QuestionListResponse
@@ -39,6 +40,7 @@ async def get_question(
     question_id: str,
     service: QuestionService = Depends(get_service),
 ):
+    parse_uuid(question_id, "question_id")
     return await service.get_by_id(question_id)
 
 
@@ -49,6 +51,7 @@ async def update_question(
     user_id: str = Depends(require_auth),
     service: QuestionService = Depends(get_service),
 ):
+    parse_uuid(question_id, "question_id")
     return await service.update(question_id, data, user_id)
 
 
@@ -58,4 +61,5 @@ async def delete_question(
     user_id: str = Depends(require_auth),
     service: QuestionService = Depends(get_service),
 ):
+    parse_uuid(question_id, "question_id")
     await service.delete(question_id, user_id)

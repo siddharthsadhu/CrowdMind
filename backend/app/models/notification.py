@@ -18,6 +18,8 @@ class Notification(Base):
     message: Mapped[str | None] = mapped_column(Text, nullable=True)
     meta_data: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True, default=None)
     is_read: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    is_archived: Mapped[bool] = mapped_column(Boolean, default=False, index=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(nullable=True, default=None)
     created_at: Mapped[datetime] = mapped_column(default=datetime.utcnow)
 
 

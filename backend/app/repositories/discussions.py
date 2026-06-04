@@ -1,10 +1,10 @@
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import select, func
+from sqlalchemy import select, func, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models.discussion import Discussion
+from app.models.discussion import Discussion, Reply
 
 
 class DiscussionRepository:
@@ -80,3 +80,25 @@ class DiscussionRepository:
         if discussion:
             discussion.view_count = (discussion.view_count or 0) + 1
             await self.session.flush()
+
+    async def get_reply_by_id(self, reply_id: str) -> Reply | None:
+        stmt = select(Reply).where(
+            Reply.id == uuid.UUID(reply_id),
+            Reply.deleted_at.is_(None),
+        )
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
+    async def accept_reply(self, reply_id: str) -> None:
+        stmt = update(Reply).where(Reply.id == uuid.UUID(reply_id)).values(is_accepted=True)
+        await self.session.execute(stmt)
+        await self.session.flush()
+
+    async def unaccept_all_replies(self, discussion_id: str) -> None:
+        stmt = (
+            update(Reply)
+            .where(Reply.discussion_id == uuid.UUID(discussion_id), Reply.is_accepted == True)
+            .values(is_accepted=False)
+        )
+        await self.session.execute(stmt)
+        await self.session.flush()

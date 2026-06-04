@@ -1,8 +1,10 @@
 from datetime import datetime
 from pydantic import BaseModel, Field
 
+from app.schemas.base import BaseSchema
 
-class FaqCandidateResponse(BaseModel):
+
+class FaqCandidateResponse(BaseSchema):
     id: str
     discussion_id: str
     generated_by_ai: bool
@@ -12,8 +14,6 @@ class FaqCandidateResponse(BaseModel):
     status: str
     created_at: datetime
     updated_at: datetime | None
-
-    model_config = {"from_attributes": True}
 
 
 class FaqCandidateListResponse(BaseModel):
@@ -27,7 +27,7 @@ class FaqCandidateReview(BaseModel):
     status: str = Field(..., pattern="^(APPROVED|REJECTED|NEEDS_REVISION)$")
 
 
-class PublishedFaqResponse(BaseModel):
+class PublishedFaqResponse(BaseSchema):
     id: str
     slug: str
     title: str
@@ -40,8 +40,6 @@ class PublishedFaqResponse(BaseModel):
     published_at: datetime
     created_at: datetime
     updated_at: datetime | None
-
-    model_config = {"from_attributes": True}
 
 
 class PublishedFaqListResponse(BaseModel):
@@ -57,7 +55,7 @@ class PublishedFaqUpdate(BaseModel):
     category_id: str | None = None
 
 
-class FaqVersionResponse(BaseModel):
+class FaqVersionResponse(BaseSchema):
     id: str
     faq_id: str
     version_number: int
@@ -66,8 +64,6 @@ class FaqVersionResponse(BaseModel):
     change_summary: str | None
     created_by: str
     created_at: datetime
-
-    model_config = {"from_attributes": True}
 
 
 class FaqVersionListResponse(BaseModel):

@@ -5,9 +5,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.dependencies import require_current_user
+from app.core.dependencies import require_auth, require_current_user
 from app.repositories.users import UserRepository
 from app.schemas.users import UserResponse
+from app.schemas.contributions import ContributionsResponse
+from app.services.contributions import ContributionService
 from app.models.user import User
 
 router = APIRouter(prefix="/api/v1/users", tags=["users"])
@@ -49,3 +51,12 @@ async def update_me(
     await db.flush()
     await db.refresh(user)
     return user
+
+
+@router.get("/me/contributions", response_model=ContributionsResponse)
+async def get_my_contributions(
+    user: User = Depends(require_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    service = ContributionService(db)
+    return await service.get_user_contributions(str(user.id))

@@ -2,10 +2,15 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.core.dependencies import require_auth
+from app.core.dependencies import require_auth, require_current_user
+from app.core.uuid_utils import parse_uuid
+from app.models.user import User
 from app.repositories.reports import ReportRepository
 from app.services.reports import ReportService
-from app.schemas.reports import ReportCreate, ReportResolve, ReportResponse, ReportListResponse
+from app.schemas.reports import (
+    ReportCreate, ReportResolve, ReportResponse, ReportListResponse,
+    ReportActionRequest, ModerationActionResponse,
+)
 
 router = APIRouter(prefix="/api/v1/reports", tags=["reports"])
 
@@ -17,10 +22,11 @@ def get_service(db: AsyncSession = Depends(get_db)) -> ReportService:
 @router.post("", response_model=ReportResponse, status_code=201)
 async def create_report(
     data: ReportCreate,
-    user_id: str = Depends(require_auth),
+    user: User = Depends(require_current_user),
     service: ReportService = Depends(get_service),
 ):
-    return await service.create(user_id, data)
+    parse_uuid(data.target_id, "target_id")
+    return await service.create(str(user.id), data)
 
 
 @router.get("", response_model=ReportListResponse)
@@ -38,6 +44,7 @@ async def get_report(
     report_id: str,
     service: ReportService = Depends(get_service),
 ):
+    parse_uuid(report_id, "report_id")
     return await service.get_by_id(report_id)
 
 
@@ -45,6 +52,19 @@ async def get_report(
 async def resolve_report(
     report_id: str,
     data: ReportResolve,
+    user: User = Depends(require_current_user),
     service: ReportService = Depends(get_service),
 ):
-    return await service.resolve(report_id, data)
+    parse_uuid(report_id, "report_id")
+    return await service.resolve(report_id, data, user_id=str(user.id))
+
+
+@router.post("/{report_id}/actions", response_model=ModerationActionResponse, status_code=201)
+async def apply_report_action(
+    report_id: str,
+    data: ReportActionRequest,
+    user: User = Depends(require_current_user),
+    service: ReportService = Depends(get_service),
+):
+    parse_uuid(report_id, "report_id")
+    return await service.apply_action(report_id, data, moderator_id=str(user.id))
