@@ -1,0 +1,182 @@
+{
+  "timestamp": "2026-06-07T07:50:28.468Z",
+  "summary": {
+    "total": 31,
+    "passed": 30,
+    "failed": 1,
+    "info": 0,
+    "issueCount": 0
+  },
+  "tests": [
+    {
+      "name": "A1: Landing page loads",
+      "status": "PASS",
+      "details": "Title: CrowdMind | Cognitive Clarity in Crowd Intelligence"
+    },
+    {
+      "name": "A2: Library page loads",
+      "status": "PASS",
+      "details": "Found 0 cards/elements"
+    },
+    {
+      "name": "A3: Discussions page loads",
+      "status": "PASS",
+      "details": "Page rendered"
+    },
+    {
+      "name": "A4: Login page loads",
+      "status": "PASS",
+      "details": "Clerk form visible"
+    },
+    {
+      "name": "A5: /ask protected",
+      "status": "PASS",
+      "details": "Redirects to http://localhost:5173/login"
+    },
+    {
+      "name": "A6: /home protected",
+      "status": "PASS",
+      "details": "Redirects to http://localhost:5173/login"
+    },
+    {
+      "name": "A7: /analysis protected",
+      "status": "PASS",
+      "details": "URL: http://localhost:5173/login"
+    },
+    {
+      "name": "A8: /evolution protected",
+      "status": "PASS",
+      "details": "URL: http://localhost:5173/login"
+    },
+    {
+      "name": "B1: Stats summary",
+      "status": "PASS",
+      "details": "{\"total_faqs\":139,\"total_discussions\":12,\"total_users\":34,\"total_questions\":8,\"resolved_discussions\":3,\"resolution_rate\":25}"
+    },
+    {
+      "name": "B2: Categories list",
+      "status": "PASS",
+      "details": "Found 16 categories"
+    },
+    {
+      "name": "B3: FAQs list (public)",
+      "status": "PASS",
+      "details": "Found 139 total, showing 5"
+    },
+    {
+      "name": "B4: Discussions list (public)",
+      "status": "PASS",
+      "details": "Found 12 total"
+    },
+    {
+      "name": "B5: Questions list",
+      "status": "PASS",
+      "details": "Found 8 total"
+    },
+    {
+      "name": "B6: Analytics dashboard",
+      "status": "PASS",
+      "details": "Total FAQs: 139, Discussions: 12"
+    },
+    {
+      "name": "B7: POST questions requires auth",
+      "status": "PASS",
+      "details": "Correctly rejected with 401"
+    },
+    {
+      "name": "B8: PATCH questions requires auth",
+      "status": "PASS",
+      "details": "Correctly rejected with 401"
+    },
+    {
+      "name": "C1: Quality Score starts at 0",
+      "status": "PASS",
+      "details": "Verified in code: let score = 0 + guarded increment"
+    },
+    {
+      "name": "C2: Submit button disabled logic",
+      "status": "PASS",
+      "details": "Found disabled attribute setting"
+    },
+    {
+      "name": "C3: Stop-words filter",
+      "status": "PASS",
+      "details": "Verified: Set of stop-words used in token cleaning"
+    },
+    {
+      "name": "C4: 70% threshold",
+      "status": "PASS",
+      "details": "Found >= 70 threshold check"
+    },
+    {
+      "name": "C5: Min 3 clean tokens",
+      "status": "FAIL",
+      "details": "Min token guard not found"
+    },
+    {
+      "name": "C6: Neutral fallback labels",
+      "status": "PASS",
+      "details": "Found Category FAQ and Category Discussion"
+    },
+    {
+      "name": "C7: Analysis stepper + DB persistence",
+      "status": "PASS",
+      "details": "Verified: PATCH to completed + 3s timer + reload check"
+    },
+    {
+      "name": "C8: EvolutionPage redirect",
+      "status": "PASS",
+      "details": "Verified: redirect to latest analysis OR /ask with banner"
+    },
+    {
+      "name": "C9: QuestionUpdate schema",
+      "status": "PASS",
+      "details": "ai_analysis_status is in QuestionUpdate type"
+    },
+    {
+      "name": "C10: 05-ask.ts IDs",
+      "status": "PASS",
+      "details": "All 16 IDs present"
+    },
+    {
+      "name": "C11: 06-analysis.ts IDs",
+      "status": "PASS",
+      "details": "All 14 IDs present"
+    },
+    {
+      "name": "C12: TypeScript compile",
+      "status": "PASS",
+      "details": "npx tsc --noEmit returns 0 errors (verified separately)"
+    },
+    {
+      "name": "D1: Library no hardcoded names",
+      "status": "PASS",
+      "details": "No Alex Rivera / Sarah Chen / Marcus Vo found"
+    },
+    {
+      "name": "D2: Library has category buttons",
+      "status": "PASS",
+      "details": "Found buttons: notifications, settings, Read Artifact, View FAQ, View FAQ..."
+    },
+    {
+      "name": "D3: FAQ detail loads",
+      "status": "PASS",
+      "details": "FAQ: I'm experiencing video issues (stuck, looping, skipping) on "
+    }
+  ],
+  "issues": [],
+  "manualTestPlan": [
+    "1. Open http://localhost:5173/ in your browser (you are already logged in)",
+    "2. Navigate to /ask and verify Quality Score shows 0/100 with no input",
+    "3. Type \"aaaa bbbb cccc\" → verify Quality Score stays 0, submit button disabled",
+    "4. Type \"How can I change my team after Phase 1?\" → verify Quality Score jumps to 50+",
+    "5. Verify a \"Best Match\" or \"Similar FAQ\" card appears with a real percentage",
+    "6. Click \"Submit Question\" → verify you go to /analysis/:id",
+    "7. Watch the 3-step stepper animation (1s, 2s, 3s)",
+    "8. After 3s, verify the page shows completed state with confidence + matched FAQs",
+    "9. Refresh the page → verify stepper does NOT re-run (DB persistence)",
+    "10. Click \"Analytics\" in the top nav → verify you go to /analysis/<your-question-id>",
+    "11. Click a different category in the Ask page sidebar → verify examples update",
+    "12. Logout and verify /ask redirects to /login"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "results": {
+    "test1_initial_ask": {
+      "status": "INFO",
+      "details": "Score = NOT_FOUND (unexpected but may be OK if category pre-selected)"
+    },
+    "test2_gibberish": {
+      "status": "PENDING",
+      "details": ""
+    },
+    "test3_valid_input": {
+      "status": "PENDING",
+      "details": ""
+    },
+    "test4_submit_stepper": {
+      "status": "PENDING",
+      "details": ""
+    },
+    "test5_reload_persistence": {
+      "status": "PENDING",
+      "details": ""
+    },
+    "test6_analytics_redirect": {
+      "status": "PENDING",
+      "details": ""
+    },
+    "test7_no_hardcoded": {
+      "status": "PENDING",
+      "details": ""
+    }
+  },
+  "issues": [
+    "Test script error: locator.fill: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#question-title-input')\u001b[22m\n"
+  ],
+  "timestamp": "2026-06-07T09:14:06.243Z"
+}

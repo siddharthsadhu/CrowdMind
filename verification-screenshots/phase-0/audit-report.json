@@ -1,0 +1,233 @@
+{
+  "timestamp": "2026-06-07T07:30:53.389Z",
+  "pagesChecked": 24,
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "ApiError: {\"detail\":\"Invalid discussion_id format: must be a valid UUID\"}\n    at request (http://localhost:5173/src/services/api/client.ts:44:11)\n    at async loadThreadData (http://localhost:5173/src",
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "ApiError: {\"detail\":\"Invalid discussion_id format: must be a valid UUID\"}\n    at request (http://localhost:5173/src/services/api/client.ts:44:11)\n    at async loadThreadData (http://localhost:5173/src",
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+    "Failed to load resource: the server responded with a status of 400 (Bad Request)"
+  ],
+  "pageErrors": [],
+  "findings": [
+    {
+      "page": "A1_landing",
+      "url": "/",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/",
+      "title": "CrowdMind | Cognitive Clarity in Crowd Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\nFAQs\nDiscussions\nAsk Question\nAnalytics\nnotifications\nSign In\nSign Up\nKNOWLEDGE EVOLUTION V2.0 LIVE\nTransform Questions Into Evolving Knowledge\n\nCrowdMind combines AI orchestration, peer-reviewed community discussions, and human expert validation to continuously refine an intelligent knowledge base for serious researchers.\n\nExplore FAQs\narrow_forward\nAsk a Question\n139\nFAQS GENERATED\n12\n",
+      "queriedExists": 2
+    },
+    {
+      "page": "A2_library",
+      "url": "/library",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/library",
+      "title": "CrowdMind | FAQ Repository",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind AI\nFAQs\nDiscussions\nAsk Question\nAnalytics\nnotifications\nsettings\nKnowledge Repository\n\nExplore community-validated and AI-evolved knowledge artifacts. Dynamic intelligence for the neural collective.\n\nTOTAL FAQS\n139\nAI VERIFIED\n90.9%\nCATEGORIES\n16\nFEATURED KNOWLEDGE ARTIFACT\nCOMMUNITY RECOMMENDED\nverified\nVerified Protocol\nHow do I submit Rosetta at the end?\n\nOn or before Day 65, share y",
+      "queriedExists": 0
+    },
+    {
+      "page": "A3_discussions",
+      "url": "/discussions",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/discussions",
+      "title": "CrowdMind | Discussions",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\nFAQs\nDiscussions\nAsk Question\nAnalytics\nnotifications\nSign In\nSign Up\nCommunity Discussions\n\nExplore evolving conversations, unresolved questions, and emerging knowledge artifacts.\n\nAsk Question\nadd\nCreate Discussion\nsearch\nAll Discussions\nOpen Questions\nAnswered\nTrending\nAI Escalated\nCOMMUNITY DISCUSSION\nMachine Learning\nHIGH MOMENTUM\nAI CONFIDENCE\n81%\nTips for surviving the first week "
+    },
+    {
+      "page": "A4_login",
+      "url": "/login",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "01_home",
+      "url": "/home",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "02_ask",
+      "url": "/ask",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "03_analysis",
+      "url": "/analysis/test-id",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "04_evolution",
+      "url": "/evolution",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "05_notifications",
+      "url": "/notifications",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "06_saved",
+      "url": "/saved",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "07_profile",
+      "url": "/profile",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/profile",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\n\nERROR 404\n\nPage not found\n\nThe page you are looking for does not exist or has been moved. Check the URL or head back to the homepage.\n\nGo home\nBrowse library\n\nCrowdMind\n\nAdvancing cognitive clarity through crowdsourced AI intelligence and rigorous validation.\n\nPRODUCT\nLibrary\nDiscussions\nAsk Question\nKnowledge Evolution\nRESOURCES\nMethodology\nAbout\nStatus\nPrivacy\n\n© 2026 CrowdMind AI. Co"
+    },
+    {
+      "page": "08_contributions",
+      "url": "/contributions",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "09_mission",
+      "url": "/mission-control",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/mission-control",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\n\nERROR 404\n\nPage not found\n\nThe page you are looking for does not exist or has been moved. Check the URL or head back to the homepage.\n\nGo home\nBrowse library\n\nCrowdMind\n\nAdvancing cognitive clarity through crowdsourced AI intelligence and rigorous validation.\n\nPRODUCT\nLibrary\nDiscussions\nAsk Question\nKnowledge Evolution\nRESOURCES\nMethodology\nAbout\nStatus\nPrivacy\n\n© 2026 CrowdMind AI. Co"
+    },
+    {
+      "page": "10_analytics",
+      "url": "/admin/analytics",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "11_faq_mgmt",
+      "url": "/admin/faq-management",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/admin/faq-management",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\n\nERROR 404\n\nPage not found\n\nThe page you are looking for does not exist or has been moved. Check the URL or head back to the homepage.\n\nGo home\nBrowse library\n\nCrowdMind\n\nAdvancing cognitive clarity through crowdsourced AI intelligence and rigorous validation.\n\nPRODUCT\nLibrary\nDiscussions\nAsk Question\nKnowledge Evolution\nRESOURCES\nMethodology\nAbout\nStatus\nPrivacy\n\n© 2026 CrowdMind AI. Co"
+    },
+    {
+      "page": "12_moderation",
+      "url": "/admin/moderation",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "13_settings",
+      "url": "/admin/settings",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "14_settings_user",
+      "url": "/settings",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "15_methodology",
+      "url": "/methodology",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/methodology",
+      "title": "CrowdMind | How It Works",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\nFAQs\nDiscussions\nAsk Question\nAnalytics\nMethodology\nnotifications\nSign In\nSign Up\nauto_awesome\nHOW CROWDMIND WORKS\nCognitive clarity, crowd-validated\n\nCrowdMind turns scattered institutional knowledge into a single, versioned, peer-reviewed source of truth. Here's how the system works, end to end.\n\nThe four pillars\n\nEvery feature in CrowdMind serves one of these four guarantees.\n\ngroups\n"
+    },
+    {
+      "page": "16_candidate_review",
+      "url": "/admin/faq-candidates",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/admin/faq-candidates",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\n\nERROR 404\n\nPage not found\n\nThe page you are looking for does not exist or has been moved. Check the URL or head back to the homepage.\n\nGo home\nBrowse library\n\nCrowdMind\n\nAdvancing cognitive clarity through crowdsourced AI intelligence and rigorous validation.\n\nPRODUCT\nLibrary\nDiscussions\nAsk Question\nKnowledge Evolution\nRESOURCES\nMethodology\nAbout\nStatus\nPrivacy\n\n© 2026 CrowdMind AI. Co"
+    },
+    {
+      "page": "17_report_investigation",
+      "url": "/admin/reports/test-id",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "18_discussion_thread",
+      "url": "/discussions/test-id",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/discussions/test-id",
+      "title": "CrowdMind | Discussion Thread",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\nFAQs\nDiscussions\nAsk Question\nAnalytics\nnotifications\nTournament Rules\n• Posted 3 hours ago\nCan I change my team after Phase 1?\nUser_3829\n•\nvisibility\n1.2k views\nauto_awesome\nsmart_toy\nAI Draft Answer\n\nGenerated by CrowdMind Core v2.4\n\n72%\nConfidence\n\"Based on current tournament guidelines, team locks occur at the start of Phase 2. However, exceptions may be granted for medical reasons o"
+    },
+    {
+      "page": "19_create_discussion",
+      "url": "/discussions/new",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/login",
+      "title": "CrowdMind AI — Collective Intelligence",
+      "hardcoded": 0,
+      "bodyTextSnippet": "Sign In to CrowdMind\nSign in to CrowdMind\n\nWelcome back! Please sign in to continue\n\nor\n\nEmail address\nPassword\nContinue\nDon’t have an account?\nSign up\n\nSecured by\n\nDevelopment mode\n\nScreens ▸"
+    },
+    {
+      "page": "20_faq_detail",
+      "url": "/faq/test-id",
+      "status": 200,
+      "finalUrl": "http://localhost:5173/faq/e3652475-c4c4-4375-9e78-db56da3a9ed6",
+      "title": "CrowdMind | I'm experiencing video issues (stuck, looping, skipping) on ViBe. How do I troubleshoot?",
+      "hardcoded": 0,
+      "bodyTextSnippet": "CrowdMind\nFAQs\nDiscussions\nAsk Question\nAnalytics\nnotifications\nSign In\nSign Up\nVIBE PLATFORM\nverified\nVerified\ninfo\nUpdated 3 days ago\nv1\nI'm experiencing video issues (stuck, looping, skipping) on ViBe. How do I troubleshoot?\n\nCommunity Validated\nAI Assisted\nVersion Controlled\n\nvisibility\n12.0k Views\nforum\n12 Discussions\ngroups\n8 Contributors\nbookmark\n399 Bookmarks\nAI CONFIDENCE\n97%\nCOMMUNITY AG"
+    }
+  ]
+}

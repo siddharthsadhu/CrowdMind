@@ -1,16 +1,20 @@
-"""Seed script for initial development data.
+"""Seed script for the CrowdMind demo data.
 
 Run with: cd backend && uv run python -m scripts.seed
 
 Drops & re-creates demo data for: users, categories, FAQs (published + candidates),
 discussions, replies, questions, reports, notifications, votes, FAQ versions,
 evolution events, achievements.
+
+Uses the REAL Vicharanashala internship FAQ (139 entries across 14 sections)
+as the primary FAQ library content.
 """
 import asyncio
 import uuid
 from datetime import datetime, timedelta
+from typing import Any
 
-from sqlalchemy import delete, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import async_session_factory
@@ -24,6 +28,7 @@ from app.models.moderation import Report
 from app.models.notification import Notification
 from app.models.reputation import Achievement
 from app.models.collection import SavedKnowledge
+from scripts.vicharanashala_faqs import VICHARANASHALA_FAQS
 
 
 # -------- HELPERS --------
@@ -36,320 +41,634 @@ def ago(days: int = 0, hours: int = 0) -> datetime:
     return datetime.utcnow() - timedelta(days=days, hours=hours)
 
 
-# -------- USERS --------
+def dicebear_avatar(name: str, style: str = "adventurer") -> str:
+    """Generate a deterministic DiceBear avatar URL.
 
-USERS = [
+    Each user gets a unique generated avatar based on their name. No two
+    users with different names share an avatar. URL is publicly accessible.
+    """
+    from urllib.parse import quote
+    seed = quote(name, safe='')
+    return f"https://api.dicebear.com/7.x/{style}/svg?seed={seed}&backgroundColor=b0c6ff,d2bbff,00dbe9,7df4ff,ffb4ab,ffd5dc,c0aede,d1d4f9"
+
+
+# -------- USERS --------
+# 30 historical/demo contributor records. They exist in the DB purely for
+# data attribution (FAQs, discussions, replies, etc.) so the demo looks
+# populated with realistic names, bios, reputation, and avatars.
+#
+# IMPORTANT: these are NOT real Clerk accounts. clerk_user_id is NULL for
+# all of them. They cannot log in. Real users who sign up via Clerk get
+# their own DB row auto-created with their real clerk_user_id on first
+# sign-in (see app/core/dependencies.py get_current_user).
+#
+# To add a new admin (real person), sign up via /login, then set their
+# role in Clerk dashboard (Users -> click user -> Metadata ->
+# public_metadata: {"role": "admin"}), then have them sign out and back in.
+
+USERS: list[dict[str, Any]] = [
     {
         "id": uid(),
-        "clerk_user_id": "clerk_admin_seed",
+        "clerk_user_id": None,
         "username": "admin",
-        "email": "admin@crowdmind.ai",
+        "email": "admin@crowdmind.dev",
         "full_name": "Dr. Elena Vasquez",
         "role": "admin",
-        "reputation_score": 5420,
-        "bio": "AI ethics researcher, PhD MIT. Lead moderator at CrowdMind.",
-        "avatar_url": "https://ui-avatars.com/api/?name=Elena+Vasquez&background=b0c6ff&color=002d6e&bold=true&size=128",
+        "reputation_score": 8420,
+        "bio": "AI ethics researcher, PhD MIT. Lead moderator and content curator at Vicharanashala, IIT Ropar.",
+        "avatar_url": dicebear_avatar("Dr. Elena Vasquez", "adventurer"),
     },
     {
         "id": uid(),
-        "clerk_user_id": "clerk_alex",
+        "clerk_user_id": None,
         "username": "alex_rivera",
-        "email": "alex@example.com",
+        "email": "alex.rivera@example.com",
         "full_name": "Alex Rivera",
         "role": "user",
-        "reputation_score": 1240,
-        "bio": "Senior ML engineer working on retrieval-augmented systems.",
-        "avatar_url": "https://ui-avatars.com/api/?name=Alex+Rivera&background=d2bbff&color=25005a&bold=true&size=128",
+        "reputation_score": 3120,
+        "bio": "Senior ML engineer, Vicharanashala alumnus. Mentor for the Annam.AI track.",
+        "avatar_url": dicebear_avatar("Alex Rivera", "adventurer"),
     },
     {
         "id": uid(),
-        "clerk_user_id": "clerk_maya",
+        "clerk_user_id": None,
         "username": "maya_p",
-        "email": "maya@example.com",
+        "email": "maya.patel@example.com",
         "full_name": "Maya Patel",
         "role": "user",
-        "reputation_score": 890,
-        "bio": "Distributed systems and consensus protocols researcher.",
-        "avatar_url": "https://ui-avatars.com/api/?name=Maya+Patel&background=00dbe9&color=00363a&bold=true&size=128",
+        "reputation_score": 2480,
+        "bio": "Distributed systems and consensus protocols. Bronze and Silver badge holder.",
+        "avatar_url": dicebear_avatar("Maya Patel", "adventurer"),
     },
     {
         "id": uid(),
-        "clerk_user_id": "clerk_jordan",
+        "clerk_user_id": None,
         "username": "jordan_l",
-        "email": "jordan@example.com",
+        "email": "jordan.lee@example.com",
         "full_name": "Jordan Lee",
         "role": "user",
-        "reputation_score": 540,
-        "bio": "PhD student in computational neuroscience. Interested in cognitive architectures.",
-        "avatar_url": "https://ui-avatars.com/api/?name=Jordan+Lee&background=7df4ff&color=00363a&bold=true&size=128",
+        "reputation_score": 1820,
+        "bio": "PhD student in computational neuroscience. Curious about cognitive architectures.",
+        "avatar_url": dicebear_avatar("Jordan Lee", "adventurer"),
     },
     {
         "id": uid(),
-        "clerk_user_id": "clerk_ravi",
+        "clerk_user_id": None,
         "username": "ravi_s",
-        "email": "ravi@example.com",
+        "email": "ravi.singh@example.com",
         "full_name": "Ravi Singh",
         "role": "user",
-        "reputation_score": 320,
-        "bio": "Software architect focused on production ML systems.",
-        "avatar_url": "https://ui-avatars.com/api/?name=Ravi+Singh&background=ffb4ab&color=690005&bold=true&size=128",
+        "reputation_score": 940,
+        "bio": "Software architect focused on production ML systems and MERN stack.",
+        "avatar_url": dicebear_avatar("Ravi Singh", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "priya_n",
+        "email": "priya.n@example.com",
+        "full_name": "Priya Nair",
+        "role": "user",
+        "reputation_score": 760,
+        "bio": "Vicharanashala intern, ViBe platform contributor. Loves documenting the learning process.",
+        "avatar_url": dicebear_avatar("Priya Nair", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "amaru_q",
+        "email": "amaru.q@example.com",
+        "full_name": "Amaru Quispe",
+        "role": "user",
+        "reputation_score": 510,
+        "bio": "Computer vision intern, working on Annam.AI's plant disease detection model.",
+        "avatar_url": dicebear_avatar("Amaru Quispe", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "lina_chen",
+        "email": "lina.chen@example.com",
+        "full_name": "Lina Chen",
+        "role": "user",
+        "reputation_score": 285,
+        "bio": "First-time Vicharanashala intern, excited to learn and contribute.",
+        "avatar_url": dicebear_avatar("Lina Chen", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "priya_admin",
+        "email": "priya.sharma@crowdmind.dev",
+        "full_name": "Priya Sharma",
+        "role": "admin",
+        "reputation_score": 6210,
+        "bio": "ML platform lead at Vicharanashala. Curates the Spurti and Yaksha knowledge tracks.",
+        "avatar_url": dicebear_avatar("Priya Sharma", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "david_admin",
+        "email": "david.okafor@crowdmind.dev",
+        "full_name": "David Okafor",
+        "role": "admin",
+        "reputation_score": 5870,
+        "bio": "Senior community moderator. Reviews candidates and resolves disputes on the platform.",
+        "avatar_url": dicebear_avatar("David Okafor", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "sara_m",
+        "email": "sara.mitchell@example.com",
+        "full_name": "Sara Mitchell",
+        "role": "user",
+        "reputation_score": 2240,
+        "bio": "NLP researcher, PhD Stanford. Contributes to the Yaksha and ViBe knowledge corpora.",
+        "avatar_url": dicebear_avatar("Sara Mitchell", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "daniel_k",
+        "email": "daniel.kim@example.com",
+        "full_name": "Daniel Kim",
+        "role": "user",
+        "reputation_score": 1960,
+        "bio": "Backend engineer with a focus on FastAPI and async Python. Active on the Rosetta track.",
+        "avatar_url": dicebear_avatar("Daniel Kim", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "ananya_i",
+        "email": "ananya.iyer@example.com",
+        "full_name": "Ananya Iyer",
+        "role": "user",
+        "reputation_score": 1810,
+        "bio": "ML intern passionate about knowledge graphs and structured reasoning systems.",
+        "avatar_url": dicebear_avatar("Ananya Iyer", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "james_w",
+        "email": "james.wright@example.com",
+        "full_name": "James Wright",
+        "role": "user",
+        "reputation_score": 1640,
+        "bio": "Full-stack developer and Vicharanashala alumnus. Builds tooling for the Annam.AI team.",
+        "avatar_url": dicebear_avatar("James Wright", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "aisha_r",
+        "email": "aisha.rahman@example.com",
+        "full_name": "Aisha Rahman",
+        "role": "user",
+        "reputation_score": 1420,
+        "bio": "Data scientist focusing on fairness in AI. Documents best practices in the library.",
+        "avatar_url": dicebear_avatar("Aisha Rahman", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "mateo_s",
+        "email": "mateo.silva@example.com",
+        "full_name": "Mateo Silva",
+        "role": "user",
+        "reputation_score": 1290,
+        "bio": "Computer vision engineer working on Annam.AI's plant disease detection pipeline.",
+        "avatar_url": dicebear_avatar("Mateo Silva", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "yuki_t",
+        "email": "yuki.tanaka@example.com",
+        "full_name": "Yuki Tanaka",
+        "role": "user",
+        "reputation_score": 1180,
+        "bio": "Robotics and reinforcement learning. Active contributor to the Spurti knowledge track.",
+        "avatar_url": dicebear_avatar("Yuki Tanaka", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "fatima_a",
+        "email": "fatima.ali@example.com",
+        "full_name": "Fatima Ali",
+        "role": "user",
+        "reputation_score": 1080,
+        "bio": "Frontend engineer and Vicharanashala intern. Loves clean UI patterns and accessibility.",
+        "avatar_url": dicebear_avatar("Fatima Ali", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "noah_c",
+        "email": "noah.collins@example.com",
+        "full_name": "Noah Collins",
+        "role": "user",
+        "reputation_score": 970,
+        "bio": "DevOps engineer with experience in Kubernetes and CI/CD. Helps maintain the platform.",
+        "avatar_url": dicebear_avatar("Noah Collins", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "zara_h",
+        "email": "zara.hassan@example.com",
+        "full_name": "Zara Hassan",
+        "role": "user",
+        "reputation_score": 880,
+        "bio": "Cognitive science researcher, exploring the intersection of AI and human reasoning.",
+        "avatar_url": dicebear_avatar("Zara Hassan", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "hiroshi_y",
+        "email": "hiroshi.yamada@example.com",
+        "full_name": "Hiroshi Yamada",
+        "role": "user",
+        "reputation_score": 820,
+        "bio": "ML systems engineer focused on inference optimization and low-latency serving.",
+        "avatar_url": dicebear_avatar("Hiroshi Yamada", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "olivia_b",
+        "email": "olivia.brown@example.com",
+        "full_name": "Olivia Brown",
+        "role": "user",
+        "reputation_score": 740,
+        "bio": "Product designer and researcher. Helps shape the CrowdMind user experience.",
+        "avatar_url": dicebear_avatar("Olivia Brown", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "kunal_k",
+        "email": "kunal.kapoor@example.com",
+        "full_name": "Kunal Kapoor",
+        "role": "user",
+        "reputation_score": 690,
+        "bio": "IIT Ropar alumnus, now a research engineer. Frequent contributor to the Yaksha track.",
+        "avatar_url": dicebear_avatar("Kunal Kapoor", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "mei_li",
+        "email": "mei.li@example.com",
+        "full_name": "Mei Li",
+        "role": "user",
+        "reputation_score": 640,
+        "bio": "Quantitative researcher with a focus on probabilistic programming and inference.",
+        "avatar_url": dicebear_avatar("Mei Li", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "tomas_m",
+        "email": "tomas.morales@example.com",
+        "full_name": "Tomas Morales",
+        "role": "user",
+        "reputation_score": 580,
+        "bio": "Software engineer passionate about open source and reproducible research.",
+        "avatar_url": dicebear_avatar("Tomas Morales", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "amara_o",
+        "email": "amara.osei@example.com",
+        "full_name": "Amara Osei",
+        "role": "user",
+        "reputation_score": 520,
+        "bio": "ML intern and Vicharanashala contributor. Building tools for the Annam.AI team.",
+        "avatar_url": dicebear_avatar("Amara Osei", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "liam_oc",
+        "email": "liam.oconnor@example.com",
+        "full_name": "Liam O'Connor",
+        "role": "user",
+        "reputation_score": 480,
+        "bio": "Research engineer focused on agentic systems and tool-using language models.",
+        "avatar_url": dicebear_avatar("Liam O'Connor", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "ines_f",
+        "email": "ines.fernandes@example.com",
+        "full_name": "Ines Fernandes",
+        "role": "user",
+        "reputation_score": 410,
+        "bio": "Data engineer and Vicharanashala intern. Building the ViBe content pipeline.",
+        "avatar_url": dicebear_avatar("Ines Fernandes", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "rajiv_m",
+        "email": "rajiv.menon@example.com",
+        "full_name": "Rajiv Menon",
+        "role": "user",
+        "reputation_score": 360,
+        "bio": "First-year Vicharanashala intern, exploring knowledge validation and consensus.",
+        "avatar_url": dicebear_avatar("Rajiv Menon", "adventurer"),
+    },
+    {
+        "id": uid(),
+        "clerk_user_id": None,
+        "username": "sofia_p",
+        "email": "sofia.petrova@example.com",
+        "full_name": "Sofia Petrova",
+        "role": "user",
+        "reputation_score": 295,
+        "bio": "New Vicharanashala intern, excited to learn and contribute to the community.",
+        "avatar_url": dicebear_avatar("Sofia Petrova", "adventurer"),
     },
 ]
 
 
 # -------- CATEGORIES --------
+# 14 categories matching the 14 Vicharanashala FAQ sections + 2 general
+# categories (General, Resources) to give the library extra structure.
 
-CATEGORIES = [
-    ("Education", "education", "Learning methodologies, pedagogy, curriculum design"),
-    ("Technology", "technology", "Software, hardware, infrastructure, emerging tech"),
-    ("AI", "ai", "Artificial intelligence, machine learning, neural networks"),
-    ("Programming", "programming", "Languages, frameworks, design patterns, best practices"),
-    ("Career", "career", "Professional growth, hiring, workplace, leadership"),
-    ("Research", "research", "Scientific method, peer review, academic publishing"),
-]
-
-
-# -------- PUBLISHED FAQs --------
-
-FAQS = [
-    {
-        "title": "What is retrieval-augmented generation (RAG)?",
-        "content": "Retrieval-augmented generation (RAG) is an AI framework that combines a pre-trained language model with an external knowledge retrieval system. Instead of relying solely on the model's parameters, RAG fetches relevant documents at inference time and feeds them as context, dramatically reducing hallucinations and allowing the model to access up-to-date information.\n\nThe typical pipeline: (1) user query is embedded into a vector, (2) a vector database is searched for top-k similar chunks, (3) those chunks are concatenated with the query as a prompt, (4) the LLM generates a response grounded in those chunks with citations.\n\nRAG works best when the knowledge base is large, dynamic, or domain-specific, and is now the standard architecture for production AI assistants.",
-        "category": "ai",
-        "confidence": 94.0,
-        "agreement": 91.0,
-        "views": 2840,
-    },
-    {
-        "title": "How do consensus protocols like Raft handle network partitions?",
-        "content": "Raft is a consensus algorithm designed to be understandable. During a network partition, the cluster splits into a majority side and a minority side. Only the majority side can elect a new leader and append entries to the log  the minority side rejects writes and eventually times out, stepping down to follower.\n\nThis guarantees safety (no two leaders in the same term) and liveness once the partition heals. The trade-off: during a partition, the minority side becomes read-only. Raft uses randomized election timeouts (typically 150300ms) to prevent split votes, and requires (N/2)+1 nodes to agree on any committed log entry.\n\nPaxos offers similar guarantees with a more abstract formulation, but Raft's leader-based design and decomposable state machine make it the de-facto choice for new systems (etcd, Consul, CockroachDB).",
-        "category": "technology",
-        "confidence": 88.0,
-        "agreement": 84.0,
-        "views": 1920,
-    },
-    {
-        "title": "What are the trade-offs between SQL and NoSQL databases?",
-        "content": "SQL databases (PostgreSQL, MySQL) provide ACID transactions, strong consistency, mature query optimization, and well-defined schemas. They excel at complex joins, aggregations, and reporting workloads. They scale vertically well and horizontally via sharding, though the latter is operationally heavy.\n\nNoSQL databases split into several families: key-value (Redis, DynamoDB) for high-throughput simple lookups, document (MongoDB) for flexible schemas and hierarchical data, columnar (Cassandra) for write-heavy time-series, and graph (Neo4j) for highly connected data. They typically sacrifice ACID for horizontal scale, eventual consistency, or schema flexibility.\n\nRule of thumb: start with a relational database. Move to NoSQL only when you have a specific access pattern (e.g., sub-millisecond reads at scale, graph traversals) that SQL cannot serve cost-effectively. Polyglot persistence  using multiple stores  is increasingly common in large systems.",
-        "category": "technology",
-        "confidence": 92.0,
-        "agreement": 89.0,
-        "views": 3210,
-    },
-    {
-        "title": "How does gradient descent actually work?",
-        "content": "Gradient descent is the optimization engine behind most modern machine learning. Given a loss function L() parameterized by weights , the gradient L tells us the direction of steepest ascent. We move in the opposite direction:    - L(), where  is the learning rate.\n\nThree flavors:\n Batch GD: uses the full dataset each step  stable but slow and memory-heavy.\n Stochastic GD: uses one example  fast but noisy.\n Mini-batch GD: uses 32512 examples  the practical sweet spot.\n\nAdvanced optimizers (Adam, RMSprop, AdaGrad) adapt the learning rate per parameter based on historical gradients. Adam is the default for most deep learning today. The learning rate schedule (warmup + cosine decay) often matters more than the optimizer choice. Second-order methods (L-BFGS, Newton) compute curvature but scale poorly to large models.",
-        "category": "ai",
-        "confidence": 96.0,
-        "agreement": 93.0,
-        "views": 4150,
-    },
-    {
-        "title": "What is the difference between correlation and causation?",
-        "content": "Correlation is a statistical measure of how two variables move together. Causation means one variable directly influences the other. The classic example: ice cream sales and drowning deaths are correlated (both rise in summer) but neither causes the other  heat is the confounder.\n\nTo establish causation, you need more than observational data:\n Randomized controlled trials: random assignment breaks confounding.\n Natural experiments: exploit exogenous shocks.\n Instrumental variables: find a variable that affects the cause but only through the outcome.\n Regression discontinuity: compare units just above/below a threshold.\n\nIn machine learning, models can only learn correlations from training data. This is why models can pick up spurious patterns (e.g., hospital visits predicting death  actually because sick people go to hospitals). Causal inference requires domain knowledge, careful study design, and explicit assumptions that can be tested.",
-        "category": "research",
-        "confidence": 91.0,
-        "agreement": 95.0,
-        "views": 2680,
-    },
-    {
-        "title": "How should I prepare for a senior engineering interview?",
-        "content": "Senior engineering interviews typically test four areas: (1) system design (design YouTube, design a rate limiter), (2) coding (medium-hard algorithmic problems, focus on clean implementation), (3) behavioral (leadership, conflict resolution, project impact), and (4) domain depth (depending on role: ML, distributed systems, frontend, etc.).\n\nFor system design, study the classic patterns: caching, sharding, queues, load balancers, CDNs, pub/sub, event sourcing. Be able to estimate QPS, storage, bandwidth. Know the trade-offs of SQL vs NoSQL, monolith vs microservices, push vs pull.\n\nFor coding, practice 50100 LeetCode problems focusing on graphs, DP, trees, and sliding window. Talk through your approach before coding. Test with edge cases.\n\nFor behavioral, prepare 57 STAR stories spanning technical leadership, conflict, failure, and impact. Quantify everything (reduced latency by 40%, led team of 5, shipped 2 years ahead of schedule).\n\nThe meta-skill: structured thinking. Show your interviewer how you decompose problems, not just that you can solve them.",
-        "category": "career",
-        "confidence": 87.0,
-        "agreement": 82.0,
-        "views": 1870,
-    },
-    {
-        "title": "What is the CAP theorem and why does it matter?",
-        "content": "The CAP theorem (Brewer, 2000) states that a distributed data store can simultaneously provide only two of three guarantees: Consistency (all nodes see the same data at the same time), Availability (every request receives a response), and Partition tolerance (the system continues operating despite network failures between nodes).\n\nSince network partitions are inevitable in any real distributed system, you effectively choose between CP and AP during a partition. CP systems (etcd, ZooKeeper, HBase) reject writes to preserve consistency. AP systems (Cassandra, DynamoDB, Riak) accept writes and reconcile conflicts later via vector clocks or last-write-wins.\n\nCAP is often oversimplified. In practice:\n Latency is part of consistency (a slow system can be eventually consistent).\n The trade-off is tunable: many systems let you choose per-operation.\n Modern databases blur the line: Spanner offers global consistency with high availability via TrueTime; Cosmos DB lets you pick from 5 consistency levels.\n\nThe real question isn't \"which two\" but \"under what conditions, with what latency, and what conflict resolution.\"",
-        "category": "technology",
-        "confidence": 93.0,
-        "agreement": 88.0,
-        "views": 2240,
-    },
-    {
-        "title": "How do I structure a TypeScript Node.js project?",
-        "content": "A well-structured TypeScript Node.js project typically follows this layout:\n\n```\nsrc/\n  index.ts          # entry point\n  app.ts            # express/fastify app setup\n  config/           # env loading, validation (zod)\n  routes/           # one file per resource\n  controllers/      # request handlers (thin)\n  services/         # business logic (thick, testable)\n  repositories/     # data access\n  models/           # database models / DTOs\n  middleware/       # auth, error handling, logging\n  utils/            # pure helpers\n  types/            # shared TypeScript types\ntests/\n  unit/             # service tests\n  integration/      # API tests\n```\n\nKey principles:\n Separate concerns: routes don't know about SQL, services don't know about HTTP.\n Use dependency injection (or factory functions) for testability.\n Validate at the boundary (zod/yup), trust internal code.\n Use a logger (pino, winston) not console.log.\n Centralize error handling with custom error classes.\n Add OpenAPI spec generation (zod-to-openapi) for free API docs.\n\nFor monorepos, use pnpm workspaces or turborepo. For build, use tsc + esbuild or swc for fast incremental builds.",
-        "category": "programming",
-        "confidence": 89.0,
-        "agreement": 85.0,
-        "views": 1650,
-    },
+CATEGORIES: list[tuple[str, str, str]] = [
+    ("About the internship", "about-internship", "Overview, VINS, phases, eligibility, leave policy"),
+    ("Timing and dates", "timing", "Start dates, duration, leaves, orientation recordings"),
+    ("NOC (No Objection Certificate)", "noc", "NOC formats, signatures, submission, verification"),
+    ("Selection, offer letter, and certificate", "selection-offer", "Selection, opting in, offer letter, certificate"),
+    ("Work, mentorship, and projects", "work-mentorship", "Projects, hours, mentors, stipend, laptop"),
+    ("Code of conduct", "code-of-conduct", "Official communication channels, prohibited groups"),
+    ("Interviews", "interviews", "Interview completion, status sync"),
+    ("Certificate", "certificate", "Certificate, e-certificate, university credit"),
+    ("Rosetta journal", "rosetta", "Daily 65-day journal, thinking routines, submission"),
+    ("Phase 1 coursework", "phase-1", "Vibe LMS, live sessions, attendance, exemptions"),
+    ("Spurti Points", "spurti-points", "Engagement points, participation thresholds"),
+    ("Yaksha Chat", "yaksha-chat", "Chat with Yaksha, the AI assistant"),
+    ("ViBe Platform", "vibe-platform", "Vicharanashala ViBe learning platform"),
+    ("Team Formation", "team-formation", "Team size, formation rules, conflicts"),
+    ("General", "general", "General knowledge, other topics"),
+    ("Resources", "resources", "External resources, references, links"),
 ]
 
 
 # -------- FAQ CANDIDATES --------
+# Drafts in the moderation queue, awaiting review.
 
-FAQ_CANDIDATES = [
+FAQ_CANDIDATES: list[dict[str, Any]] = [
     {
-        "title": "Are we approaching the limits of LLM scaling laws?",
-        "content": "The Chinchilla scaling laws (Hoffmann et al., 2022) established that compute-optimal training requires ~20 tokens per parameter. GPT-4-class models are believed to use 1T+ parameters trained on 10T+ tokens. Recent evidence suggests inference-time scaling (chain-of-thought, tool use, multi-step reasoning) and test-time compute scaling can extend capability gains even when parameter scaling slows.\n\nKey open questions: (1) does data run out before we hit capability limits? (2) does inference-time scaling have its own scaling laws? (3) what is the role of RLHF and synthetic data?\n\nThe community is split: some researchers argue we're entering a regime of diminishing returns, others point to emergent capabilities that appear suddenly at scale. The truth is empirically unknown.",
-        "confidence": 72.0,
+        "title": "How do I switch from one project track to another mid-internship?",
+        "content": "Project track switches are not generally supported mid-internship, but in genuine cases (mentor unavailable, project deprioritised, strong case for fit) you can raise a request via Yaksha with the #escalate tag. Each request is reviewed by the programme team. There is no guaranteed turnaround, and approval is not automatic.",
+        "confidence": 62.0,
         "status": "PENDING",
     },
     {
-        "title": "How do multi-agent LLM systems coordinate without central control?",
-        "content": "Multi-agent systems in AI research draw from distributed systems theory. Coordination patterns include: (1) market-based (agents bid on tasks), (2) blackboard (shared memory), (3) contract net (announce-bid-award), (4) swarm (local rules, emergent global behavior). Recent LLM frameworks like AutoGen, CrewAI, and LangGraph implement variations of these.\n\nOpen problems: how to verify agent outputs without trusting them, how to prevent cascading failures, how to attribute credit/blame for outcomes. The field borrows heavily from multi-agent reinforcement learning, mechanism design, and formal verification.",
-        "confidence": 68.0,
+        "title": "What happens to my ViBe progress if my account email changes?",
+        "content": "Progress is tied to the registered email, not to a name. If you need to change the email on file, raise a #vibe-email request in Yaksha chat. The team can migrate progress to the new email after verifying ownership. Expect 1-2 working days for the migration to complete.",
+        "confidence": 71.0,
         "status": "PENDING",
     },
     {
-        "title": "What is the best way to learn Rust in 2025?",
-        "content": "The fastest path to Rust proficiency: (1) read The Rust Book (free online, ~30 hours), (2) complete Rustlings (small exercises, ~10 hours), (3) build a small CLI tool (e.g., a grep clone), (4) read Rust by Example alongside. Key concepts to internalize: ownership, borrowing, lifetimes, the borrow checker errors (read them carefully  they are usually right), traits vs dyn-trait, async/await with tokio.\n\nCommon pitfalls: fighting the borrow checker (refactor first, don't sprinkle .clone()), over-using Rc/Arc, premature optimization with unsafe, not reading the standard library. The Rust ecosystem moves fast  Cargo, tokio, axum, sqlx, and serde are the foundations. Avoid tutorial hell: build something real by week 3.",
-        "confidence": 85.0,
+        "title": "Can I publish a personal blog post about my Vicharanashala experience?",
+        "content": "Yes, with one condition: do not disclose any internal cohort information, mentor names, or unreleased programme details. Public posts about the experience, the project, the platform, and what you learned are welcome. Posts that name other interns without their consent, or that share internal-only dashboards or communications, are not.",
+        "confidence": 84.0,
         "status": "APPROVED",
     },
     {
-        "title": "How should companies evaluate AI vendors in 2025?",
-        "content": "Evaluation framework: (1) Use case clarity  what specific problem are you solving, with measurable success criteria. (2) Data  what data does the vendor need, who owns it, how is it used in training, can you opt out. (3) Latency and cost  match the cost-per-1k-tokens to your budget; pilot at 10x expected production scale. (4) Vendor lock-in  can you export data, switch models, host on-prem. (5) Compliance  SOC 2, GDPR, HIPAA, regional data residency. (6) Roadmap  are they building toward your needs, or have they plateaued.\n\nRed flags: vendor can't explain their model, no customers willing to be references, evaluation on synthetic benchmarks only, no SLA, no exit clause. Green flags: published evaluations, transparent pricing, open source components, security certifications.",
-        "confidence": 81.0,
-        "status": "NEEDS_REVISION",
+        "title": "Are there any scholarships or fee waivers for the programme?",
+        "content": "VINS is entirely free. There is no fee, and therefore no scholarships or waivers. The programme is supported by IIT Ropar's Vicharanashala Lab for Education Design. If you have paid anyone in connection with getting selected, please write to sudarshansudarshan@gmail.com — these are not affiliated with us.",
+        "confidence": 90.0,
+        "status": "APPROVED",
     },
     {
-        "title": "Should I use WebSockets or Server-Sent Events for real-time features?",
-        "content": "WebSockets: full-duplex, low overhead after handshake, supports binary, works through most proxies. Use for: chat, collaborative editing, gaming, bidirectional control.\n\nSSE (Server-Sent Events): unidirectional (server  client), plain HTTP, automatic reconnection, simpler to debug with curl, works through HTTP/2, can be served by CDNs. Use for: notifications, live feeds, progress updates, log streaming.\n\nFor most real-time UIs that only need server-push (notifications, dashboards, prices, activity feeds), SSE is simpler and more reliable. WebSockets shine when you need true bidirectional communication. Both have ~50ms latency in practice. For <50ms requirements (HFT, gaming), neither is enough  use UDP or a specialized protocol like QUIC.",
+        "title": "What is the policy on using AI coding assistants (Copilot, Cursor, Claude) during the internship?",
+        "content": "AI coding assistants are welcome for the technical work — that is part of modern engineering. The one firm exception is Rosetta (your internship journal): AI-generated entries are explicitly prohibited and will be rejected. The same applies to evaluation forms, reflection prompts, and any artefact where the requirement is your own thinking rather than the output.",
         "confidence": 88.0,
+        "status": "APPROVED",
+    },
+    {
+        "title": "How do I dispute a participation flag on the dashboard?",
+        "content": "If a session is flagged as missed and you were actually present, raise a #escalate in Yaksha with the date and a screenshot of the Zoom attendance report. The team reviews and corrects the flag within 24-48 hours. Note: this only works for sessions that were joined with the correct registered email; mismatched Zoom emails cannot be retroactively credited.",
+        "confidence": 79.0,
         "status": "PENDING",
     },
 ]
 
 
 # -------- DISCUSSIONS --------
+# 12 discussions across the topics interns actually argue about.
 
-DISCUSSIONS = [
+DISCUSSIONS: list[dict[str, Any]] = [
     {
-        "title": "Best practices for prompt engineering in production LLM systems",
-        "description": "Looking for battle-tested techniques beyond the usual 'be clear and specific.' Specifically interested in: (1) how to structure system prompts that survive across model versions, (2) techniques for reducing prompt injection risk, (3) when to use few-shot vs zero-shot vs chain-of-thought, (4) how to A/B test prompt changes safely. Would love to hear from anyone running LLM systems at scale.",
-        "status": "ACTIVE",
-        "view_count": 892,
-        "consensus_score": 0.78,
-        "question_link": None,
-    },
-    {
-        "title": "Is Rust ready to replace C++ in systems programming?",
-        "description": "C++ has dominated systems programming for 40+ years. Rust offers memory safety without garbage collection, modern tooling, and growing ecosystem. Where does Rust still fall short? Performance parity, FFI ergonomics, compile times, hiring pool, library maturity in specific domains. Genuinely curious where the field is in 2025.",
+        "title": "Tips for surviving the first week of the Bronze phase?",
+        "description": "I just got my dashboard access and I'm a bit overwhelmed. The ViBe platform, the daily standups, the Yaksha chat, the Rosetta journal — there's a lot to set up. What did you wish someone told you in week 1? What setup mistakes should I avoid?",
         "status": "ACTIVE",
         "view_count": 1240,
-        "consensus_score": 0.82,
-        "question_link": None,
+        "consensus_score": 0.81,
     },
     {
-        "title": "How do you handle ML model versioning and rollback?",
-        "description": "We had a production incident last month where a model update caused a 30% spike in false positives. Rolling back was painful  we had to revert feature pipelines, model artifacts, AND shadow traffic routing. What's your team's model deployment and rollback story? Tools, processes, lessons learned?",
+        "title": "Best way to balance Vibe coursework with actual project work?",
+        "description": "I'm finding the daily 3.33% target on ViBe hard to sustain when I'm also doing meaningful project work. Anyone figured out a good rhythm? Do you batch Vibe into chunks or spread it across the day?",
+        "status": "ACTIVE",
+        "view_count": 890,
+        "consensus_score": 0.72,
+    },
+    {
+        "title": "How strict is the 'no WhatsApp' rule really?",
+        "description": "I've been added to a couple of team-coordination WhatsApp groups even though §6.1 says no. Are people actually getting caught? What happens if a mentor reports it? Looking for honest takes before I decide whether to stay in the groups.",
+        "status": "ACTIVE",
+        "view_count": 2150,
+        "consensus_score": 0.58,
+    },
+    {
+        "title": "Has anyone's NOC verification actually taken the full working day?",
+        "description": "I uploaded mine 18 hours ago and still no offer letter. The FAQ says 1 hour to 1 working day. Reassure me that this is normal and not a sign that something went wrong with the upload.",
         "status": "RESOLVED",
         "view_count": 567,
-        "consensus_score": 0.91,
-        "question_link": None,
+        "consensus_score": 0.93,
     },
     {
-        "title": "Postgres vs ClickHouse for analytical queries on 10B+ rows",
-        "description": "We're hitting the limits of our Postgres-based analytics setup. Aggregation queries over a week of data take 40+ seconds. Considering ClickHouse, DuckDB, and TimescaleDB. Anyone migrated from Postgres to a columnar store for similar workloads? What were the surprises, gotchas, and what would you do differently?",
+        "title": "Can I write Rosetta entries in my native language?",
+        "description": "I think in Hindi/Tamil much faster than English. Will the programme accept Rosetta entries that are partly or fully in my native language, or is English mandatory?",
         "status": "ACTIVE",
-        "view_count": 423,
+        "view_count": 410,
         "consensus_score": 0.65,
-        "question_link": None,
     },
     {
-        "title": "Why are microservices still controversial in 2025?",
-        "description": "A decade after the microservices hype cycle, the industry seems to have settled into 'modular monolith first, extract services when you need to scale teams or systems.' Yet many large orgs still operate on microservices-only. What's the current best practice? When does the complexity payoff, and when is it pure overhead?",
+        "title": "What's the actual time commitment per day for Silver?",
+        "description": "The FAQ says 6-10 hours, but is that realistic? I'm a first-year student and I have college classes. Honest answer please, not the marketing version.",
         "status": "ACTIVE",
-        "view_count": 738,
-        "consensus_score": 0.71,
-        "question_link": None,
+        "view_count": 1580,
+        "consensus_score": 0.77,
     },
     {
-        "title": "Discussion: optimizing transformer inference for low-latency serving",
-        "description": "Thread continued from the question about zero-shot learning. We discussed KV-cache compression, speculative decoding, and quantization. Sharing the notes here for community review.",
+        "title": "Anyone else getting hit by the ViBe camera-proctoring false positives?",
+        "description": "I sit in a well-lit room, single face in frame, but ViBe keeps pausing my video saying 'low light detected' or 'no face in frame.' My webcam log says everything is fine. Is there a known workaround beyond the troubleshooting steps in §13.21?",
+        "status": "ACTIVE",
+        "view_count": 980,
+        "consensus_score": 0.69,
+    },
+    {
+        "title": "Discussion: pros and cons of being randomly assigned to a team",
+        "description": "I formed my own team during the May 15/16 activity, but I have friends who got randomly assigned. They say random assignment is actually better because you meet more diverse people. Curious what the late-cohort experience is like.",
         "status": "RESOLVED",
-        "view_count": 312,
+        "view_count": 720,
+        "consensus_score": 0.85,
+    },
+    {
+        "title": "How to handle mentor unresponsiveness without burning the relationship?",
+        "description": "It's been 4 days since I last heard from my assigned mentor. I don't want to escalate, but the Silver phase deadline is approaching. What's a polite, professional way to ask for a sync without sounding demanding?",
+        "status": "ACTIVE",
+        "view_count": 645,
+        "consensus_score": 0.74,
+    },
+    {
+        "title": "Should I link my GitHub commits to my portfolio now or wait until Silver ends?",
+        "description": "Some of my Gold-track work is genuinely portfolio-worthy. Tempted to make my repos public and add them to my LinkedIn. But the cohort hasn't ended yet, and I don't want to leak anything internal.",
+        "status": "ACTIVE",
+        "view_count": 380,
+        "consensus_score": 0.71,
+    },
+    {
+        "title": "Reading list for serious Vicharanashala applicants?",
+        "description": "If you got selected, what would you recommend reading before you start? Not interview prep — I mean readings that would help me make the most of the programme: open-source culture, technical writing, project management for small teams, that kind of thing.",
+        "status": "ACTIVE",
+        "view_count": 1130,
+        "consensus_score": 0.79,
+    },
+    {
+        "title": "What does the Vicharanashala certificate actually look like?",
+        "description": "Future employer here considering how to weight the Vicharanashala certificate on a CV. For those who've completed the programme — what does the e-certificate look like, what does it say, and how is it verifiable?",
+        "status": "RESOLVED",
+        "view_count": 490,
         "consensus_score": 0.88,
-        "question_link": "linked_to_question",
     },
 ]
 
 
-# -------- REPLIES (discussion_id, author_idx, content, days_ago, is_accepted, upvotes, downvotes) --------
+# -------- REPLIES --------
+# Format: (disc_idx, user_idx, content, days_ago, is_accepted, upvotes, downvotes)
 
-REPLIES = [
-    # Discussion 1: prompt engineering
-    (0, 0, "For production prompts, treat them like code: version them, review them, test them. We use a YAML-based prompt registry with semantic version tags. Every prompt change goes through PR review and A/B testing on 1% of traffic before full rollout.", 2, True, 47, 1),
-    (0, 1, "On prompt injection: we use a strict separation between system instructions and user content. System prompt contains ONLY untrusted data wrapped in <user_input> tags, and we explicitly tell the model to never follow instructions inside those tags. Plus we run a separate classifier on inputs to flag injection attempts.", 2, False, 32, 0),
-    (0, 2, "For A/B testing prompts safely: we measure both the business metric (task success, user satisfaction) and a safety metric (refusal rate, hallucination rate). Don't roll out a prompt that wins on UX but breaks safety.", 1, False, 28, 2),
-    (0, 3, "Few-shot examples in production are a maintenance burden. They bloat tokens, they go stale, they bias the model in subtle ways. We use them only during evaluation, not in the live prompt, unless the task is genuinely zero-shot-impossible.", 1, False, 19, 5),
+REPLIES: list[tuple[int, int, str, int, bool, int, int]] = [
+    # Discussion 0: Tips for week 1
+    (0, 0, "First thing: do not optimise anything in week 1. The platform is opinionated, and most 'productivity hacks' I tried broke things. Get the Vibe login, accept the course invite, set your Zoom ID, and start Day 1 of Rosetta. That's it. Resist the urge to plan your whole 65 days on Day 1.", 2, True, 89, 1),
+    (0, 1, "Set up the study corner before you log into ViBe for the first time. The most common avoidable mistake is sitting with a window behind you — your camera sees a silhouette, ViBe pauses everything, and you spend 30 minutes debugging lighting before you watch a single clip. Get the light, then start.", 2, False, 67, 0),
+    (0, 2, "One thing I wish I had done: skim the entire FAQ in week 1. The Bronze FAQ is ~50 questions and answers 90% of the questions you would otherwise ask in Yaksha. Saves a lot of chat round-trips.", 1, False, 41, 3),
+    (0, 3, "Daily standups at 10am are the single highest-leverage thing in week 1. Even if you have nothing to report, show up and listen. Mentors drop context in standup that doesn't make it into the FAQ.", 1, False, 35, 1),
 
-    # Discussion 2: Rust vs C++
-    (1, 1, "Rust is ready for greenfield systems work. The hiring pool is still small but growing fast. The real question is your existing codebase  rewriting C++ in Rust is rarely worth it. Use Rust for new components, FFI into existing C++ where needed.", 4, True, 64, 3),
-    (1, 2, "Compile times are still a real productivity hit. A clean build of our 200k-line Rust service takes 6 minutes. Incremental is fine but PRs often cross many crates.", 3, False, 38, 12),
-    (1, 4, "FFI ergonomics have improved a lot with cxx, autocxx, and bindgen. It's not perfect but it's no longer the blocker it was in 2020.", 3, False, 22, 4),
-    (1, 3, "Library maturity: async ecosystem is great (tokio, hyper, axum), serialization is great (serde), but specialized domains (audio, scientific computing, certain ML ops) are still rough.", 2, False, 15, 1),
+    # Discussion 1: ViBe + project balance
+    (1, 1, "Batch, don't spread. I tried to do 30 minutes of ViBe between project work and it killed my focus. Now I do 1.5 hours of ViBe first thing in the morning, then project work until evening. My 3.33% target gets hit by 11am and the rest of the day is uninterrupted.", 4, True, 78, 0),
+    (1, 4, "Don't chase 3.33% every day. Some days you'll do 5%, some days 2%. The rolling 5-day window means consistency matters more than daily hit rate. Two days at 1% can be okay if the rest of the window is on target.", 3, False, 52, 2),
+    (1, 0, "Use the Vibe linear progression to your advantage. Once you're on a streak of cleared quizzes, the next item unlocks quickly. Don't try to jump ahead — the Access Restricted banner will kick you back and break your rhythm.", 3, False, 31, 5),
 
-    # Discussion 3: model rollback
-    (2, 0, "We solved this with a proper model registry (MLflow) + a feature store. Model artifacts are versioned, features are versioned, and the serving layer takes a 'release name' that pins both. Rollback is one command: kubectl set image with the previous release. Took us 8 months to build but reduced rollback time from 2 hours to 90 seconds.", 5, True, 89, 0),
-    (2, 1, "Shadow traffic routing is underrated. We run every new model version in shadow mode for 48 hours  gets the same traffic as production but predictions are logged not served. Catches 80% of issues before user impact.", 4, False, 56, 1),
+    # Discussion 2: WhatsApp rule
+    (2, 0, "The rule is real. I reported a group last year (4 interns from different teams, sharing notes). All four were terminated within a week. The admin is not bluffing. The §6.1 reading is strict: any peer-coordinated space is a violation, regardless of size.", 5, True, 156, 8),
+    (2, 3, "Use LinkedIn. That is the explicit allowed channel. Yes, it's slower than WhatsApp. Yes, you can DM one person at a time. That's the point. The 5-person WhatsApp group is doing exactly what the rule says it shouldn't: bypassing the official channels.", 4, False, 94, 11),
+    (2, 5, "Counter-take: this rule is overkill and it actively hurts teams. I have a 4-person Silver project, no WhatsApp, only LinkedIn DMs, and coordinating release dates is a nightmare. But I understand the policy rationale, so I'm not going to push back — just flagging that there's a real coordination cost.", 3, False, 38, 22),
 
-    # Discussion 4: Postgres vs ClickHouse
-    (3, 2, "ClickHouse is a different beast for analytics. We moved from Postgres to ClickHouse 2 years ago for 5B+ row analytics. Compressed our storage 10x, queries went from minutes to seconds. The migration is non-trivial though  expect 2-3 engineer-months.", 6, False, 41, 2),
-    (3, 0, "Don't underestimate DuckDB for analytics-in-process. If your data fits in memory (under 100GB compressed), DuckDB is faster than ClickHouse for most workloads and zero-ops. We use DuckDB for ad-hoc analysis and ClickHouse for the dashboards.", 5, False, 35, 0),
+    # Discussion 3: NOC verification
+    (3, 0, "Yes, my NOC took 14 hours. It was the long end of the 1-hour-to-1-working-day window, but it cleared and the offer letter came through 30 minutes later. If you uploaded 18 hours ago, you're still in the window. Don't panic yet.", 6, True, 64, 0),
+
+    # Discussion 4: Rosetta in native language
+    (4, 0, "Yes, the programme accepts Rosetta entries in your native language. The journal is for you, not for the programme. The team reviews entries for completeness and honesty, not for English fluency. Write in whatever language makes the reflection genuine.", 8, True, 47, 1),
+    (4, 1, "Confirmed — I have written 40% of my entries in Hindi, the rest in English. Both are equally valid. The one thing that does not change: AI-generated entries are not accepted, regardless of language.", 7, False, 22, 0),
+
+    # Discussion 5: Hours per day for Silver
+    (5, 0, "Honest answer: 6-10 hours is accurate, with caveats. The first 2 weeks of Silver feel like 12 hours because there's so much context to absorb. The middle 4 weeks settle into 7-8 hours. The last 2 weeks spike back to 10+ as you push to finish. Plan for the spike — it is not optional.", 3, True, 112, 2),
+    (5, 2, "First-year students in Silver is normal — I was one. The trick is to be honest with your college from Day 1 about the time commitment. The FAQ §9.14 is right: this is not a self-paced programme. If you try to half-attend, you will be moved to a later batch per §10.7.", 2, False, 67, 5),
+
+    # Discussion 6: ViBe false positives
+    (6, 1, "I had this for the first week. Fix: disable auto-brightness on your laptop, set screen brightness to ~60%, and put a desk lamp directly in front of you (not behind). Camera logs in DevTools are not the same as the proctoring model. The proctoring model is conservative; trust the troubleshooting in §13.21.", 4, True, 89, 0),
+    (6, 4, "If it's still failing after the lighting fix, raise #escalate-ViBe in Yaksha. The team can pull the camera frames from your session and tell you what the model is seeing. They did it for me — turned out my webcam was applying a 'beauty' filter that the proctoring model read as low-contrast face.", 3, False, 41, 1),
+
+    # Discussion 7: Random team assignment
+    (7, 2, "Random assignment is better for at least one reason: no awkward 'I want to switch teams' conversations later. If you don't know your teammates, you also don't have pre-existing friend dynamics to manage. The §14.21 'no team switches' rule is much easier to follow when you have no emotional ties.", 5, True, 58, 0),
+
+    # Discussion 8: Mentor unresponsiveness
+    (8, 0, "Send one short, factual message: 'Hi [mentor name], checking in — I am on track for the [deliverable] due [date]. Is there a good 20-min slot this week for a quick sync? Happy to work around your schedule.' If you don't hear back in 48 hours, escalate via Yaksha. Polite, professional, paper trail.", 6, True, 73, 0),
+    (8, 3, "Don't apologise for following up. Mentors at Vicharanashala have multiple interns; sometimes you slip their mind. The second message is not a 'bother,' it is giving them the cue to prioritise you. Escalating after 2 unanswered follow-ups is the right move, not an overreaction.", 5, False, 38, 2),
+
+    # Discussion 9: GitHub public
+    (9, 1, "Make the repo public the moment your contribution is merged, not before. Until merge, the work is internal — keep the repo private. Once it's part of the public Vicharanashala codebase, the commits are part of the open-source history and there is nothing internal to leak.", 5, True, 51, 0),
+
+    # Discussion 10: Reading list
+    (10, 0, "Three books I recommend: 'The Mythical Man-Month' (Brooks) for project dynamics, 'A Philosophy of Software Design' (Ousterhout) for design judgement, and 'Working in Public' (Eghbal) for open-source culture. All available free online. Read the first one before Silver starts — the other two are mid-Silver reading.", 4, True, 92, 1),
+
+    # Discussion 11: Certificate look
+    (11, 0, "I have the Silver certificate. It's a single-page PDF, Vicharanashala letterhead, your name, the cohort year, and a verification number at the bottom. No mention of online vs offline (consistent with §8.2). The number links to a verification page on the Vicharanashala site.", 8, True, 35, 0),
 ]
 
 
 # -------- QUESTIONS --------
+# Pending question queue — questions interns have asked but not yet been
+# promoted to FAQs. The admin queue will turn these into FAQ candidates.
 
-QUESTIONS = [
+QUESTIONS: list[dict[str, Any]] = [
     {
-        "title": "What are the key differences between gRPC and REST for service-to-service communication?",
-        "description": "Evaluating gRPC vs REST for a new microservices system. Looking for real-world performance, developer experience, and observability trade-offs.",
-        "category": "technology",
+        "title": "What is the maximum number of days I can take off for personal reasons?",
+        "description": "Family wedding in the middle of my Silver phase. The §2.5 answer says no leave, but what about emergency leave?",
+        "category": "timing",
         "status": "ANALYZED",
         "ai_status": "COMPLETED",
     },
     {
-        "title": "How can I debug a memory leak in a long-running Node.js service?",
-        "description": "Our Node.js service slowly grows to 4GB RSS over 3 days then OOMs. heap snapshots show old generation growing but I can't find what's holding references.",
-        "category": "programming",
+        "title": "How do I claim the Spurti Points I've already earned?",
+        "description": "My SP shows -3 today even though I attended all live sessions this week. Is there a way to dispute the balance?",
+        "category": "spurti-points",
         "status": "OPEN",
         "ai_status": "PENDING",
     },
     {
-        "title": "When should I use a vector database vs a traditional search engine?",
-        "description": "Building a semantic search feature. We have 1M documents, need to find the top-10 most semantically similar. Algolia, Elasticsearch, Pinecone, pgvector  which makes sense?",
-        "category": "ai",
+        "title": "Can I use my college's NOC format from a previous internship?",
+        "description": "I did a summer internship last year and have a NOC from my HOD. Can I reuse the same signed copy, or do I need a fresh NOC?",
+        "category": "noc",
         "status": "ANALYZED",
         "ai_status": "COMPLETED",
     },
     {
-        "title": "What is the most effective way to onboard a new senior engineer?",
-        "description": "Just hired 3 senior engineers. What onboarding rituals have you seen actually work vs feel-good-but-don't-matter?",
-        "category": "career",
-        "status": "ANALYZED",
-        "ai_status": "COMPLETED",
-    },
-    {
-        "title": "How do I run a productive technical interview loop as an interviewer?",
-        "description": "I've been an interviewer for years but I want to be better. What are the techniques interviewers use to actually evaluate signal vs noise?",
-        "category": "career",
+        "title": "What is the rule on contributing to open-source projects outside the assigned one?",
+        "description": "I want to also help fix a bug in a small OSS library I depend on. Allowed? Counts towards Silver evaluation?",
+        "category": "work-mentorship",
         "status": "OPEN",
         "ai_status": "PENDING",
     },
     {
-        "title": "What's the current state of differential privacy in production?",
-        "description": "Apple, Google, and the US Census use DP. But the academic-to-production gap feels huge. Who's actually deploying DP in 2025, and what tools are usable?",
-        "category": "research",
-        "status": "ANALYZED",
-        "ai_status": "COMPLETED",
-    },
-    {
-        "title": "Should I pursue a PhD or go directly into industry after my MS in ML?",
-        "description": "Second-year MS student trying to decide. I like research but I'm also excited by industry impact and comp. Honest advice wanted.",
-        "category": "career",
+        "title": "Are there any perks for high Spurti Points above and beyond the recognition?",
+        "description": "The §11.6 answer is vague. Are the 'small perks' tangible (swag, certificates, priority projects) or purely symbolic?",
+        "category": "spurti-points",
         "status": "OPEN",
         "ai_status": "PENDING",
     },
     {
-        "title": "How do you measure developer productivity without harming engineering culture?",
-        "description": "Leadership wants 'developer productivity metrics.' Every metric I know of is gameable and incentivizes the wrong behavior. Is there a measurement framework that actually works?",
-        "category": "research",
+        "title": "Can my mentor write me a letter of recommendation beyond the certificate?",
+        "description": "The §8.1 answer mentions LoR 'if earned.' What is the threshold? Is it automatic for Gold/Platinum interns?",
+        "category": "certificate",
+        "status": "ANALYZED",
+        "ai_status": "COMPLETED",
+    },
+    {
+        "title": "What if my team is dissolved and reformed without my consent?",
+        "description": "The §14.25 says teams are locked. What happens if the admin reassigns me to a different team without my agreement?",
+        "category": "team-formation",
+        "status": "OPEN",
+        "ai_status": "PENDING",
+    },
+    {
+        "title": "Is there a way to bulk-export my ViBe progress for my own records?",
+        "description": "I'd like a local copy of every quiz I cleared and every video I watched. The dashboard only shows summaries.",
+        "category": "vibe-platform",
         "status": "ANALYZED",
         "ai_status": "COMPLETED",
     },
@@ -357,50 +676,60 @@ QUESTIONS = [
 
 
 # -------- REPORTS --------
+# Reports in the moderation queue for the admin to act on.
 
-REPORTS = [
+REPORTS: list[dict[str, Any]] = [
     {
-        "reporter_idx": 1,
+        "reporter_idx": 2,
         "target_type": "faq",
-        "target_id": 0,  # will be replaced with actual FAQ id
+        "target_idx": 0,
         "reason": "Outdated information",
-        "description": "This FAQ references practice patterns from 2022 that are no longer recommended.",
+        "description": "This FAQ references a 2025 deadline for the self-declaration path, but the policy was retired on 2026-05-27. Please update.",
         "severity": "LOW",
         "status": "OPEN",
     },
     {
-        "reporter_idx": 2,
+        "reporter_idx": 3,
         "target_type": "discussion",
-        "target_id": 1,  # will be replaced
-        "reason": "Off-topic",
-        "description": "Thread has devolved into a language flame war. Please moderate.",
+        "target_idx": 2,
+        "reason": "Off-topic / personal attack",
+        "description": "Thread has devolved into personal attacks against another intern. Several messages are reported under §6.1. Please moderate.",
         "severity": "MEDIUM",
         "status": "OPEN",
     },
     {
-        "reporter_idx": 3,
+        "reporter_idx": 4,
         "target_type": "reply",
-        "target_id": 0,  # will be replaced with a reply id
-        "reason": "Spam",
-        "description": "This reply contains a promotional link to a competing product.",
+        "target_idx": 0,
+        "reason": "Spam / self-promotion",
+        "description": "Reply contains a link to the user's paid bootcamp. Section 6.1 prohibits peer-coordinated promotion.",
         "severity": "HIGH",
         "status": "OPEN",
     },
     {
-        "reporter_idx": 4,
+        "reporter_idx": 5,
         "target_type": "user",
-        "target_id": 3,  # will be replaced
-        "reason": "Harassment",
-        "description": "User has been sending aggressive DMs to other members after disagreements.",
+        "target_idx": 4,
+        "reason": "WhatsApp group coordination",
+        "description": "User is operating a 6-person WhatsApp group explicitly labelled for Vicharanashala interns. Screenshot attached.",
         "severity": "HIGH",
-        "status": "RESOLVED",
+        "status": "INVESTIGATING",
     },
     {
         "reporter_idx": 0,
         "target_type": "faq",
-        "target_id": 0,
-        "reason": "Low quality",
-        "description": "Test report - already resolved.",
+        "target_idx": 3,
+        "reason": "Typo / minor inaccuracy",
+        "description": "The 'Dec 31' date is mentioned in the body as '31 Dec 2025' in one place. Should be 2026.",
+        "severity": "LOW",
+        "status": "RESOLVED",
+    },
+    {
+        "reporter_idx": 1,
+        "target_type": "discussion",
+        "target_idx": 5,
+        "reason": "Duplicate thread",
+        "description": "This is essentially the same question as Discussion 9. Please merge or close.",
         "severity": "LOW",
         "status": "DISMISSED",
     },
@@ -408,38 +737,56 @@ REPORTS = [
 
 
 # -------- NOTIFICATIONS --------
+# Mix of read / unread / archived for the test user (idx 1 = Alex).
 
-NOTIFICATIONS = [
+NOTIFICATIONS: list[dict[str, Any]] = [
     {"user_idx": 1, "type": "faq", "title": "Your question was answered",
-     "message": "A new FAQ was published based on the question you asked about RAG architectures.", "read": False, "days": 0},
+     "message": "A new FAQ was published: 'How do I log in to ViBe?' based on a similar question you asked.", "read": False, "archived": False, "days": 0},
     {"user_idx": 1, "type": "discussion", "title": "New reply on your discussion",
-     "message": "Maya Patel replied to 'Best practices for prompt engineering in production LLM systems'", "read": False, "days": 0},
+     "message": "Maya Patel replied to 'Tips for surviving the first week of the Bronze phase?'", "read": False, "archived": False, "days": 0},
     {"user_idx": 1, "type": "reply", "title": "Your reply was accepted",
-     "message": "Elena Vasquez marked your reply as the accepted solution.", "read": True, "days": 1},
-    {"user_idx": 1, "type": "reputation", "title": "+50 reputation",
-     "message": "You earned 50 reputation for your accepted answer.", "read": True, "days": 1},
+     "message": "Elena Vasquez marked your reply as the accepted solution on 'Best way to balance Vibe coursework.'", "read": True, "archived": False, "days": 1},
+    {"user_idx": 1, "type": "reputation", "title": "+75 reputation",
+     "message": "You earned 75 reputation for your accepted answer on the Vibe balance discussion.", "read": True, "archived": False, "days": 1},
     {"user_idx": 1, "type": "badge", "title": "New badge earned: Curious Mind",
-     "message": "You asked 10 questions this month. Keep exploring!", "read": False, "days": 2},
+     "message": "You asked 10 questions this month. Keep exploring!", "read": False, "archived": False, "days": 2},
     {"user_idx": 1, "type": "faq", "title": "FAQ you follow was updated",
-     "message": "'What is retrieval-augmented generation (RAG)?' got a new version (v2).", "read": True, "days": 3},
+     "message": "'What is the Vicharanashala internship?' got a new version (v2).", "read": True, "archived": False, "days": 3},
     {"user_idx": 1, "type": "discussion", "title": "Discussion escalated to AI",
-     "message": "Your discussion has been escalated for AI-assisted moderation.", "read": False, "days": 0},
+     "message": "Your discussion 'How strict is the no WhatsApp rule' has been escalated for AI-assisted moderation review.", "read": False, "archived": False, "days": 0},
     {"user_idx": 1, "type": "reputation", "title": "Top contributor this week",
-     "message": "You're in the top 5% of contributors this week. Keep it up!", "read": False, "days": 0},
+     "message": "You're in the top 5% of contributors this week. Keep it up!", "read": False, "archived": False, "days": 0},
+    {"user_idx": 1, "type": "system", "title": "Welcome to the Vicharanashala cohort",
+     "message": "Your cohort officially begins. Day 1 steps are waiting on your dashboard.", "read": True, "archived": True, "days": 14},
+    {"user_idx": 1, "type": "system", "title": "ViBe platform access granted",
+     "message": "You can now log in to ViBe using your registered email. Accept the course invite to begin.", "read": True, "archived": True, "days": 10},
+    {"user_idx": 1, "type": "faq", "title": "Section updated: Code of conduct",
+     "message": "The Code of conduct section was updated with new clarifications on peer-coordinated spaces.", "read": True, "archived": False, "days": 5},
+    {"user_idx": 1, "type": "discussion", "title": "You were mentioned in a discussion",
+     "message": "Priya Nair mentioned you in 'Reading list for serious Vicharanashala applicants?'", "read": False, "archived": False, "days": 0},
+    # Add some for other users so admin views can see them
+    {"user_idx": 0, "type": "moderation", "title": "3 new reports in the queue",
+     "message": "Three new reports are awaiting moderation review.", "read": False, "archived": False, "days": 0},
+    {"user_idx": 0, "type": "faq", "title": "5 new FAQ candidates pending review",
+     "message": "Five draft FAQs are waiting for your review in the candidate queue.", "read": False, "archived": False, "days": 0},
 ]
 
 
 # -------- ACHIEVEMENTS --------
 
-ACHIEVEMENTS = [
+ACHIEVEMENTS: list[dict[str, str]] = [
     {"name": "First Question", "description": "Asked your first question", "icon": "help"},
     {"name": "Curious Mind", "description": "Asked 10 questions", "icon": "psychology"},
     {"name": "Helpful Answer", "description": "Provided an accepted answer", "icon": "check_circle"},
     {"name": "Discussion Starter", "description": "Started 5 discussions", "icon": "forum"},
     {"name": "FAQ Contributor", "description": "Contributed to a published FAQ", "icon": "library_books"},
-    {"name": "Top 1% Contributor", "description": "Top 1% of contributors this month", "icon": "emoji_events"},
-    {"name": "Early Adopter", "description": "Joined CrowdMind in the first month", "icon": "stars"},
+    {"name": "Bronze Phase Complete", "description": "Completed the Bronze training phase", "icon": "military_tech"},
+    {"name": "Silver Phase Complete", "description": "Completed the Silver project phase", "icon": "workspace_premium"},
+    {"name": "Gold Recognition", "description": "Earned Gold for a meaningful contribution", "icon": "emoji_events"},
     {"name": "Verified Expert", "description": "Domain expertise verified by admins", "icon": "verified"},
+    {"name": "Early Adopter", "description": "Joined Vicharanashala in the first month", "icon": "stars"},
+    {"name": "Rosetta Complete", "description": "Submitted a complete Rosetta journal", "icon": "menu_book"},
+    {"name": "Top 1% Contributor", "description": "Top 1% of contributors this month", "icon": "trending_up"},
 ]
 
 
@@ -447,7 +794,6 @@ ACHIEVEMENTS = [
 
 async def clear_all(session: AsyncSession):
     """Clear all data tables for a fresh seed (idempotent reseed)."""
-    # Order matters: respect FK dependencies
     tables_in_order = [
         "saved_knowledge",
         "collection_items",
@@ -474,14 +820,10 @@ async def clear_all(session: AsyncSession):
         "user_profiles",
         "users",
     ]
-    for table in tables_in_order:
-        await session.execute(_table_delete(table))
-    await session.commit()
-
-
-def _table_delete(table: str):
     from sqlalchemy import text
-    return text(f"DELETE FROM {table}")
+    for table in tables_in_order:
+        await session.execute(text(f"DELETE FROM {table}"))
+    await session.commit()
 
 
 async def seed():
@@ -491,80 +833,72 @@ async def seed():
             print("Database already seeded. Skipping (delete rows first to reseed).")
             return
 
-        print("[*] Seeding CrowdMind demo data...")
-
-        # Clear in correct order
+        print("[*] Seeding CrowdMind demo data with REAL Vicharanashala FAQ content...")
         await clear_all(session)
 
         # ---- USERS ----
-        print("   users")
+        print(f"   users ({len(USERS)})")
         for u in USERS:
             session.add(User(**u))
-
         await session.flush()
-        admin = USERS[0]["id"]
-        alex = USERS[1]["id"]
-        maya = USERS[2]["id"]
-        jordan = USERS[3]["id"]
-        ravi = USERS[4]["id"]
-        user_ids = [admin, alex, maya, jordan, ravi]
+        user_ids = [u["id"] for u in USERS]
+        admin = user_ids[0]
+        alex = user_ids[1]
+        maya = user_ids[2]
+        jordan = user_ids[3]
+        ravi = user_ids[4]
+        priya = user_ids[5]
+        amaru = user_ids[6]
+        lina = user_ids[7]
 
         # ---- CATEGORIES ----
-        print("   categories")
-        cat_map = {}
+        print(f"   categories ({len(CATEGORIES)})")
+        cat_map: dict[str, Any] = {}
         for name, slug, desc in CATEGORIES:
             c = Category(id=uuid.uuid4(), name=name, slug=slug, description=desc)
             cat_map[slug] = c
             session.add(c)
         await session.flush()
 
-        # ---- QUESTIONS ----
-        print("   questions")
-        question_ids = []
-        for i, q in enumerate(QUESTIONS):
-            qid = uuid.uuid4()
-            question_ids.append(qid)
-            session.add(Question(
-                id=qid,
-                user_id=user_ids[(i % 4) + 1],  # not admin
-                title=q["title"],
-                description=q["description"],
-                category_id=cat_map[q["category"]].id,
-                status=q["status"],
-                ai_analysis_status=q["ai_status"],
-                created_at=ago(days=i * 2 + 1),
-            ))
-
-        # ---- PUBLISHED FAQs ----
-        print("   published FAQs")
-        published_ids = []
-        for i, f in enumerate(FAQS):
+        # ---- PUBLISHED FAQs from VICHARANASHALA_FAQS ----
+        print(f"   published FAQs from Vicharanashala source ({len(VICHARANASHALA_FAQS)} entries)")
+        published_ids: list[uuid.UUID] = []
+        for i, faq in enumerate(VICHARANASHALA_FAQS):
             fid = uuid.uuid4()
             published_ids.append(fid)
-            slug = f["title"].lower()[:60].replace(" ", "-").replace("?", "").replace(",", "").replace("'", "")
-            slug = "".join(c for c in slug if c.isalnum() or c == "-") + f"-{i}"
+            # Find a matching category by slug
+            slug_to_use = None
+            section = faq["section"]
+            for cs, c in cat_map.items():
+                if c.name == section:
+                    slug_to_use = cs
+                    break
+            if slug_to_use is None:
+                slug_to_use = "general"
+            slug = f"faq-{i+1:03d}-" + "".join(c if c.isalnum() else "-" for c in faq["question"].lower()[:50]).strip("-")
+            # Alternate publishers: admin for the first half, maya for some
+            publisher = admin if i % 3 != 0 else maya
             session.add(PublishedFaq(
                 id=fid,
                 candidate_id=None,
                 slug=slug,
-                title=f["title"],
-                content=f["content"],
-                category_id=cat_map[f["category"]].id,
+                title=faq["question"],
+                content=faq["answer"],
+                category_id=cat_map[slug_to_use].id,
                 version_number=1,
-                confidence_score=f["confidence"],
-                community_agreement_score=f["agreement"],
-                published_by=admin,
-                published_at=ago(days=i + 2),
-                created_at=ago(days=i + 2),
+                confidence_score=85.0 + (i % 13),  # 85-97
+                community_agreement_score=88.0 + (i % 11),  # 88-98
+                published_by=publisher,
+                published_at=ago(days=(i % 90) + 1),
+                created_at=ago(days=(i % 90) + 1),
             ))
-
         await session.flush()
 
-        # ---- FAQ VERSIONS (for first 2 FAQs) ----
-        print("   FAQ versions")
-        for i in range(2):
+        # ---- FAQ VERSIONS for first 8 FAQs (history of revisions) ----
+        print(f"   FAQ versions for first 8 FAQs")
+        for i in range(min(8, len(published_ids))):
             faq = await session.get(PublishedFaq, published_ids[i])
-            # Add a v1 (initial)
+            # v1
             session.add(FaqVersion(
                 id=uuid.uuid4(),
                 faq_id=faq.id,
@@ -575,68 +909,66 @@ async def seed():
                 created_by=admin,
                 created_at=faq.published_at,
             ))
-            # Add a v2 (revised)
-            session.add(FaqVersion(
-                id=uuid.uuid4(),
-                faq_id=faq.id,
-                version_number=2,
-                title=faq.title,
-                content=faq.content + "\n\n## Update (v2)\nAdded additional context and examples based on community feedback.",
-                change_summary="Added 3 examples and clarified section on trade-offs",
-                created_by=admin,
-                created_at=ago(days=i),
-            ))
-            # Update published FAQ to v2
-            faq.version_number = 2
-            faq.confidence_score = min(99.0, (faq.confidence_score or 90) + 3)
-            faq.community_agreement_score = min(99.0, (faq.community_agreement_score or 85) + 4)
+            # v2 (revised)
+            if i % 2 == 0:
+                session.add(FaqVersion(
+                    id=uuid.uuid4(),
+                    faq_id=faq.id,
+                    version_number=2,
+                    title=faq.title,
+                    content=faq.content + "\n\n## Update (v2)\n\nThis answer was updated based on cohort feedback received via Yaksha. The substantive policy is unchanged; clarifications have been added throughout for common edge cases.",
+                    change_summary="Clarifications added based on cohort Q&A",
+                    created_by=admin,
+                    created_at=ago(days=(i % 30)),
+                ))
+                faq.version_number = 2
+                faq.confidence_score = min(99.0, (faq.confidence_score or 90) + 2)
+                faq.community_agreement_score = min(99.0, (faq.community_agreement_score or 85) + 3)
 
-        # ---- FAQ CANDIDATES ----
-        print("   FAQ candidates")
-        candidate_ids = []
-        # Need a discussion for each candidate  link to first 5 discussions
-        # We'll create discussions first, then candidates
-
-        # ---- DISCUSSIONS ----
-        print("   discussions")
-        discussion_ids = []
+        # ---- DISCUSSIONS (must come before FAQ CANDIDATES since candidates need discussion_id) ----
+        print(f"   discussions ({len(DISCUSSIONS)})")
+        discussion_ids: list[uuid.UUID] = []
         for i, d in enumerate(DISCUSSIONS):
             did = uuid.uuid4()
             discussion_ids.append(did)
-            q_id = question_ids[0] if (d["question_link"] == "linked_to_question" and question_ids) else None
+            # First 4 by Alex, then alternates
+            author_idx = 1 + (i % 7) if i > 0 else 0  # discussion 0 by admin
             session.add(Discussion(
                 id=did,
-                question_id=q_id,
-                created_by=user_ids[(i % 4) + 1],
+                question_id=None,
+                created_by=user_ids[author_idx],
                 title=d["title"],
                 description=d["description"],
                 status=d["status"],
                 view_count=d["view_count"],
-                reply_count=0,  # updated after replies
+                reply_count=0,
                 participant_count=0,
                 consensus_score=d["consensus_score"],
-                created_at=ago(days=i + 3),
+                created_at=ago(days=(i % 30) + 1),
             ))
         await session.flush()
 
-        # Now create candidates linked to discussions
+        # ---- FAQ CANDIDATES ----
+        print(f"   FAQ candidates ({len(FAQ_CANDIDATES)})")
+        candidate_ids: list[uuid.UUID] = []
         for i, c in enumerate(FAQ_CANDIDATES):
             cid = uuid.uuid4()
             candidate_ids.append(cid)
             session.add(FaqCandidate(
                 id=cid,
                 discussion_id=discussion_ids[i % len(discussion_ids)],
-                generated_by_ai=(i % 2 == 0),
+                generated_by_ai=False,
                 title=c["title"],
                 content=c["content"],
                 confidence_score=c["confidence"],
                 status=c["status"],
-                created_at=ago(days=i + 1, hours=i * 3),
+                created_at=ago(days=2, hours=3),
             ))
+        await session.flush()
 
         # ---- REPLIES ----
-        print("   replies")
-        reply_ids = []
+        print(f"   replies ({len(REPLIES)})")
+        reply_ids: list[uuid.UUID] = []
         for disc_idx, user_idx, content, days, is_accepted, ups, downs in REPLIES:
             rid = uuid.uuid4()
             reply_ids.append(rid)
@@ -652,26 +984,42 @@ async def seed():
                 created_at=ago(days=days),
             ))
 
-        # Update discussion reply_count
+        # Update discussion reply_count and participant_count
         for i, did in enumerate(discussion_ids):
             disc = await session.get(Discussion, did)
             count = sum(1 for r in REPLIES if r[0] == i)
             disc.reply_count = count
             disc.participant_count = min(count, len(set(r[1] for r in REPLIES if r[0] == i)))
 
+        # ---- QUESTIONS ----
+        print(f"   questions ({len(QUESTIONS)})")
+        question_ids: list[uuid.UUID] = []
+        for i, q in enumerate(QUESTIONS):
+            qid = uuid.uuid4()
+            question_ids.append(qid)
+            session.add(Question(
+                id=qid,
+                user_id=user_ids[(i % 7) + 1],  # not admin
+                title=q["title"],
+                description=q["description"],
+                category_id=cat_map[q["category"]].id,
+                status=q["status"],
+                ai_analysis_status=q["ai_status"],
+                created_at=ago(days=i * 2 + 1),
+            ))
+
         # ---- VOTES ----
         print("   votes")
-        # Give the first 2 discussions and first few replies some votes
         vote_targets = (
-            [(published_ids[0], "faq"), (published_ids[1], "faq"), (published_ids[2], "faq")] +
-            [(discussion_ids[0], "discussion"), (discussion_ids[1], "discussion"), (discussion_ids[2], "discussion")] +
-            [(reply_ids[0], "reply"), (reply_ids[1], "reply"), (reply_ids[4], "reply"), (reply_ids[8], "reply")]
+            [(published_ids[0], "faq"), (published_ids[1], "faq"), (published_ids[5], "faq"), (published_ids[10], "faq"), (published_ids[25], "faq"), (published_ids[50], "faq"), (published_ids[100], "faq")] +
+            [(discussion_ids[0], "discussion"), (discussion_ids[1], "discussion"), (discussion_ids[2], "discussion"), (discussion_ids[3], "discussion"), (discussion_ids[4], "discussion"), (discussion_ids[5], "discussion")] +
+            [(reply_ids[0], "reply"), (reply_ids[1], "reply"), (reply_ids[4], "reply"), (reply_ids[5], "reply"), (reply_ids[8], "reply"), (reply_ids[9], "reply")]
         )
         vote_count = 0
         for target_id, target_type in vote_targets:
-            for voter_idx in [0, 1, 2, 3, 4]:
+            for voter_idx in range(len(USERS)):
                 if voter_idx == 1 and target_type in ("faq", "discussion"):
-                    continue  # skip self-votes
+                    continue
                 vt = "UPVOTE" if voter_idx % 3 != 0 else "DOWNVOTE"
                 session.add(Vote(
                     id=uuid.uuid4(),
@@ -685,17 +1033,16 @@ async def seed():
         print(f"    {vote_count} votes created")
 
         # ---- REPORTS ----
-        print("   reports")
+        print(f"   reports ({len(REPORTS)})")
         for r in REPORTS:
-            # Resolve target_id based on type
             if r["target_type"] == "faq":
-                tid = published_ids[r["target_id"] % len(published_ids)]
+                tid = published_ids[r["target_idx"] % len(published_ids)]
             elif r["target_type"] == "discussion":
-                tid = discussion_ids[r["target_id"] % len(discussion_ids)]
+                tid = discussion_ids[r["target_idx"] % len(discussion_ids)]
             elif r["target_type"] == "reply":
-                tid = reply_ids[r["target_id"] % len(reply_ids)]
+                tid = reply_ids[r["target_idx"] % len(reply_ids)]
             elif r["target_type"] == "user":
-                tid = user_ids[r["target_id"]]
+                tid = user_ids[r["target_idx"]]
             else:
                 tid = uuid.uuid4()
             session.add(Report(
@@ -707,11 +1054,11 @@ async def seed():
                 description=r["description"],
                 severity=r["severity"],
                 status=r["status"],
-                created_at=ago(days=2 if r["status"] == "OPEN" else 5),
+                created_at=ago(days=2 if r["status"] in ("OPEN", "INVESTIGATING") else 5),
             ))
 
         # ---- NOTIFICATIONS ----
-        print("   notifications")
+        print(f"   notifications ({len(NOTIFICATIONS)})")
         for n in NOTIFICATIONS:
             session.add(Notification(
                 id=uuid.uuid4(),
@@ -720,11 +1067,12 @@ async def seed():
                 title=n["title"],
                 message=n["message"],
                 is_read=n["read"],
+                is_archived=n.get("archived", False),
                 created_at=ago(days=n["days"], hours=n["days"] * 3),
             ))
 
         # ---- ACHIEVEMENTS ----
-        print("   achievements")
+        print(f"   achievements ({len(ACHIEVEMENTS)})")
         for a in ACHIEVEMENTS:
             session.add(Achievement(
                 id=uuid.uuid4(),
@@ -733,10 +1081,10 @@ async def seed():
                 icon=a["icon"],
             ))
 
-        # ---- SAVED KNOWLEDGE (one for Alex) ----
-        print("   saved knowledge")
+        # ---- SAVED KNOWLEDGE (mix of FAQ and discussion bookmarks for Alex) ----
+        print("   saved knowledge (8 items for Alex)")
         from app.models.collection import SavedKnowledge as SK
-        for i, p in enumerate(published_ids[:3]):
+        for i, p in enumerate(published_ids[:5]):
             session.add(SK(
                 id=uuid.uuid4(),
                 user_id=alex,
@@ -744,27 +1092,51 @@ async def seed():
                 target_id=p,
                 created_at=ago(days=i + 1),
             ))
+        for i, d in enumerate(discussion_ids[:3]):
+            session.add(SK(
+                id=uuid.uuid4(),
+                user_id=alex,
+                target_type="discussion",
+                target_id=d,
+                created_at=ago(days=i + 1),
+            ))
+        # Some for Priya
+        for i, p in enumerate(published_ids[5:9]):
+            session.add(SK(
+                id=uuid.uuid4(),
+                user_id=priya,
+                target_type="faq",
+                target_id=p,
+                created_at=ago(days=i + 2),
+            ))
 
         # ---- EVOLUTION EVENTS ----
         print("   evolution events")
-        for i, p in enumerate(published_ids[:3]):
+        for i, p in enumerate(published_ids[:10]):
+            ev_type = "PUBLISHED" if i == 0 else ("UPDATED" if i % 2 == 0 else "CONSENSUS")
+            desc = {
+                "PUBLISHED": "FAQ initially published by Elena Vasquez",
+                "UPDATED": "FAQ revised based on cohort feedback",
+                "CONSENSUS": "Community consensus score crossed 90% threshold",
+            }[ev_type]
             session.add(EvolutionEvent(
                 id=uuid.uuid4(),
                 faq_id=p,
                 version_id=None,
-                event_type="PUBLISHED" if i == 0 else "UPDATED",
-                description=f"FAQ initially published" if i == 0 else f"FAQ revised based on community feedback",
+                event_type=ev_type,
+                description=desc,
                 triggered_by=admin,
                 created_at=ago(days=i + 2),
             ))
 
         await session.commit()
-        print("[OK] Seed complete!")
         print()
-        print("Summary:")
-        print(f"  Users:        {len(USERS)} (1 admin, 4 regular)")
+        print("=" * 60)
+        print("[OK] Seed complete!")
+        print("=" * 60)
+        print(f"  Users:        {len(USERS)} (1 admin, 7 regular)")
         print(f"  Categories:   {len(CATEGORIES)}")
-        print(f"  FAQs:         {len(FAQS)} published, {len(FAQ_CANDIDATES)} candidates")
+        print(f"  FAQs:         {len(VICHARANASHALA_FAQS)} published, {len(FAQ_CANDIDATES)} candidates")
         print(f"  Discussions:  {len(DISCUSSIONS)}")
         print(f"  Replies:      {len(REPLIES)}")
         print(f"  Questions:    {len(QUESTIONS)}")
@@ -773,12 +1145,10 @@ async def seed():
         print(f"  Votes:        {vote_count}")
         print(f"  Achievements: {len(ACHIEVEMENTS)}")
         print()
-        print("Admin user (for testing):")
-        print(f"  username: admin")
-        print(f"  email:    admin@crowdmind.ai")
-        print()
-        print("  To log in as admin in dev, set the Clerk user's publicMetadata.role to 'admin'.")
-        print("    In Clerk dashboard: Users  select user  Metadata  Public: {\"role\": \"admin\"}")
+        print("Admin user (DB):")
+        print("  username: admin")
+        print("  email:    admin@crowdmind.dev")
+        print("  clerk_user_id: clerk_admin_seed (run scripts/seed_clerk.py to provision)")
 
 
 if __name__ == "__main__":
