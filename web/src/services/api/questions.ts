@@ -11,6 +11,7 @@ export type QuestionUpdate = {
   description?: string
   category_id?: string
   status?: string
+  ai_analysis_status?: string
 }
 
 export type QuestionResponse = {
@@ -47,4 +48,7 @@ export const questionsApi = {
 
   delete: (id: string) =>
     api.delete<void>(`/api/v1/questions/${id}`),
+
+  getAnalysis: (id: string) =>
+    api.get<any>(`/api/v1/questions/${id}/analysis`),
 }

@@ -3,37 +3,51 @@ import { useNavigate } from 'react-router-dom'
 import { StitchPage } from '@/components/StitchPage'
 import { bodyHtml, pageStyles } from '@/stitch-content/01-landing'
 import { commonUserNav } from '@/data/navMaps'
-import { analyticsApi } from '@/services/api/analytics'
-import { faqsApi } from '@/services/api/faqs'
+import { statsApi } from '@/services/api/stats'
 import { discussionsApi } from '@/services/api/discussions'
 import { categoriesApi, CategoryResponse } from '@/services/api/categories'
 import { showLoading, showError } from '@/utils/pageStatus'
+import { useAuth } from '@/context/AuthContext'
+
+function formatStat(value: number, kind: 'count' | 'percent'): string {
+  if (kind === 'percent') return `${value}%`
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M+`
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k+`
+  return `${value}`
+}
 
 export default function LandingPage() {
   const navigate = useNavigate()
+  const { role } = useAuth()
 
   useStitchData(async (root) => {
-    const statsRow = root.querySelector('.grid.grid-cols-2.md\\:grid-cols-4')
+    const statsRow = root.querySelector('.grid.grid-cols-2.lg\\:grid-cols-4')
     const clearLoading = statsRow ? showLoading(statsRow as HTMLElement) : () => {}
 
     let categoriesList: CategoryResponse[] = []
     try {
       categoriesList = await categoriesApi.list()
     } catch (err) {
-      console.error(err)
+      console.error('categories load failed', err)
     }
 
     try {
-      const dash = await analyticsApi.getDashboard()
+      const summary = await statsApi.getSummary()
       clearLoading()
-      const stats = root.querySelectorAll('.glass-card .font-headline-md')
-      if (stats.length >= 4) {
-        stats[0].textContent = dash.total_faqs.toString()
-        stats[1].textContent = dash.total_discussions.toString()
-        stats[2].textContent = dash.total_questions.toString()
-        stats[3].textContent = dash.total_users.toString()
+      
+      const statsCards = Array.from(root.querySelectorAll('section.py-12 .glass-card'))
+      if (statsCards.length >= 4) {
+        const setCardStat = (cardIndex: number, value: string) => {
+          const valEl = statsCards[cardIndex].querySelector('.font-display, .text-4xl, div:first-child')
+          if (valEl) valEl.textContent = value
+        }
+        setCardStat(0, formatStat(summary.total_faqs, 'count'))
+        setCardStat(1, formatStat(summary.total_discussions, 'count'))
+        setCardStat(2, formatStat(summary.resolution_rate, 'percent'))
+        setCardStat(3, formatStat(summary.total_users, 'count'))
       }
-    } catch {
+    } catch (err) {
+      console.error('stats load failed', err)
       clearLoading()
       if (statsRow) showError(statsRow as HTMLElement)
     }
@@ -41,7 +55,7 @@ export default function LandingPage() {
     try {
       const faqGrid = root.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-3.gap-8')
       if (faqGrid) {
-        const faqRes = await faqsApi.list({ page_size: '3' })
+        const faqRes = await statsApi.getTrendingFaqs(3)
         if (faqRes.items.length > 0) {
           const template = faqGrid.querySelector('.glass-card')
           if (template) {
@@ -58,7 +72,8 @@ export default function LandingPage() {
               if (categoryEl) categoryEl.textContent = catObj ? catObj.name.toUpperCase() : 'GENERAL'
 
               if (viewsEl) {
-                viewsEl.innerHTML = `<span class="material-symbols-outlined text-sm">verified</span> ${faq.confidence_score ?? 100}% AI Confidence`
+                const conf = faq.confidence_score != null ? Math.round(faq.confidence_score) : null
+                viewsEl.innerHTML = `<span class="material-symbols-outlined text-sm">verified</span> ${conf ?? 100}% AI Confidence`
               }
               card.style.cursor = 'pointer'
               card.onclick = () => navigate(`/faq/${faq.id}`)
@@ -104,13 +119,19 @@ export default function LandingPage() {
     }
   }, [navigate])
 
+  const ctaStartPath = role === 'guest' ? '/login' : '/ask'
+  const learnPath = '/methodology'
+
   return (
     <StitchPage
       bodyHtml={bodyHtml}
       pageStyles={pageStyles}
-      title="CrowdMind | Landing"
+      title="CrowdMind | Cognitive Clarity in Crowd Intelligence"
       navMap={{
         ...commonUserNav,
+        // Overrides (must come AFTER commonUserNav spread — last write wins in JS)
+        'get started now': ctaStartPath,
+        'learn our methodology': learnPath,
         'read more': '/library',
         'learn more': '/evolution',
         features: '/',

@@ -38,7 +38,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Repository</a>
 <a class="text-secondary-fixed font-bold border-b-2 border-secondary-fixed pb-1 font-label-md text-label-md" href="#">Collections</a>
 <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">History</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="#">Evolution</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-md text-label-md" href="/evolution">Evolution</a>
 </nav>
 </div>
 <div class="flex items-center gap-4">

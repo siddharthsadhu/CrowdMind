@@ -5,14 +5,23 @@ export function ClerkTokenSync() {
   const { getToken, isSignedIn } = useAuth()
 
   useEffect(() => {
-    if (isSignedIn) {
+    if (!isSignedIn) {
+      localStorage.removeItem('clerk-token')
+      return
+    }
+
+    const updateToken = () => {
       getToken().then((token) => {
         if (token) localStorage.setItem('clerk-token', token)
       })
-    } else {
-      localStorage.removeItem('clerk-token')
     }
+
+    updateToken()
+    const interval = setInterval(updateToken, 30000)
+
+    return () => clearInterval(interval)
   }, [isSignedIn, getToken])
 
   return null
 }
+

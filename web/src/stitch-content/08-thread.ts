@@ -35,10 +35,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-12">
 <a class="font-display text-headline-md font-semibold text-primary" href="#">CrowdMind</a>
 <nav class="hidden md:flex items-center gap-8">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">FAQs</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Discussions</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Ask Question</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/library">FAQs</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="/discussions">Discussions</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/ask">Ask Question</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/analysis">Analytics</a>
 </nav>
 </div>
 <div class="flex items-center gap-6">
@@ -74,9 +74,9 @@ export const bodyHtml = `<!-- TopNavBar -->
 </div>
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <!-- Left Content Area (8 Columns) -->
-<div class="md:col-span-8 space-y-gutter">
+<div data-cm-reply-feed class="md:col-span-8 space-y-gutter">
 <!-- AI Draft Answer Card -->
-<section class="glass-card rounded-xl p-8 border-l-4 border-l-primary shadow-lg relative overflow-hidden">
+<section data-cm-ai-draft-card class="glass-card rounded-xl p-8 border-l-4 border-l-primary shadow-lg relative overflow-hidden">
 <div class="absolute top-0 right-0 p-4 opacity-5">
 <span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
 </div>
@@ -104,10 +104,10 @@ export const bodyHtml = `<!-- TopNavBar -->
                             Community Validation Required
                         </div>
 <div class="flex gap-4">
-<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-md text-label-md">
+<button data-cm-ai-helpful class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-md text-label-md">
 <span class="material-symbols-outlined">thumb_up</span> Helpful
                             </button>
-<button class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-1 font-label-md text-label-md">
+<button data-cm-ai-not-helpful class="text-on-surface-variant hover:text-error transition-colors flex items-center gap-1 font-label-md text-label-md">
 <span class="material-symbols-outlined">thumb_down</span> Not Helpful
                             </button>
 </div>
@@ -175,7 +175,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="mt-12">
 <h3 class="font-headline-md text-headline-md text-on-surface mb-6">Add your answer</h3>
 <div class="glass-card rounded-xl p-1 focus-within:ring-2 focus-within:ring-primary/40 transition-all">
-<textarea class="w-full bg-transparent border-none focus:ring-0 text-body-md text-on-surface p-6 placeholder:text-on-surface-variant" placeholder="Provide your perspective or solution..." rows="6"></textarea>
+<textarea data-cm-reply-input class="w-full bg-transparent border-none focus:ring-0 text-body-md text-on-surface p-6 placeholder:text-on-surface-variant" placeholder="Provide your perspective or solution..." rows="6"></textarea>
 <div class="flex items-center justify-between p-4 border-t border-white/5 bg-surface-container/50 rounded-b-xl">
 <div class="flex gap-2">
 <button class="w-8 h-8 flex items-center justify-center rounded hover:bg-surface-variant transition-colors text-on-surface-variant">
@@ -201,66 +201,66 @@ export const bodyHtml = `<!-- TopNavBar -->
 <!-- Right Sidebar (4 Columns) -->
 <aside class="md:col-span-4 space-y-gutter">
 <div class="glass-card rounded-xl p-6">
-<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<h3 data-cm-insights-header class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
 <span class="material-symbols-outlined text-primary">analytics</span>
                         Discussion Insights
                     </h3>
 <div class="grid grid-cols-1 gap-4">
-<div class="p-4 rounded-lg bg-surface-container border border-white/5 flex items-center justify-between">
+<div data-cm-total-answers class="p-4 rounded-lg bg-surface-container border border-white/5 flex items-center justify-between">
 <span class="text-on-surface-variant font-label-md text-label-md">Total Answers</span>
-<span class="text-on-surface font-headline-md text-headline-md font-bold">12</span>
+<span data-cm-total-answers-value class="text-on-surface font-headline-md text-headline-md font-bold">12</span>
 </div>
-<div class="p-4 rounded-lg bg-surface-container border border-white/5 flex items-center justify-between">
+<div data-cm-total-votes class="p-4 rounded-lg bg-surface-container border border-white/5 flex items-center justify-between">
 <span class="text-on-surface-variant font-label-md text-label-md">Total Votes</span>
-<span class="text-on-surface font-headline-md text-headline-md font-bold">89</span>
+<span data-cm-total-votes-value class="text-on-surface font-headline-md text-headline-md font-bold">89</span>
 </div>
-<div class="p-4 rounded-lg bg-surface-container border border-white/5 flex items-center justify-between">
+<div data-cm-participation-level class="p-4 rounded-lg bg-surface-container border border-white/5 flex items-center justify-between">
 <span class="text-on-surface-variant font-label-md text-label-md">Participation Level</span>
-<span class="text-secondary-fixed-dim font-label-md text-label-md font-bold uppercase tracking-widest">High</span>
+<span data-cm-participation-level-value class="text-secondary-fixed-dim font-label-md text-label-md font-bold uppercase tracking-widest">High</span>
 </div>
-<div class="p-4 rounded-lg bg-primary-container/10 border border-primary/20 flex flex-col gap-2">
+<div data-cm-quality-score class="p-4 rounded-lg bg-primary-container/10 border border-primary/20 flex flex-col gap-2">
 <div class="flex justify-between items-center">
 <span class="text-primary font-label-md text-label-md">Quality Score</span>
-<span class="text-primary font-headline-md text-headline-md font-bold">9.4/10</span>
+<span data-cm-quality-score-value class="text-primary font-headline-md text-headline-md font-bold">9.4/10</span>
 </div>
 <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
-<div class="h-full bg-primary rounded-full" style="width: 94%"></div>
+<div data-cm-quality-score-bar class="h-full bg-primary rounded-full" style="width: 94%"></div>
 </div>
 </div>
 </div>
 </div><div class="glass-card rounded-xl p-6 border border-primary/20">
-<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<h3 data-cm-ai-consensus-header class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
 <span class="material-symbols-outlined text-primary">psychology</span>
         AI Consensus
     </h3>
 <div class="space-y-4">
-<div class="flex justify-between items-center py-2 border-b border-white/5">
+<div data-cm-analyzed-row class="flex justify-between items-center py-2 border-b border-white/5">
 <span class="text-on-surface-variant font-label-md text-label-md">Total Answers Analyzed</span>
-<span class="text-on-surface font-label-md">12</span>
+<span data-cm-analyzed-value class="text-on-surface font-label-md">12</span>
 </div>
-<div class="flex justify-between items-center py-2 border-b border-white/5">
+<div data-cm-agreement-row class="flex justify-between items-center py-2 border-b border-white/5">
 <span class="text-on-surface-variant font-label-md text-label-md">Community Agreement</span>
-<span class="text-secondary-fixed-dim font-label-md font-bold">88%</span>
+<span data-cm-agreement-value class="text-secondary-fixed-dim font-label-md font-bold">88%</span>
 </div>
-<div class="py-2">
+<div data-cm-conclusion-row class="py-2">
 <span class="text-on-surface-variant font-label-md text-label-md block mb-1">Most Likely Conclusion</span>
-<p class="text-label-sm text-on-surface italic leading-relaxed">Phase 1 allows changes; Phase 2 locks require moderator mediation.</p>
+<p data-cm-conclusion-text class="text-label-sm text-on-surface italic leading-relaxed">Phase 1 allows changes; Phase 2 locks require moderator mediation.</p>
 </div>
-<div class="p-3 bg-primary-container/10 rounded-lg border border-primary/20">
+<div data-cm-confidence-row class="p-3 bg-primary-container/10 rounded-lg border border-primary/20">
 <div class="flex justify-between items-center mb-1">
 <span class="text-primary font-label-sm font-bold uppercase tracking-widest">Confidence Score</span>
-<span class="text-primary font-label-md font-bold">92%</span>
+<span data-cm-confidence-value class="text-primary font-label-md font-bold">92%</span>
 </div>
 <div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
-<div class="h-full bg-primary" style="width: 92%"></div>
+<div data-cm-confidence-bar class="h-full bg-primary" style="width: 92%"></div>
 </div>
 </div>
 </div>
 </div>
 <div class="glass-card rounded-xl p-6">
-<h3 class="font-label-md text-label-md text-on-surface font-bold uppercase mb-4 tracking-widest">Top Contributors</h3>
-<div class="space-y-4">
-<div class="flex items-center gap-3">
+<h3 data-cm-top-contributors-header class="font-label-md text-label-md text-on-surface font-bold uppercase mb-4 tracking-widest">Top Contributors</h3>
+<div data-cm-top-contributors-list class="space-y-4">
+<div data-cm-contributor-row="1" class="flex items-center gap-3">
 <img alt="Avatar" class="w-8 h-8 rounded-full" data-alt="A portrait of a male data scientist in a dark room illuminated only by the light from a monitor, casting a cool blue glow over his face. He is wearing a professional dark sweater. The photo is minimalist, sleek, and high-resolution, evoking a sense of deep focus and analytical rigor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtgAf4bq0vIfg4cxUQa96eK0KK4VjsEX0NDTuJ6mLC_BgtQU1iUGke935j7Dc9zQkOrOSb4w_lBVZYgHySdqaaiYouUxzpzD_KfhjnP8CLrEOIrUZ_mtALpKF603JgN3MHajwSj40-VG_7i5gASWkiMtp5S64YBWIRJvzaAbPUrViNTTNWn8qwDLg29l5W6GFXhbdfMU1LDdyWimdsRzpT0-IcfkSp28TGGqFQRJZm7qqU1ppfQQAmVDBN3oL3QpHbF03EkzNh3EvV">
 <div class="flex-1">
 <p class="text-label-md font-medium text-on-surface">Marcus_V</p>
@@ -309,7 +309,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex flex-col gap-4">
 <span class="text-on-surface font-label-md text-label-md font-bold uppercase tracking-widest">Community</span>
 <a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Forum</a>
-<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="#">Discussions</a>
+<a class="text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md" href="/discussions">Discussions</a>
 </div>
 <div class="flex flex-col gap-4">
 <span class="text-on-surface font-label-md text-label-md font-bold uppercase tracking-widest">Resources</span>

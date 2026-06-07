@@ -142,10 +142,10 @@
 <div class="flex items-center gap-12">
 <a class="font-display text-display font-semibold text-primary text-[24px]" href="#">CrowdMind</a>
 <div class="hidden md:flex items-center gap-8">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">FAQs</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Discussions</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Ask Question</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/library">FAQs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/discussions">Discussions</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/ask">Ask Question</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="/analysis">Analytics</a>
 </div>
 </div>
 <div class="flex items-center gap-6">
@@ -167,6 +167,19 @@
 <header class="mb-12 text-center md:text-left">
 <h1 class="font-display text-headline-lg text-on-surface mb-2">Self-Evolving Knowledge Engine</h1>
 <p class="font-body-md text-on-surface-variant">Knowledge improves as the community learns.</p>
+<div class="mt-6 flex flex-wrap items-center gap-3 glass-card rounded-xl p-4">
+<label class="font-label-md text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">timeline</span>
+Viewing:
+</label>
+<select data-cm-faq-selector class="flex-1 min-w-[280px] bg-surface-container-low border border-outline-variant/30 rounded-lg px-4 py-2 text-label-md focus:ring-1 focus:ring-primary focus:outline-none">
+<option value="">Loading knowledge artifacts…</option>
+</select>
+<button data-cm-refresh title="Refresh timeline" class="flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-4 py-2 rounded-lg text-label-md hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">refresh</span>
+Refresh
+</button>
+</div>
 </header>
 <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
 <!-- Left Panel: Evolution Events -->
@@ -174,7 +187,7 @@
 <h2 class="font-headline-md text-on-surface text-[18px]">Evolution Insights</h2>
 <span class="material-symbols-outlined text-primary">insight_spark</span>
 </div>
-<div class="glass-card rounded-xl p-4 space-y-4">
+<div data-cm-insights class="glass-card rounded-xl p-4 space-y-4">
 <div class="border-l-2 border-primary pl-4">
 <p class="text-label-sm text-primary mb-1 uppercase tracking-wider">Policy-Driven</p>
 <p class="font-body-md text-[14px] text-on-surface-variant leading-relaxed">FAQ updated due to Q3 structural realignment.</p>
@@ -189,7 +202,7 @@
 </div>
 </div></aside>
 <!-- Center Visualization (Hero) -->
-<section class="md:col-span-6 relative flex flex-col items-center"><div class="relative z-10 w-full mb-12">
+<section data-cm-timeline-list class="md:col-span-6 relative flex flex-col items-center hidden"><div class="relative z-10 w-full mb-12">
 <div class="flex flex-col items-center">
 <div class="h-16 w-16 rounded-full bg-secondary-container flex items-center justify-center node-glow border-4 border-surface ring-2 ring-secondary-container/20 animate-pulse">
 <span class="material-symbols-outlined text-on-secondary-container text-[32px]" data-weight="fill">auto_awesome</span>
@@ -211,7 +224,11 @@
 </div>
 </div>
 </div>
-<div class="evolution-line absolute top-0 bottom-0 z-0"></div>
+<div data-cm-timeline-line class="evolution-line absolute top-0 bottom-0 z-0 hidden"></div>
+<div data-cm-timeline-empty class="glass-card rounded-xl p-8 text-center text-on-surface-variant font-body-md w-full">
+<span class="material-symbols-outlined text-primary text-[40px] mb-2">timeline</span>
+<p>Select a knowledge artifact above to view its evolution timeline.</p>
+</div>
 <!-- Node: Version 3 (Active/Newest) -->
 <div class="relative z-10 w-full mb-12">
 <div class="flex flex-col items-center">
@@ -271,12 +288,12 @@
 <div class="flex justify-between items-start mb-4">
 <div>
 <p class="text-label-md text-on-surface-variant">FAQ Accuracy</p>
-<p class="text-headline-md text-primary">98.4%</p>
+<p data-cm-metric-accuracy class="text-headline-md text-primary">98.4%</p>
 </div>
 <div class="relative h-12 w-12">
 <svg class="h-full w-full -rotate-90" viewBox="0 0 36 36">
 <circle class="stroke-surface-variant" cx="18" cy="18" fill="none" r="16" stroke-width="3"></circle>
-<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="98.4, 100" stroke-linecap="round" stroke-width="3"></circle>
+<circle data-cm-metric-accuracy-ring class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="98.4, 100" stroke-linecap="round" stroke-width="3"></circle>
 </svg>
 </div>
 </div>
@@ -292,46 +309,58 @@
 <div class="glass-card rounded-xl p-5">
 <div class="flex justify-between items-center mb-2">
 <p class="text-label-md text-on-surface-variant">Community Agreement</p>
-<span class="text-secondary-fixed-dim text-label-sm">+2.1%</span>
+<span data-cm-metric-agreement-delta class="text-secondary-fixed-dim text-label-sm">+2.1%</span>
 </div>
-<p class="text-headline-md text-on-surface">89%</p>
+<p data-cm-metric-agreement class="text-headline-md text-on-surface">89%</p>
 </div>
 <div class="glass-card rounded-xl p-5">
 <div class="flex justify-between items-center mb-2">
 <p class="text-label-md text-on-surface-variant">Evolution Frequency</p>
 <span class="material-symbols-outlined text-outline text-sm">info</span>
 </div>
-<p class="text-headline-md text-on-surface">3.2 <span class="text-label-sm text-on-surface-variant">v/mo</span></p>
+<p data-cm-metric-frequency class="text-headline-md text-on-surface">3.2 <span class="text-label-sm text-on-surface-variant">v/mo</span></p>
 </div>
 <div class="glass-card rounded-xl p-5"><div class="flex justify-between items-center mb-4">
 <p class="text-label-md text-on-surface-variant">Knowledge Stability</p>
-<span class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold ring-1 ring-primary/20">
+<span data-cm-metric-stability-badge class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary/10 text-primary text-[10px] font-bold ring-1 ring-primary/20">
 <span class="h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
         STABLE
     </span>
 </div>
 <div class="w-full bg-surface-variant h-2 rounded-full mt-3 overflow-hidden">
-<div class="bg-primary h-full w-[76%] shadow-[0_0_10px_rgba(176,198,255,0.5)]"></div>
+<div data-cm-metric-stability-bar class="bg-primary h-full w-[76%] shadow-[0_0_10px_rgba(176,198,255,0.5)]"></div>
 </div>
 <div class="flex justify-between items-center mt-3">
 <p class="text-label-sm text-outline">Trend: +4.2%</p>
-<p class="text-label-sm text-on-surface font-bold">76% Score</p>
+<p data-cm-metric-stability-score class="text-label-sm text-on-surface font-bold">76% Score</p>
 </div></div>
 </aside>
 </div>
 <!-- Bottom Section: Interactive Version Comparison -->
-<section class="mt-section-gap">
+<section data-cm-diff-section class="mt-section-gap">
 <div class="flex items-center justify-between mb-6">
 <div>
 <h2 class="font-headline-lg text-on-surface text-[24px]">Knowledge Diff Viewer</h2>
-<p class="font-body-md text-on-surface-variant">Comparing Version 2.0 vs Version 3.0</p>
+<p data-cm-diff-caption class="font-body-md text-on-surface-variant">Comparing Version 2.0 vs Version 3.0</p>
 </div>
-<div class="flex gap-3">
-<button class="bg-surface-container-high border border-outline-variant px-4 py-2 rounded-lg text-label-md flex items-center gap-2 hover:bg-surface-variant transition-all">
+<div class="flex flex-wrap items-center gap-3">
+<label class="font-label-sm text-on-surface-variant flex items-center gap-1">
+<span>From</span>
+<select data-cm-diff-from class="bg-surface-container-low border border-outline-variant/30 rounded-lg px-3 py-2 text-label-md focus:ring-1 focus:ring-primary focus:outline-none min-w-[100px]">
+<option value="">…</option>
+</select>
+</label>
+<label class="font-label-sm text-on-surface-variant flex items-center gap-1">
+<span>→</span>
+<select data-cm-diff-to class="bg-surface-container-low border border-outline-variant/30 rounded-lg px-3 py-2 text-label-md focus:ring-1 focus:ring-primary focus:outline-none min-w-[100px]">
+<option value="">…</option>
+</select>
+</label>
+<button data-cm-rollback disabled class="bg-surface-container-high border border-outline-variant px-4 py-2 rounded-lg text-label-md flex items-center gap-2 hover:bg-surface-variant transition-all disabled:opacity-50 disabled:cursor-not-allowed">
 <span class="material-symbols-outlined text-sm">settings_backup_restore</span>
                         Rollback
                     </button>
-<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md font-bold hover:brightness-110 transition-all">
+<button data-cm-diff-approve class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md font-bold hover:brightness-110 transition-all">
                         Approve Change
                     </button>
 </div>
@@ -340,10 +369,10 @@
 <div class="glass-card !border-0 p-8">
 <div class="flex items-center gap-2 mb-4">
 <span class="h-2 w-2 rounded-full bg-outline"></span>
-<span class="font-label-md text-outline">v2.0 · Legacy</span>
+<span data-cm-diff-from-label class="font-label-md text-outline">v2.0 · Legacy</span>
 </div>
-<h5 class="font-headline-md text-on-surface mb-4">Security Policy &amp; Access Control</h5>
-<div class="font-body-md text-on-surface-variant space-y-4 leading-relaxed">
+<h5 data-cm-diff-from-title class="font-headline-md text-on-surface mb-4">Security Policy &amp; Access Control</h5>
+<div data-cm-diff-from-body class="font-body-md text-on-surface-variant space-y-4 leading-relaxed">
 <p>All employees are granted access to the internal data lake upon completing the standard onboarding sequence. <span class="bg-error/20 text-error px-1 rounded line-through">Access levels are managed by regional department heads through a manual ticket system.</span></p>
 <p>Credentials must be rotated every 90 days. <span class="bg-error/20 text-error px-1 rounded line-through">Security patches are applied weekly on Sundays.</span></p>
 </div>
@@ -351,10 +380,10 @@
 <div class="glass-card !border-0 p-8 bg-primary-container/5">
 <div class="flex items-center gap-2 mb-4">
 <span class="h-2 w-2 rounded-full bg-primary animate-pulse"></span>
-<span class="font-label-md text-primary">v3.0 · Active Evolution</span>
+<span data-cm-diff-to-label class="font-label-md text-primary">v3.0 · Active Evolution</span>
 </div>
-<h5 class="font-headline-md text-on-surface mb-4">Security Policy &amp; Access Control</h5>
-<div class="font-body-md text-on-surface-variant space-y-4 leading-relaxed">
+<h5 data-cm-diff-to-title class="font-headline-md text-on-surface mb-4">Security Policy &amp; Access Control</h5>
+<div data-cm-diff-to-body class="font-body-md text-on-surface-variant space-y-4 leading-relaxed">
 <p>All employees are granted access to the internal data lake upon completing the standard onboarding sequence. <span class="bg-primary/20 text-primary px-1 rounded">Dynamic RBAC (Role-Based Access Control) now automates permissions based on project metadata.</span></p>
 <p>Credentials must be rotated every 90 days. <span class="bg-primary/20 text-primary px-1 rounded">Real-time patch management enables continuous vulnerability remediation without downtime.</span></p>
 </div>
@@ -372,15 +401,15 @@
 <div class="md:col-span-2">
 <h6 class="font-label-md text-primary mb-4">Product</h6>
 <ul class="space-y-2 text-on-surface-variant font-label-sm">
-<li><a class="hover:text-secondary transition-colors" href="#">Evolution</a></li>
-<li><a class="hover:text-secondary transition-colors" href="#">Analytics</a></li>
+<li><a class="hover:text-secondary transition-colors" href="/evolution">Evolution</a></li>
+<li><a class="hover:text-secondary transition-colors" href="/analysis">Analytics</a></li>
 <li><a class="hover:text-secondary transition-colors" href="#">Integrations</a></li>
 </ul>
 </div>
 <div class="md:col-span-2">
 <h6 class="font-label-md text-primary mb-4">Community</h6>
 <ul class="space-y-2 text-on-surface-variant font-label-sm">
-<li><a class="hover:text-secondary transition-colors" href="#">Discussions</a></li>
+<li><a class="hover:text-secondary transition-colors" href="/discussions">Discussions</a></li>
 <li><a class="hover:text-secondary transition-colors" href="#">Events</a></li>
 <li><a class="hover:text-secondary transition-colors" href="#">Guidelines</a></li>
 </ul>

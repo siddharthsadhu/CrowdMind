@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { RouteGuard } from '@/components/RouteGuard'
 import { ScreenIndex } from '@/components/ScreenIndex'
 import LandingPage from '@/pages/user/LandingPage'
@@ -15,7 +15,9 @@ import ProfilePage from '@/pages/user/ProfilePage'
 import NotificationsPage from '@/pages/user/NotificationsPage'
 import SavedKnowledgePage from '@/pages/user/SavedKnowledgePage'
 import ContributionsPage from '@/pages/user/ContributionsPage'
+import UserSettingsPage from '@/pages/user/UserSettingsPage'
 import EvolutionPage from '@/pages/user/EvolutionPage'
+import MethodologyPage from '@/pages/user/MethodologyPage'
 import MissionControlPage from '@/pages/admin/MissionControlPage'
 import FaqManagementPage from '@/pages/admin/FaqManagementPage'
 import FaqCandidateReviewPage from '@/pages/admin/FaqCandidateReviewPage'
@@ -23,6 +25,7 @@ import ModerationPage from '@/pages/admin/ModerationPage'
 import AnalyticsPage from '@/pages/admin/AnalyticsPage'
 import ReportInvestigationPage from '@/pages/admin/ReportInvestigationPage'
 import SettingsPage from '@/pages/admin/SettingsPage'
+import NotFoundPage from '@/pages/NotFoundPage'
 
 export default function App() {
   return (
@@ -42,7 +45,9 @@ export default function App() {
         <Route path="/notifications" element={<RouteGuard allow={['user', 'admin']}><NotificationsPage /></RouteGuard>} />
         <Route path="/saved" element={<RouteGuard allow={['user', 'admin']}><SavedKnowledgePage /></RouteGuard>} />
         <Route path="/contributions" element={<RouteGuard allow={['user', 'admin']}><ContributionsPage /></RouteGuard>} />
+        <Route path="/settings" element={<RouteGuard allow={['user']}><UserSettingsPage /></RouteGuard>} />
         <Route path="/evolution" element={<EvolutionPage />} />
+        <Route path="/methodology" element={<MethodologyPage />} />
         <Route path="/admin" element={<RouteGuard allow={['admin']}><MissionControlPage /></RouteGuard>} />
         <Route path="/admin/faq" element={<RouteGuard allow={['admin']}><FaqManagementPage /></RouteGuard>} />
         <Route path="/admin/faq-review/:id?" element={<RouteGuard allow={['admin']}><FaqCandidateReviewPage /></RouteGuard>} />
@@ -50,7 +55,7 @@ export default function App() {
         <Route path="/admin/analytics" element={<RouteGuard allow={['admin']}><AnalyticsPage /></RouteGuard>} />
         <Route path="/admin/reports/:id" element={<RouteGuard allow={['admin']}><ReportInvestigationPage /></RouteGuard>} />
         <Route path="/admin/settings" element={<RouteGuard allow={['admin']}><SettingsPage /></RouteGuard>} />
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <ScreenIndex />
     </>

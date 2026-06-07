@@ -51,10 +51,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-8">
 <span class="text-headline-md font-headline-md font-bold text-primary tracking-tight">CrowdMind</span>
 <nav class="hidden md:flex items-center gap-6">
-<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="#">FAQs</a>
-<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="#">Discussions</a>
-<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="#">Ask Question</a>
-<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="/library">FAQs</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="/discussions">Discussions</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="/ask">Ask Question</a>
+<a class="text-on-surface-variant font-medium font-body-md text-body-md hover:text-primary transition-colors duration-200" href="/analysis">Analytics</a>
 </nav>
 </div>
 <div class="flex items-center gap-4">

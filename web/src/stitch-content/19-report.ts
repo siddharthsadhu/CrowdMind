@@ -45,10 +45,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-8">
 <span class="font-display text-headline-md font-bold text-primary">CrowdMind</span>
 <div class="hidden md:flex gap-6">
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="#">FAQs</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="#">Discussions</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="#">Ask Question</a>
-<a class="text-primary border-b-2 border-primary pb-1 font-body-md" href="#">Analytics</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="/library">FAQs</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="/discussions">Discussions</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md" href="/ask">Ask Question</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-body-md" href="/analysis">Analytics</a>
 </div>
 </div>
 <div class="flex items-center gap-4">

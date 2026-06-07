@@ -35,10 +35,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-gutter">
 <a class="font-display text-headline-md font-semibold text-primary tracking-tight" href="#">CrowdMind</a>
 <div class="hidden md:flex gap-6 items-center">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">FAQs</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Discussions</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Ask Question</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/library">FAQs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/discussions">Discussions</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/ask">Ask Question</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out" href="/analysis">Analytics</a>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -340,14 +340,14 @@ export const bodyHtml = `<!-- TopNavBar -->
 <h5 class="font-label-md text-primary mb-4 uppercase tracking-widest text-xs">Product</h5>
 <ul class="space-y-2">
 <li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="#">Features</a></li>
-<li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="#">Analytics</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="/analysis">Analytics</a></li>
 <li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="#">Integrations</a></li>
 </ul>
 </div>
 <div class="md:col-span-2">
 <h5 class="font-label-md text-primary mb-4 uppercase tracking-widest text-xs">Community</h5>
 <ul class="space-y-2">
-<li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="#">Discussions</a></li>
+<li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="/discussions">Discussions</a></li>
 <li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="#">Leaderboard</a></li>
 <li><a class="text-on-surface-variant hover:text-secondary transition-colors text-sm" href="#">Contributors</a></li>
 </ul>

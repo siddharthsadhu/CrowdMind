@@ -46,7 +46,7 @@ export const usersApi = {
   getById: (id: string) =>
     api.get<UserResponse>(`/api/v1/users/${id}`),
 
-  updateMe: (data: { full_name?: string; bio?: string; avatar_url?: string }) =>
+  updateMe: (data: { full_name?: string; bio?: string; avatar_url?: string; username?: string }) =>
     api.patch<UserResponse>('/api/v1/users/me', data),
 
   getMyContributions: () =>

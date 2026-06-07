@@ -13,6 +13,7 @@
     "@clerk/clerk-react": "^5.61.8",
     "@hookform/resolvers": "^5.4.0",
     "@tanstack/react-query": "^5.100.14",
+    "idb": "^8.0.3",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.77.0",
@@ -26,6 +27,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.5.0",
+    "playwright": "^1.60.0",
     "tailwindcss": "^4.1.8",
     "typescript": "~5.8.3",
     "vite": "^6.3.5"

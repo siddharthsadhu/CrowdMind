@@ -8,6 +8,7 @@ type AuthState = {
   role: UserRole
   email: string | null
   name: string
+  imageUrl: string | null
   isLoaded: boolean
   signIn: (email?: string) => void
   signOut: () => void
@@ -28,6 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           role: 'guest',
           email: null,
           name: 'Guest',
+          imageUrl: null,
           isLoaded: false,
           signIn: () => {},
           signOut: () => {},
@@ -57,6 +59,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const signOut = () => {
     clerkSignOut()
     localStorage.removeItem('clerk-token')
+    localStorage.removeItem('cm_custom_avatar_url')
+    localStorage.removeItem('cm_custom_name')
+    localStorage.removeItem('saved-faqs')
+    localStorage.removeItem('faq-feedback-counts')
   }
 
   const setAdmin = () => {
@@ -69,6 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         role,
         email,
         name: displayName,
+        imageUrl: user?.imageUrl ?? null,
         isLoaded: true,
         signIn,
         signOut,
@@ -88,6 +95,7 @@ export function GuestOnlyProvider({ children }: { children: ReactNode }) {
         role: 'guest',
         email: null,
         name: 'Guest',
+        imageUrl: null,
         isLoaded: true,
         signIn: () => { alert('Clerk not configured — sign-in unavailable') },
         signOut: () => {},

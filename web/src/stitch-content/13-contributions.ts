@@ -37,10 +37,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-8">
 <span class="font-headline-md text-headline-md font-bold text-primary tracking-tight">CrowdMind</span>
 <nav class="hidden md:flex items-center gap-6">
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">FAQs</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Discussions</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Ask Question</a>
-<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Analytics</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/library">FAQs</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/discussions">Discussions</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/ask">Ask Question</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-colors" href="/analysis">Analytics</a>
 </nav>
 </div>
 <div class="flex items-center gap-4">

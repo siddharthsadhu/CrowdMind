@@ -40,10 +40,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-8">
 <span class="font-display text-headline-md font-semibold text-primary">CrowdMind</span>
 <div class="hidden md:flex items-center gap-6">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">FAQs</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Discussions</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Ask Question</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="/library">FAQs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="/discussions">Discussions</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="/ask">Ask Question</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200" href="/analysis">Analytics</a>
 </div>
 </div>
 <div class="flex items-center gap-4">
@@ -75,20 +75,20 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-3">
 <div class="text-right">
 <p class="text-[10px] text-outline uppercase tracking-tighter">Quality Score</p>
-<p class="font-label-md text-secondary-container">68/100</p>
+<p class="font-label-md text-secondary-container" id="quality-score-num">68/100</p>
 </div>
 <div class="w-12 h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
-<div class="bg-secondary-container h-full w-[68%]"></div>
+<div class="bg-secondary-container h-full w-[68%]" id="quality-score-bar"></div>
 </div>
 </div>
 </div>
-<textarea class="w-full bg-transparent border-none text-headline-md font-headline-md text-on-surface placeholder:text-outline-variant focus:ring-0 resize-none p-0" placeholder="Can I change my team after Phase 1?" rows="4"></textarea>
+<textarea class="w-full bg-transparent border-none text-headline-md font-headline-md text-on-surface placeholder:text-outline-variant focus:ring-0 resize-none p-0" id="question-title-input" placeholder="Can I change my team after Phase 1?" rows="4"></textarea>
 <div class="h-[1px] w-full bg-gradient-to-r from-primary/50 to-transparent"></div><div class="mt-4 p-4 rounded-lg bg-primary/5 border border-primary/20">
 <div class="flex items-center gap-2 text-primary mb-2">
 <span class="material-symbols-outlined text-[20px]">tips_and_updates</span>
 <span class="font-label-sm uppercase">Proactive Suggestions</span>
 </div>
-<ul class="space-y-1.5">
+<ul class="space-y-1.5" id="proactive-suggestions-list">
 <li class="text-body-md text-on-surface-variant flex items-center gap-2">
 <span class="w-1 h-1 rounded-full bg-primary"></span>
             Add more context to help AI analysis
@@ -103,7 +103,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <!-- Category Selector -->
 <div class="space-y-4">
 <label class="font-label-md text-on-surface-variant">Select Category</label>
-<div class="flex flex-wrap gap-3">
+<div class="flex flex-wrap gap-3" id="category-buttons-wrapper">
 <button class="px-6 py-2 rounded-full border border-primary bg-primary/10 text-primary font-label-md transition-all active:scale-95">Internship</button>
 <button class="px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95">Team Formation</button>
 <button class="px-6 py-2 rounded-full border border-outline-variant hover:border-primary/50 text-on-surface-variant font-label-md transition-all active:scale-95">NOC</button>
@@ -115,28 +115,28 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="space-y-4">
 <label class="font-label-md text-on-surface-variant">Additional Context (Optional)</label>
 <div class="p-4 rounded-lg bg-surface-container-lowest border border-outline-variant/30">
-<textarea class="w-full bg-transparent border-none text-body-md text-on-surface focus:ring-0 p-0" placeholder="Describe your situation in more detail for a better AI analysis..." rows="3"></textarea>
+<textarea class="w-full bg-transparent border-none text-body-md text-on-surface focus:ring-0 p-0" id="question-desc-input" placeholder="Describe your situation in more detail for a better AI analysis..." rows="3"></textarea>
 </div>
 </div>
 <!-- Submit Action -->
-<div class="p-6 rounded-xl border border-secondary-container/30 bg-secondary-container/5 space-y-4">
+<div class="p-6 rounded-xl border border-secondary-container/30 bg-secondary-container/5 space-y-4" id="best-faq-match-section">
 <div class="flex items-center justify-between">
 <div class="flex items-center gap-2 text-secondary-container">
 <span class="material-symbols-outlined">verified</span>
 <span class="font-headline-md">Your question may already be answered here</span>
 </div>
-<span class="px-3 py-1 bg-secondary-container/20 text-secondary-container rounded-full text-[10px] font-bold tracking-widest uppercase">Best FAQ Match</span>
+<span class="px-3 py-1 bg-secondary-container/20 text-secondary-container rounded-full text-[10px] font-bold tracking-widest uppercase" id="best-faq-match-pct">Best FAQ Match</span>
 </div>
-<div class="glass-card p-4 rounded-lg border-secondary-container/20 hover:border-secondary-container/50 cursor-pointer">
-<h4 class="font-headline-md text-on-surface mb-1">What is the procedure for mid-phase team transitions?</h4>
-<p class="text-body-md text-on-surface-variant">Team changes after Phase 1 are permitted only through a NOC request submitted by the project lead...</p>
+<div class="glass-card p-4 rounded-lg border-secondary-container/20 hover:border-secondary-container/50 cursor-pointer" id="best-faq-match-card">
+<h4 class="font-headline-md text-on-surface mb-1" id="best-faq-match-title">What is the procedure for mid-phase team transitions?</h4>
+<p class="text-body-md text-on-surface-variant" id="best-faq-match-desc">Team changes after Phase 1 are permitted only through a NOC request submitted by the project lead...</p>
 </div>
 </div><div class="flex items-center justify-between pt-4">
 <div class="flex items-center gap-2 text-label-sm text-outline">
 <span class="material-symbols-outlined text-[18px]">info</span>
                             AI will scan for duplicates before posting
                         </div>
-<button class="px-10 py-4 bg-primary text-on-primary font-headline-md rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(176,198,255,0.3)]">
+<button data-prevent-stitch="true" class="px-10 py-4 bg-primary text-on-primary font-headline-md rounded-xl hover:brightness-110 active:scale-95 transition-all shadow-[0_0_20px_rgba(176,198,255,0.3)]">
                             Submit Question
                         </button>
 </div>
@@ -144,29 +144,29 @@ export const bodyHtml = `<!-- TopNavBar -->
 <!-- Recent Similar Questions (Below Main Panel) -->
 <section class="mt-16 space-y-6"><div class="flex items-center justify-between">
 <h2 class="font-headline-lg text-on-surface">Intelligent Match Analysis</h2>
-<span class="font-label-sm text-primary">Scanning 4,200+ knowledge nodes</span>
+<span class="font-label-sm text-primary" id="knowledge-nodes-count-text">Scanning 4,200+ knowledge nodes</span>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
 <div class="space-y-4">
 <div class="flex items-center justify-between">
 <h3 class="font-label-md text-outline uppercase">Similar FAQs</h3>
-<span class="text-[10px] text-secondary-container uppercase font-bold">98% Confidence</span>
+<span class="text-[10px] text-secondary-container uppercase font-bold" id="similar-faq-confidence">98% Confidence</span>
 </div>
-<div class="glass-card rounded-xl p-6 border-l-2 border-l-secondary-container">
-<span class="font-label-sm text-secondary-fixed bg-secondary-fixed/10 px-2 py-1 rounded mb-4 inline-block">Governance</span>
-<h4 class="font-headline-md text-on-surface mb-2">Can team rosters be modified during active sprints?</h4>
-<p class="text-body-md text-on-surface-variant line-clamp-1">View detailed policy on roster management and NOC requirements.</p>
+<div class="glass-card rounded-xl p-6 border-l-2 border-l-secondary-container" id="similar-faq-card">
+<span class="font-label-sm text-secondary-fixed bg-secondary-fixed/10 px-2 py-1 rounded mb-4 inline-block" id="similar-faq-category">Governance</span>
+<h4 class="font-headline-md text-on-surface mb-2" id="similar-faq-title">Can team rosters be modified during active sprints?</h4>
+<p class="text-body-md text-on-surface-variant line-clamp-1" id="similar-faq-desc">View detailed policy on roster management and NOC requirements.</p>
 </div>
 </div>
 <div class="space-y-4">
 <div class="flex items-center justify-between">
 <h3 class="font-label-md text-outline uppercase">Similar Discussions</h3>
-<span class="text-[10px] text-primary uppercase font-bold">82% Relevance</span>
+<span class="text-[10px] text-primary uppercase font-bold" id="similar-discussion-confidence">82% Relevance</span>
 </div>
-<div class="glass-card rounded-xl p-6 border-l-2 border-l-primary">
-<span class="font-label-sm text-secondary-fixed bg-secondary-fixed/10 px-2 py-1 rounded mb-4 inline-block">ViBe</span>
-<h4 class="font-headline-md text-on-surface mb-2">Phase 1 Team Formation - Common issues and fixes</h4>
-<p class="text-body-md text-on-surface-variant line-clamp-1">Community-led thread discussing team synchronization issues.</p>
+<div class="glass-card rounded-xl p-6 border-l-2 border-l-primary" id="similar-discussion-card">
+<span class="font-label-sm text-secondary-fixed bg-secondary-fixed/10 px-2 py-1 rounded mb-4 inline-block" id="similar-discussion-category">ViBe</span>
+<h4 class="font-headline-md text-on-surface mb-2" id="similar-discussion-title">Phase 1 Team Formation - Common issues and fixes</h4>
+<p class="text-body-md text-on-surface-variant line-clamp-1" id="similar-discussion-desc">Community-led thread discussing team synchronization issues.</p>
 </div>
 </div>
 </div></section>
@@ -198,7 +198,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <!-- Examples Card -->
 <div class="glass-card rounded-xl p-6">
 <h3 class="font-headline-md text-on-surface mb-6">Example Questions</h3>
-<div class="space-y-6">
+<div class="space-y-6" id="example-questions-list">
 <div class="space-y-1">
 <p class="font-label-sm text-outline uppercase tracking-wider">Infrastructure</p>
 <p class="text-on-surface italic">"How do I sync my Rosetta nodes manually?"</p>
@@ -247,7 +247,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="md:col-span-2">
 <h4 class="font-label-md text-primary mb-4 uppercase">Community</h4>
 <div class="flex flex-col gap-2">
-<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="#">Discussions</a>
+<a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="/discussions">Discussions</a>
 <a class="text-on-surface-variant font-body-md hover:text-secondary transition-colors" href="#">Wiki</a>
 </div>
 </div>

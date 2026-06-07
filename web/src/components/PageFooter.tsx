@@ -1,8 +1,13 @@
 /** Real footer with working links. Replaces the broken <a href="#"> links in every Stitch page. */
 import { useNavigate } from 'react-router-dom'
+import { useAuth } from '@/context/AuthContext'
 
 export function PageFooter() {
   const navigate = useNavigate()
+  const { role, isLoaded } = useAuth()
+
+  const isAdmin = isLoaded && role === 'admin'
+  const isSignedIn = isLoaded && role !== 'guest'
 
   const columns = [
     {
@@ -14,31 +19,39 @@ export function PageFooter() {
         { label: 'Knowledge Evolution', to: '/evolution' },
       ],
     },
-    {
-      title: 'Account',
-      links: [
-        { label: 'Profile', to: '/home' },
-        { label: 'Saved', to: '/saved' },
-        { label: 'Notifications', to: '/notifications' },
-        { label: 'Settings', to: '/settings' },
-      ],
-    },
-    {
-      title: 'Admin',
-      links: [
-        { label: 'Mission Control', to: '/admin' },
-        { label: 'FAQ Management', to: '/admin/faq' },
-        { label: 'Moderation', to: '/admin/moderation' },
-        { label: 'Analytics', to: '/admin/analytics' },
-      ],
-    },
+    ...(isSignedIn
+      ? [
+          {
+            title: 'Account',
+            links: [
+              { label: 'Profile', to: '/home' },
+              { label: 'Saved', to: '/saved' },
+              { label: 'Notifications', to: '/notifications' },
+              { label: 'Settings', to: isAdmin ? '/admin/settings' : '/settings' },
+            ],
+          },
+        ]
+      : []),
+    ...(isAdmin
+      ? [
+          {
+            title: 'Admin',
+            links: [
+              { label: 'Mission Control', to: '/admin' },
+              { label: 'FAQ Management', to: '/admin/faq' },
+              { label: 'Moderation', to: '/admin/moderation' },
+              { label: 'Analytics', to: '/admin/analytics' },
+            ],
+          },
+        ]
+      : []),
     {
       title: 'Resources',
       links: [
+        { label: 'Methodology', to: '/methodology' },
         { label: 'About', to: '/' },
         { label: 'Status', to: '/' },
         { label: 'Privacy', to: '/' },
-        { label: 'Terms', to: '/' },
       ],
     },
   ]

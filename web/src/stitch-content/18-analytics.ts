@@ -42,7 +42,7 @@ export const bodyHtml = `<!-- TopNavBar Shell -->
 <span class="font-display text-headline-md font-semibold text-on-surface tracking-tight">CrowdMind</span>
 <div class="hidden md:flex items-center gap-6">
 <a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Dashboard</a>
-<a class="text-primary font-semibold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Analytics</a>
+<a class="text-primary font-semibold border-b-2 border-primary pb-1 font-body-md text-body-md" href="/analysis">Analytics</a>
 <a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Insights</a>
 <a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Reports</a>
 <a class="text-on-surface-variant font-medium hover:text-on-surface transition-colors font-body-md text-body-md" href="#">Engines</a>
@@ -68,52 +68,52 @@ export const bodyHtml = `<!-- TopNavBar Shell -->
 </header>
 <!-- KPI Row -->
 <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-gutter mb-12">
-<div class="glass-card p-6 rounded-xl">
+<div data-cm-kpi-discussions class="glass-card p-6 rounded-xl">
 <p class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Total Discussions</p>
-<h3 class="text-headline-md font-headline-md text-on-surface">12.4k</h3>
-<span class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
+<h3 data-cm-kpi-discussions-value class="text-headline-md font-headline-md text-on-surface">12.4k</h3>
+<span data-cm-kpi-discussions-trend class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
 <span class="material-symbols-outlined text-[14px]">trending_up</span> +5.2%
             </span>
 </div>
-<div class="glass-card p-6 rounded-xl">
+<div data-cm-kpi-faqs class="glass-card p-6 rounded-xl">
 <p class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Published FAQs</p>
-<h3 class="text-headline-md font-headline-md text-on-surface">1,284</h3>
-<span class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
+<h3 data-cm-kpi-faqs-value class="text-headline-md font-headline-md text-on-surface">1,284</h3>
+<span data-cm-kpi-faqs-trend class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
 <span class="material-symbols-outlined text-[14px]">trending_up</span> +12%
             </span>
 </div>
-<div class="glass-card p-6 rounded-xl">
+<div data-cm-kpi-accuracy class="glass-card p-6 rounded-xl">
 <p class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Knowledge Accuracy</p>
-<h3 class="text-headline-md font-headline-md text-on-surface">98.4%</h3>
-<span class="text-on-surface-variant text-label-sm font-label-sm flex items-center gap-1 mt-2">
+<h3 data-cm-kpi-accuracy-value class="text-headline-md font-headline-md text-on-surface">98.4%</h3>
+<span data-cm-kpi-accuracy-trend class="text-on-surface-variant text-label-sm font-label-sm flex items-center gap-1 mt-2">
 <span class="material-symbols-outlined text-[14px]">horizontal_rule</span> Stable
             </span>
 </div>
-<div class="glass-card p-6 rounded-xl">
+<div data-cm-kpi-contributors class="glass-card p-6 rounded-xl">
 <p class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Active Contributors</p>
-<h3 class="text-headline-md font-headline-md text-on-surface">3.1k</h3>
-<span class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
+<h3 data-cm-kpi-contributors-value class="text-headline-md font-headline-md text-on-surface">3.1k</h3>
+<span data-cm-kpi-contributors-trend class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
 <span class="material-symbols-outlined text-[14px]">group</span> +204
             </span>
 </div>
-<div class="glass-card p-6 rounded-xl">
+<div data-cm-kpi-reuse class="glass-card p-6 rounded-xl">
 <p class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Reuse Rate</p>
-<h3 class="text-headline-md font-headline-md text-on-surface">84%</h3>
-<span class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
+<h3 data-cm-kpi-reuse-value class="text-headline-md font-headline-md text-on-surface">84%</h3>
+<span data-cm-kpi-reuse-trend class="text-secondary text-label-sm font-label-sm flex items-center gap-1 mt-2">
 <span class="material-symbols-outlined text-[14px]">trending_up</span> +2.1%
             </span>
 </div>
-<div class="glass-card p-6 rounded-xl border-primary/20 bg-primary/5">
+<div data-cm-kpi-growth class="glass-card p-6 rounded-xl border-primary/20 bg-primary/5">
 <p class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">Monthly Growth</p>
-<h3 class="text-headline-md font-headline-md text-primary">+12.4%</h3>
-<span class="text-primary text-label-sm font-label-sm flex items-center gap-1 mt-2">
+<h3 data-cm-kpi-growth-value class="text-headline-md font-headline-md text-primary">+12.4%</h3>
+<span data-cm-kpi-growth-trend class="text-primary text-label-sm font-label-sm flex items-center gap-1 mt-2">
 <span class="material-symbols-outlined text-[14px]">rocket_launch</span> High Pace
             </span>
 </div>
 </section>
 <!-- Time Filter -->
 <div class="flex justify-end mb-8">
-<div class="flex bg-surface-container rounded-lg p-1 border border-white/5">
+<div data-cm-time-filter class="flex bg-surface-container rounded-lg p-1 border border-white/5">
 <button class="px-4 py-1.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors">7D</button>
 <button class="px-4 py-1.5 rounded font-label-sm text-label-sm bg-primary/20 text-primary border border-primary/20">30D</button>
 <button class="px-4 py-1.5 rounded font-label-sm text-label-sm text-on-surface-variant hover:text-on-surface transition-colors">90D</button>
@@ -166,44 +166,43 @@ export const bodyHtml = `<!-- TopNavBar Shell -->
 <line stroke="white" stroke-dasharray="4" stroke-opacity="0.05" x1="0" x2="800" y1="120" y2="120"></line>
 <line stroke="white" stroke-dasharray="4" stroke-opacity="0.05" x1="0" x2="800" y1="180" y2="180"></line>
 <!-- Area Fills -->
-<path class="chart-fill-primary" d="M0,240 C100,200 200,180 300,140 C400,100 500,120 600,60 C700,20 800,40 800,240 Z"></path>
-<path class="chart-fill-secondary" d="M0,240 C100,220 200,210 300,180 C400,150 500,170 600,120 C700,90 800,100 800,240 Z"></path>
-<path class="chart-fill-tertiary" d="M0,240 C100,230 200,230 300,210 C400,190 500,200 600,160 C700,140 800,150 800,240 Z"></path>
-<!-- Line Paths -->
-<path class="chart-path-primary" d="M0,240 C100,200 200,180 300,140 C400,100 500,120 600,60 C700,20 800,40"></path>
-<path class="chart-path-secondary" d="M0,240 C100,220 200,210 300,180 C400,150 500,170 600,120 C700,90 800,100"></path>
-<path class="chart-path-tertiary" d="M0,240 C100,230 200,230 300,210 C400,190 500,200 600,160 C700,140 800,150"></path>
+<path data-cm-chart-fill-discussions class="chart-fill-primary" d="M0,240 C100,200 200,180 300,140 C400,100 500,120 600,60 C700,20 800,40 800,240 Z"></path>
+<path data-cm-chart-fill-consensus class="chart-fill-secondary" d="M0,240 C100,220 200,210 300,180 C400,150 500,170 600,120 C700,90 800,100 800,240 Z"></path>
+<path data-cm-chart-fill-faqs class="chart-fill-tertiary" d="M0,240 C100,230 200,230 300,210 C400,190 500,200 600,160 C700,140 800,150 800,240 Z"></path>
+<path data-cm-chart-path-discussions class="chart-path-primary" d="M0,240 C100,200 200,180 300,140 C400,100 500,120 600,60 C700,20 800,40"></path>
+<path data-cm-chart-path-consensus class="chart-path-secondary" d="M0,240 C100,220 200,210 300,180 C400,150 500,170 600,120 C700,90 800,100"></path>
+<path data-cm-chart-path-faqs class="chart-path-tertiary" d="M0,240 C100,230 200,230 300,210 C400,190 500,200 600,160 C700,140 800,150"></path>
 </svg>
 </div>
 </div>
 <!-- 2. Knowledge Conversion Funnel -->
 <div class="glass-card p-8 rounded-xl">
-<h2 class="text-headline-md font-headline-md mb-8">Knowledge Conversion Funnel</h2>
+<h2 data-cm-funnel-header class="text-headline-md font-headline-md mb-8">Knowledge Conversion Funnel</h2>
 <div class="space-y-4">
-<div class="flex items-center gap-4">
-<div class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">Questions (24k)</div>
-<div class="flex-1 bg-primary h-8 rounded-sm opacity-100"></div>
-<div class="w-16 text-right font-label-sm">100%</div>
+<div data-cm-funnel-row-questions class="flex items-center gap-4">
+<div data-cm-funnel-questions-label class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">Questions (24k)</div>
+<div data-cm-funnel-questions-bar class="flex-1 bg-primary h-8 rounded-sm opacity-100"></div>
+<div data-cm-funnel-questions-pct class="w-16 text-right font-label-sm">100%</div>
 </div>
-<div class="flex items-center gap-4">
-<div class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">Discussions (12.4k)</div>
-<div class="flex-1 bg-primary h-8 rounded-sm opacity-80" style="width: 52%"></div>
-<div class="w-16 text-right font-label-sm">52%</div>
+<div data-cm-funnel-row-discussions class="flex items-center gap-4">
+<div data-cm-funnel-discussions-label class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">Discussions (12.4k)</div>
+<div data-cm-funnel-discussions-bar class="flex-1 bg-primary h-8 rounded-sm opacity-80" style="width: 52%"></div>
+<div data-cm-funnel-discussions-pct class="w-16 text-right font-label-sm">52%</div>
 </div>
-<div class="flex items-center gap-4">
-<div class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">Consensus (8.2k)</div>
-<div class="flex-1 bg-primary h-8 rounded-sm opacity-60" style="width: 34%"></div>
-<div class="w-16 text-right font-label-sm">34%</div>
+<div data-cm-funnel-row-consensus class="flex items-center gap-4">
+<div data-cm-funnel-consensus-label class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">Consensus (8.2k)</div>
+<div data-cm-funnel-consensus-bar class="flex-1 bg-primary h-8 rounded-sm opacity-60" style="width: 34%"></div>
+<div data-cm-funnel-consensus-pct class="w-16 text-right font-label-sm">34%</div>
 </div>
-<div class="flex items-center gap-4">
-<div class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">AI Synthesis (3.1k)</div>
-<div class="flex-1 bg-primary h-8 rounded-sm opacity-40" style="width: 13%"></div>
-<div class="w-16 text-right font-label-sm">13%</div>
+<div data-cm-funnel-row-synthesis class="flex items-center gap-4">
+<div data-cm-funnel-synthesis-label class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">AI Synthesis (3.1k)</div>
+<div data-cm-funnel-synthesis-bar class="flex-1 bg-primary h-8 rounded-sm opacity-40" style="width: 13%"></div>
+<div data-cm-funnel-synthesis-pct class="w-16 text-right font-label-sm">13%</div>
 </div>
-<div class="flex items-center gap-4">
-<div class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">FAQ Published (1.2k)</div>
-<div class="flex-1 bg-primary h-8 rounded-sm opacity-20" style="width: 5%"></div>
-<div class="w-16 text-right font-label-sm">5.3%</div>
+<div data-cm-funnel-row-faqs class="flex items-center gap-4">
+<div data-cm-funnel-faqs-label class="w-1/4 text-label-sm font-label-sm text-on-surface-variant">FAQ Published (1.2k)</div>
+<div data-cm-funnel-faqs-bar class="flex-1 bg-primary h-8 rounded-sm opacity-20" style="width: 5%"></div>
+<div data-cm-funnel-faqs-pct class="w-16 text-right font-label-sm">5.3%</div>
 </div>
 </div>
 </div>
@@ -222,7 +221,7 @@ export const bodyHtml = `<!-- TopNavBar Shell -->
 <th class="px-8 py-4">Activity</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-white/5">
+<tbody data-cm-category-intelligence-tbody class="divide-y divide-white/5">
 <tr class="hover:bg-white/2 transition-colors">
 <td class="px-8 py-5 text-on-surface font-medium">AI Ethics</td>
 <td class="px-8 py-5">
@@ -310,31 +309,31 @@ export const bodyHtml = `<!-- TopNavBar Shell -->
 <div class="glass-card p-8 rounded-xl">
 <div class="flex items-center gap-3 mb-6">
 <span class="material-symbols-outlined text-secondary">update</span>
-<h2 class="text-headline-md font-headline-md">Knowledge Evolution Activity</h2>
+<h2 data-cm-evolution-activity-header class="text-headline-md font-headline-md">Knowledge Evolution Activity</h2>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
-<div class="flex justify-between items-center py-2 border-b border-white/5">
+<div data-cm-evo-row-growing class="flex justify-between items-center py-2 border-b border-white/5">
 <span class="text-on-surface-variant font-label-md">Fastest Growing Topic</span>
-<span class="text-secondary font-medium flex items-center gap-2">Neural Ethics <span class="bg-secondary/10 px-2 py-0.5 rounded text-[10px]">+24%</span></span>
+<span data-cm-evo-growing-value class="text-secondary font-medium flex items-center gap-2">Neural Ethics <span class="bg-secondary/10 px-2 py-0.5 rounded text-[10px]">+24%</span></span>
 </div>
-<div class="flex justify-between items-center py-2 border-b border-white/5">
+<div data-cm-evo-row-updated class="flex justify-between items-center py-2 border-b border-white/5">
 <span class="text-on-surface-variant font-label-md">Most Updated FAQ</span>
-<span class="text-on-surface font-medium flex items-center gap-2">#402 Data Norms <span class="bg-white/5 px-2 py-0.5 rounded text-[10px]">12 v.</span></span>
+<span data-cm-evo-updated-value class="text-on-surface font-medium flex items-center gap-2">#402 Data Norms <span class="bg-white/5 px-2 py-0.5 rounded text-[10px]">12 v.</span></span>
 </div>
-<div class="flex justify-between items-center py-2 border-b border-white/5">
+<div data-cm-evo-row-emerging class="flex justify-between items-center py-2 border-b border-white/5">
 <span class="text-on-surface-variant font-label-md">Emerging Category</span>
-<span class="text-primary font-medium">Agentic Reasoning</span>
+<span data-cm-evo-emerging-value class="text-primary font-medium">Agentic Reasoning</span>
 </div>
-<div class="flex justify-between items-center py-2 border-b border-white/5">
+<div data-cm-evo-row-reuse class="flex justify-between items-center py-2 border-b border-white/5">
 <span class="text-on-surface-variant font-label-md">Highest Reuse Artifact</span>
-<span class="text-on-surface font-medium flex items-center gap-2">Prompt V3.1 <span class="text-on-surface-variant text-[11px]">4.2k uses</span></span>
+<span data-cm-evo-reuse-value class="text-on-surface font-medium flex items-center gap-2">Prompt V3.1 <span class="text-on-surface-variant text-[11px]">4.2k uses</span></span>
 </div>
 </div>
 </div>
 <!-- 8. Platform Activity Heatmap -->
 <div class="glass-card p-8 rounded-xl">
-<h2 class="text-headline-md font-headline-md mb-6">Platform Activity Heatmap</h2>
-<div class="grid grid-cols-24 gap-1">
+<h2 data-cm-heatmap-header class="text-headline-md font-headline-md mb-6">Platform Activity Heatmap</h2>
+<div data-cm-heatmap-container class="grid grid-cols-24 gap-1">
 <div class="flex gap-2 items-center flex-wrap">
 
 </div>
@@ -391,7 +390,7 @@ export const bodyHtml = `<!-- TopNavBar Shell -->
 </div>
 <!-- 2. Contributor Intelligence (Updated) -->
 <div class="glass-card p-8 rounded-xl">
-<h2 class="text-headline-md font-headline-md mb-6">Top Contributors</h2>
+<h2 data-cm-top-contributors-header class="text-headline-md font-headline-md mb-6">Top Contributors</h2>
 <div class="space-y-8">
 <!-- Contributor 1 -->
 <div class="space-y-3">

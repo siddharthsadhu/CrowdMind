@@ -105,10 +105,10 @@
 <div class="flex items-center gap-12">
 <span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">CrowdMind AI</span>
 <nav class="hidden md:flex items-center gap-8">
-<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="#">FAQs</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Discussions</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Ask Question</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Analytics</a>
+<a class="font-body-md text-body-md text-primary border-b-2 border-primary pb-1" href="/library">FAQs</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/discussions">Discussions</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/ask">Ask Question</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/analysis">Analytics</a>
 </nav>
 </div>
 <div class="flex items-center gap-6">
@@ -393,8 +393,8 @@
 </div>
 </div>
 <!-- Pagination -->
-<div class="flex justify-center items-center gap-2 mt-8">
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
+<div data-cm-pagination class="flex justify-center items-center gap-2 mt-8">
+<button data-cm-page-prev class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
 <span class="material-symbols-outlined text-sm">chevron_left</span>
 </button>
 <button class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary text-on-primary font-label-md text-sm">1</button>
@@ -402,7 +402,7 @@
 <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">3</button>
 <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">4</button>
 <button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors font-label-md text-sm text-on-surface-variant">5</button>
-<button class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
+<button data-cm-page-next class="w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 hover:bg-white/5 transition-colors text-on-surface-variant">
 <span class="material-symbols-outlined text-sm">chevron_right</span>
 </button>
 </div>
@@ -477,7 +477,7 @@
 <div>
 <h4 class="font-label-md text-on-surface mb-6 uppercase tracking-wider">Community</h4>
 <div class="flex flex-col gap-4">
-<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Discussions</a>
+<a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="/discussions">Discussions</a>
 <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Governance</a>
 <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Mentorship</a>
 <a class="font-body-md text-on-surface-variant hover:text-primary transition-colors" href="#">Wall of Fame</a>

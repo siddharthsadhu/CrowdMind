@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useStitchData } from '@/hooks/useStitchData'
 import { useNavigate } from 'react-router-dom'
 import { StitchPage } from '@/components/StitchPage'
@@ -9,12 +10,24 @@ type Filter = 'all' | 'unread' | 'archived'
 
 export default function NotificationsPage() {
   const navigate = useNavigate()
-  let currentFilter: Filter = 'all'
+  const [currentFilter, setCurrentFilter] = useState<Filter>('all')
+  const [tick, setTick] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTick((t) => t + 1)
+    }, 8000)
+    return () => clearInterval(timer)
+  }, [])
 
   useStitchData(async (root) => {
     const loadNotifications = async (filter: Filter = currentFilter) => {
-      currentFilter = filter
       try {
+        // Persist checkbox states
+        const checkedIds = Array.from(root.querySelectorAll('.cm-select-notif:checked'))
+          .map(cb => cb.getAttribute('data-id'))
+          .filter(Boolean) as string[]
+
         const res = await notificationsApi.list({ page_size: '50', filter })
         const container = root.querySelector('.space-y-10')
         if (container) {
@@ -67,9 +80,10 @@ export default function NotificationsPage() {
             }
 
             const dateStr = n.created_at ? new Date(n.created_at).toLocaleDateString() : 'Just now'
+            const isChecked = checkedIds.includes(n.id)
 
             card.innerHTML = `
-              <div class="pt-1"><input class="w-4 h-4 rounded border-outline-variant bg-transparent text-primary focus:ring-primary/50 cm-select-notif" type="checkbox" data-id="${n.id}"></div>
+              <div class="pt-1"><input class="w-4 h-4 rounded border-outline-variant bg-transparent text-primary focus:ring-primary/50 cm-select-notif" type="checkbox" data-id="${n.id}" ${isChecked ? 'checked' : ''}></div>
               <div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0">
                 <span class="material-symbols-outlined text-primary">${icon}</span>
               </div>
@@ -92,6 +106,7 @@ export default function NotificationsPage() {
               if (!n.read) {
                 try {
                   await notificationsApi.markRead(n.id)
+                  window.dispatchEvent(new CustomEvent('cm:notifications-updated'))
                   loadNotifications()
                 } catch (err) {
                   console.error(err)
@@ -104,6 +119,7 @@ export default function NotificationsPage() {
               e.stopPropagation()
               try {
                 await notificationsApi.markRead(n.id)
+                window.dispatchEvent(new CustomEvent('cm:notifications-updated'))
                 loadNotifications()
               } catch (err) {
                 console.error(err)
@@ -129,6 +145,7 @@ export default function NotificationsPage() {
         e.preventDefault()
         try {
           await notificationsApi.markAllRead()
+          window.dispatchEvent(new CustomEvent('cm:notifications-updated'))
           loadNotifications()
         } catch (err) {
           console.error(err)
@@ -139,12 +156,16 @@ export default function NotificationsPage() {
     // Batch Mark Read Button (drafts icon)
     const draftsIconBtn = root.querySelector('button[title="Mark Read"]')
     if (draftsIconBtn) {
-      draftsIconBtn.addEventListener('click', async () => {
+      const newDraftsIconBtn = draftsIconBtn.cloneNode(true) as HTMLButtonElement
+      draftsIconBtn.parentNode?.replaceChild(newDraftsIconBtn, draftsIconBtn)
+      newDraftsIconBtn.addEventListener('click', async (e) => {
+        e.preventDefault()
         const checkedBoxes = Array.from(root.querySelectorAll('.cm-select-notif:checked')) as HTMLInputElement[]
         const ids = checkedBoxes.map(cb => cb.getAttribute('data-id')).filter(Boolean) as string[]
         if (ids.length > 0) {
           try {
             await Promise.all(ids.map(id => notificationsApi.markRead(id)))
+            window.dispatchEvent(new CustomEvent('cm:notifications-updated'))
             loadNotifications()
           } catch (err) {
             console.error(err)
@@ -156,15 +177,17 @@ export default function NotificationsPage() {
     // Master Checkbox
     const masterCheckbox = root.querySelector('.flex.items-center.gap-3.bg-surface-container-low input[type="checkbox"]') as HTMLInputElement | null
     if (masterCheckbox) {
-      masterCheckbox.addEventListener('change', () => {
+      const newMasterCheckbox = masterCheckbox.cloneNode(true) as HTMLInputElement
+      masterCheckbox.parentNode?.replaceChild(newMasterCheckbox, masterCheckbox)
+      newMasterCheckbox.addEventListener('change', () => {
         const checkboxes = Array.from(root.querySelectorAll('.cm-select-notif')) as HTMLInputElement[]
         checkboxes.forEach(cb => {
-          cb.checked = masterCheckbox.checked
+          cb.checked = newMasterCheckbox.checked
         })
       })
     }
 
-    // Archive button (single notification)
+    // Archive button
     const archiveBtn = root.querySelector('button[title="Archive"]') as HTMLButtonElement | null
     if (archiveBtn) {
       const newArchiveBtn = archiveBtn.cloneNode(true) as HTMLButtonElement
@@ -180,6 +203,7 @@ export default function NotificationsPage() {
         }
         try {
           await Promise.all(ids.map(id => notificationsApi.archive(id)))
+          window.dispatchEvent(new CustomEvent('cm:notifications-updated'))
           loadNotifications()
         } catch (err) {
           console.error(err)
@@ -187,7 +211,7 @@ export default function NotificationsPage() {
       })
     }
 
-    // Delete button (single notification)
+    // Delete button
     const deleteBtn = root.querySelector('button[title="Delete"]') as HTMLButtonElement | null
     if (deleteBtn) {
       const newDeleteBtn = deleteBtn.cloneNode(true) as HTMLButtonElement
@@ -204,6 +228,7 @@ export default function NotificationsPage() {
         if (!confirm(`Delete ${ids.length} notification(s)?`)) return
         try {
           await Promise.all(ids.map(id => notificationsApi.delete(id)))
+          window.dispatchEvent(new CustomEvent('cm:notifications-updated'))
           loadNotifications()
         } catch (err) {
           console.error(err)
@@ -222,16 +247,24 @@ export default function NotificationsPage() {
       const txt = (tab.textContent ?? '').trim().toLowerCase()
       const f = tabMap[txt]
       if (!f) return
+      
+      // Update active/inactive tab styling
+      if (f === currentFilter) {
+        tab.className = 'px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md whitespace-nowrap'
+      } else {
+        tab.className = 'px-4 py-2 rounded-full border border-outline-variant text-on-surface-variant hover:border-primary/50 font-label-md text-label-md whitespace-nowrap transition-colors'
+      }
+
       const newTab = tab.cloneNode(true) as HTMLButtonElement
       tab.parentNode?.replaceChild(newTab, tab)
       newTab.addEventListener('click', (e) => {
         e.preventDefault()
-        loadNotifications(f)
+        setCurrentFilter(f)
       })
     })
 
     loadNotifications()
-  }, [navigate])
+  }, [navigate, currentFilter, tick])
 
   return (
     <StitchPage

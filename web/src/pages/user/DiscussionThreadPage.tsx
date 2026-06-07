@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { useStitchData } from '@/hooks/useStitchData'
 import { useNavigate, useParams } from 'react-router-dom'
 import { StitchPage } from '@/components/StitchPage'
@@ -11,12 +12,34 @@ import { votesApi } from '@/services/api/votes'
 export default function DiscussionThreadPage() {
   const navigate = useNavigate()
   const { id } = useParams()
+  const [tick, setTick] = useState(0)
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTick((t) => t + 1)
+    }, 6000)
+    return () => clearInterval(timer)
+  }, [])
 
   useStitchData(async (root) => {
     if (!id) return
 
     const loadThreadData = async () => {
       try {
+        // ── Cursor preservation ─────────────────────────────────────────
+        // The 6s poll can re-render parts of the page and reset focus /
+        // selection in the reply textarea. Save the user's cursor
+        // position before the data load, then restore it after, but only
+        // if the textarea is still focused (so we don't yank focus away
+        // from a button click). The `<textarea>` lives in the static
+        // 08-thread template (line 178) and is not recreated, but a
+        // defensive save/restore is cheap insurance.
+        const replyArea = root.querySelector('textarea') as HTMLTextAreaElement | null
+        const wasFocused = replyArea === document.activeElement
+        const savedStart = replyArea?.selectionStart ?? 0
+        const savedEnd = replyArea?.selectionEnd ?? 0
+        const savedValue = replyArea?.value ?? ''
+
         const disc = await discussionsApi.getById(id)
         document.title = `CrowdMind | ${disc.title}`
 
@@ -345,13 +368,31 @@ export default function DiscussionThreadPage() {
           })
         }
 
+        // ── Restore cursor after data load ──────────────────────────────
+        // Only restore if the user was actively typing in the textarea
+        // (had it focused) AND the textarea's value hasn't been changed
+        // by an explicit action (e.g. a "Reply" button prepended @user).
+        const currentTextarea = root.querySelector('textarea') as HTMLTextAreaElement | null
+        if (
+          currentTextarea &&
+          wasFocused &&
+          currentTextarea.value === savedValue
+        ) {
+          currentTextarea.focus()
+          try {
+            currentTextarea.setSelectionRange(savedStart, savedEnd)
+          } catch {
+            // Some input types don't support setSelectionRange; ignore.
+          }
+        }
+
       } catch (err) {
         console.error(err)
       }
     }
 
     loadThreadData()
-  }, [id, navigate])
+  }, [id, navigate, tick])
 
   return (
     <StitchPage

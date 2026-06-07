@@ -34,7 +34,19 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
     ...extraHeaders,
   }
 
-  const token = localStorage.getItem('clerk-token')
+  let token = localStorage.getItem('clerk-token')
+  if (typeof window !== 'undefined' && (window as any).Clerk?.session) {
+    try {
+      const clerkToken = await (window as any).Clerk.session.getToken()
+      if (clerkToken) {
+        token = clerkToken
+        localStorage.setItem('clerk-token', clerkToken)
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
   if (token) headers['Authorization'] = `Bearer ${token}`
 
   const res = await fetch(url, {

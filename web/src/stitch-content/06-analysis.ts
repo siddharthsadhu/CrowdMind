@@ -38,10 +38,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="flex items-center gap-8">
 <span class="font-display text-headline-md font-semibold text-primary">CrowdMind</span>
 <nav class="hidden md:flex items-center gap-6">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="#">FAQs</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="#">Discussions</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="#">Ask Question</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="#">Analytics</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="/library">FAQs</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="/discussions">Discussions</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-all duration-200 ease-out font-label-md text-label-md" href="/ask">Ask Question</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-md text-label-md" href="/analysis">Analytics</a>
 </nav>
 </div>
 <div class="flex items-center gap-4">
@@ -68,14 +68,14 @@ export const bodyHtml = `<!-- TopNavBar -->
                 "Can I change my team after Phase 1?"
             </h1>
 <!-- Top Status Card -->
-<div class="glass-card rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 border-l-4 border-l-error opacity-100">
+<div id="status-card-container" class="glass-card rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-8 border-l-4 border-l-error opacity-100">
 <div class="flex items-center gap-6">
 <div class="w-20 h-20 rounded-full border-4 border-surface-container-high flex items-center justify-center relative">
 <svg class="w-full h-full transform -rotate-90">
 <circle class="text-surface-container-high" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-width="4"></circle>
-<circle class="text-primary transition-all duration-1000 ease-out" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213.6" stroke-dashoffset="59.8" stroke-width="4"></circle>
+<circle id="status-circle-progress" class="text-primary transition-all duration-1000 ease-out" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213.6" stroke-dashoffset="59.8" stroke-width="4"></circle>
 </svg>
-<span class="absolute font-label-md text-label-md text-primary">72%</span>
+<span id="status-confidence-score" class="absolute font-label-md text-label-md text-primary">72%</span>
 </div>
 <div>
 <div class="text-on-surface-variant font-label-sm text-label-sm mb-1 uppercase tracking-wider">AI Confidence Score</div>
@@ -97,9 +97,9 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="md:col-span-8 space-y-gutter">
 <div class="flex items-center justify-between">
 <h2 class="font-headline-lg text-headline-lg text-on-surface">Similar FAQs Found</h2>
-<span class="font-label-sm text-label-sm text-on-surface-variant">3 relevant documents recovered</span>
+<span id="similar-faqs-count-label" class="font-label-sm text-label-sm text-on-surface-variant">3 relevant documents recovered</span>
 </div>
-<div class="grid grid-cols-1 gap-6">
+<div id="similar-faqs-container" class="grid grid-cols-1 gap-6">
 <!-- Card 1 -->
 <div class="glass-card rounded-xl p-6 relative overflow-hidden group opacity-100">
 <div class="absolute top-0 right-0 p-4">
@@ -157,16 +157,16 @@ export const bodyHtml = `<!-- TopNavBar -->
 <h2 class="font-label-md text-label-md text-primary font-bold uppercase tracking-widest">AI Draft Answer</h2>
 <span class="bg-secondary-container/20 text-secondary-fixed text-[10px] px-2 py-0.5 rounded font-bold uppercase">Beta</span>
 </div>
-<div class="mb-6 p-4 rounded-lg bg-surface-container-high/50 border border-white/5 italic text-on-surface-variant text-body-md leading-relaxed">
+<div id="ai-draft-text" class="mb-6 p-4 rounded-lg bg-surface-container-high/50 border border-white/5 italic text-on-surface-variant text-body-md leading-relaxed">
                         "Based on general tournament guidelines (Ref: Rules v2.1), team locks typically occur at the start of Phase 2. However, explicit phrasing for 'Team Changes' post-Phase 1 is missing from the current CrowdMind repository."
                     </div>
 <div class="space-y-4">
 <div class="flex items-center justify-between text-label-sm font-label-sm">
 <span class="text-on-surface-variant">Confidence Meter</span>
-<span class="text-primary">72%</span>
+<span id="ai-draft-confidence-pct" class="text-primary">72%</span>
 </div>
 <div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
-<div class="h-full bg-primary w-[72%]"></div>
+<div id="ai-draft-confidence-bar" class="h-full bg-primary w-[72%]"></div>
 </div>
 </div>
 <div class="mt-8 pt-6 border-t border-white/5 flex items-center gap-3">
@@ -207,17 +207,17 @@ export const bodyHtml = `<!-- TopNavBar -->
 <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-4 tracking-wider">Analyzed Sources</h3>
 <div class="grid grid-cols-2 gap-3 mb-4">
 <div class="bg-surface-container-low p-3 rounded-lg border border-white/5">
-<div class="text-headline-md text-on-surface font-bold">42</div>
+<div class="text-headline-md text-on-surface font-bold" id="analysis-faqs-scanned">42</div>
 <div class="text-[10px] text-on-surface-variant uppercase">FAQs Scanned</div>
 </div>
 <div class="bg-surface-container-low p-3 rounded-lg border border-white/5">
-<div class="text-headline-md text-on-surface font-bold">18</div>
+<div class="text-headline-md text-on-surface font-bold" id="analysis-discussions-scanned">18</div>
 <div class="text-[10px] text-on-surface-variant uppercase">Discussions</div>
 </div>
 </div>
 <div class="space-y-2">
 <div class="text-[10px] text-on-surface-variant uppercase mb-1">Categories Matched:</div>
-<div class="flex flex-wrap gap-2">
+<div class="flex flex-wrap gap-2" id="analysis-categories-matched">
 <span class="bg-white/5 text-on-surface-variant text-[10px] px-2 py-0.5 rounded border border-white/10">Team Formation</span>
 <span class="bg-white/5 text-on-surface-variant text-[10px] px-2 py-0.5 rounded border border-white/10">Tournament Rules</span>
 </div>
@@ -226,7 +226,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <!-- Confidence Breakdown -->
 <div class="pt-6 border-t border-white/5">
 <h3 class="text-label-sm font-label-sm text-on-surface-variant uppercase mb-2 tracking-wider">Confidence Breakdown</h3>
-<p class="text-body-md text-on-surface-variant text-sm leading-relaxed">
+<p class="text-body-md text-on-surface-variant text-sm leading-relaxed" id="analysis-confidence-breakdown">
             High semantic match in Rules v2.1, but no specific team-change clause found in current thread history. 72% reflects uncertainty regarding post-Phase 1 flexibility.
         </p>
 </div>
@@ -238,10 +238,10 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="glass-card rounded-2xl p-10 flex flex-col items-center text-center max-w-4xl mx-auto border-t-2 border-t-primary/30 opacity-100">
 <span class="material-symbols-outlined text-primary text-5xl mb-6" style="font-variation-settings: 'FILL' 1;">psychology</span>
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Recommended Action</h2>
-<p class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-2xl">
+<p id="analysis-action-desc" class="text-on-surface-variant font-body-lg text-body-lg mb-10 max-w-2xl">
                     Our AI couldn't find a high-certainty answer. We recommend escalating this to the community experts or refining your parameters.
                 </p>
-<div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+<div id="analysis-action-buttons" class="flex flex-col sm:flex-row gap-4 w-full justify-center">
 <button class="bg-primary text-on-primary px-8 py-4 rounded-xl font-bold font-headline-md text-headline-md flex items-center justify-center gap-3 hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-primary/20">
 <span class="material-symbols-outlined">forum</span>
                         Create Discussion Thread
@@ -274,7 +274,7 @@ export const bodyHtml = `<!-- TopNavBar -->
 <div class="md:col-span-2">
 <div class="font-label-sm text-label-sm font-bold text-primary uppercase mb-6">Community</div>
 <ul class="space-y-3">
-<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Discussions</a></li>
+<li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="/discussions">Discussions</a></li>
 <li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Resources</a></li>
 <li><a class="text-on-surface-variant font-body-md text-body-md hover:text-secondary transition-colors" href="#">Events</a></li>
 </ul>
