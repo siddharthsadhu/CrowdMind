@@ -102,3 +102,15 @@ class DiscussionRepository:
         )
         await self.session.execute(stmt)
         await self.session.flush()
+
+    async def get_replies(self, discussion_id: str) -> "list[Reply]":
+        stmt = (
+            select(Reply)
+            .where(
+                Reply.discussion_id == uuid.UUID(discussion_id),
+                Reply.deleted_at.is_(None),
+            )
+            .order_by(Reply.created_at.asc())
+        )
+        result = await self.session.execute(stmt)
+        return list(result.scalars().all())

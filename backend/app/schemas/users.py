@@ -6,7 +6,7 @@ from app.schemas.base import BaseSchema
 
 class UserResponse(BaseSchema):
     id: str
-    clerk_user_id: str
+    clerk_user_id: str | None = None
     username: str
     email: str
     full_name: str

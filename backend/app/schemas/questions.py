@@ -15,6 +15,7 @@ class QuestionUpdate(BaseModel):
     description: str | None = None
     category_id: str | None = None
     status: str | None = None
+    ai_analysis_status: str | None = None
 
 
 class QuestionResponse(BaseSchema):

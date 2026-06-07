@@ -13,7 +13,7 @@ router = APIRouter(prefix="/api/v1/discussions", tags=["discussions"])
 
 
 def get_service(db: AsyncSession = Depends(get_db)) -> DiscussionService:
-    return DiscussionService(DiscussionRepository(db))
+    return DiscussionService(DiscussionRepository(db), db=db)
 
 
 @router.post("", response_model=DiscussionResponse, status_code=201)

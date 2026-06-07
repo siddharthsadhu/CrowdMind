@@ -2,11 +2,17 @@ from fastapi import HTTPException, status
 
 from app.repositories.discussions import DiscussionRepository
 from app.schemas.discussions import DiscussionCreate, DiscussionUpdate, DiscussionResponse, DiscussionListResponse
+from app.services.consensus import compute_consensus, persist_consensus_signal
+from app.services.evolution import record_event
+from app.services.synthesis import synthesize_from_discussion
+from app.models.faq import FaqCandidate
+import uuid
 
 
 class DiscussionService:
-    def __init__(self, repo: DiscussionRepository):
+    def __init__(self, repo: DiscussionRepository, db=None):
         self.repo = repo
+        self.db = db
 
     async def create(self, user_id: str, data: DiscussionCreate) -> DiscussionResponse:
         discussion = await self.repo.create(
@@ -74,4 +80,46 @@ class DiscussionService:
         await self.repo.accept_reply(reply_id)
         await self.repo.update(discussion_id, {"status": "ANSWERED"})
         updated = await self.repo.get_by_id(discussion_id)
+
+        if self.db is not None:
+            try:
+                all_replies = await self.repo.get_replies(discussion_id)
+                breakdown = await compute_consensus(self.db, updated, all_replies)
+                updated.consensus_score = breakdown.score
+                await self.repo.update(discussion_id, {"consensus_score": breakdown.score})
+                await persist_consensus_signal(
+                    self.db,
+                    str(updated.id),
+                    str(reply.id),
+                    breakdown,
+                )
+
+                candidate = await synthesize_from_discussion(self.db, updated, all_replies)
+                candidate_row = FaqCandidate(
+                    id=uuid.uuid4(),
+                    discussion_id=updated.id,
+                    generated_by_ai=not candidate.used_fallback,
+                    title=candidate.title,
+                    content=candidate.content,
+                    confidence_score=candidate.confidence_score,
+                    status="PENDING",
+                )
+                self.db.add(candidate_row)
+
+                await record_event(
+                    self.db,
+                    faq_id=str(updated.question_id) if updated.question_id else str(updated.id),
+                    event_type="DISCUSSION_SYNTHESIZED",
+                    description=(
+                        f"Auto-synthesis on accepted reply: '{updated.title}' "
+                        f"(consensus {breakdown.score}, confidence {candidate.confidence_score}%)"
+                    ),
+                    triggered_by=user_id,
+                )
+            except Exception as err:
+                import logging
+                logging.getLogger(__name__).warning(
+                    "[DiscussionService] accept-reply post-hooks failed: %s", err
+                )
+
         return DiscussionResponse.model_validate(updated)

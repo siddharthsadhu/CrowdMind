@@ -12,7 +12,11 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    clerk_user_id: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
+    # clerk_user_id is nullable: historical/demo fixture users (the 30 seed
+    # contributors) live in the DB with clerk_user_id = NULL because they have
+    # no real Clerk account. Real users who sign in via Clerk get their clerk
+    # user ID populated automatically by the auth dependency.
+    clerk_user_id: Mapped[str | None] = mapped_column(String, unique=True, nullable=True, index=True)
     username: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
     email: Mapped[str] = mapped_column(String, unique=True, nullable=False, index=True)
     full_name: Mapped[str] = mapped_column(String, nullable=False, default="")

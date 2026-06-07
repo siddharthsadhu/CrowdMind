@@ -16,11 +16,11 @@ router = APIRouter(prefix="/api/v1/faqs", tags=["faqs"])
 
 
 def get_candidate_service(db: AsyncSession = Depends(get_db)) -> FaqCandidateService:
-    return FaqCandidateService(FaqCandidateRepository(db))
+    return FaqCandidateService(FaqCandidateRepository(db), db=db)
 
 
 def get_published_service(db: AsyncSession = Depends(get_db)) -> PublishedFaqService:
-    return PublishedFaqService(PublishedFaqRepository(db))
+    return PublishedFaqService(PublishedFaqRepository(db), db=db)
 
 
 def get_version_service(db: AsyncSession = Depends(get_db)) -> FaqVersionService:
@@ -51,10 +51,11 @@ async def get_candidate(
 async def review_candidate(
     candidate_id: str,
     data: FaqCandidateReview,
+    user_id: str = Depends(require_auth),
     service: FaqCandidateService = Depends(get_candidate_service),
 ):
     parse_uuid(candidate_id, "candidate_id")
-    return await service.review(candidate_id, data.status)
+    return await service.review(candidate_id, data.status, reviewer_id=user_id)
 
 
 # --- Published FAQs ---

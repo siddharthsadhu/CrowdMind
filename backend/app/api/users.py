@@ -44,7 +44,7 @@ async def update_me(
     user: User = Depends(require_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    allowed = {"full_name", "bio", "avatar_url"}
+    allowed = {"full_name", "bio", "avatar_url", "username"}
     update_data = {k: v for k, v in data.items() if k in allowed}
     for key, value in update_data.items():
         setattr(user, key, value)
