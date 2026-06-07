@@ -21,6 +21,10 @@ _TEST_PRIVATE_PEM = _TEST_PRIVATE_KEY.private_bytes(
     encryption_algorithm=serialization.NoEncryption(),
 ).decode()
 
+# Expose the test signing key to app.core.security.create_test_token
+import os
+os.environ["TEST_JWT_PRIVATE_KEY"] = _TEST_PRIVATE_PEM
+
 
 @pytest_asyncio.fixture(autouse=True)
 async def setup_db():
