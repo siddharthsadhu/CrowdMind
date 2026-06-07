@@ -946,16 +946,49 @@ created_at TIMESTAMP
 ### Event Types
 
 ```text
-NEW_DISCUSSION
-
-CORRECTION
-
-CLARIFICATION
-
-COMMUNITY_REQUEST
-
-MODERATOR_UPDATE
+FAQ_PUBLISHED   -- initial publication
+FAQ_UPDATED     -- routine improvement
+ROLLBACK        -- reverted to a previous version
+CORRECTION      -- fixed an error
+CLARIFICATION   -- clarified ambiguous language
+COMMUNITY_REQUEST  -- changed due to community feedback
+MODERATOR_UPDATE   -- moderator-initiated change
 ```
+
+---
+
+### Phase 6.5+ Additions
+
+The following fields are appended to `faq_versions` and `faq_evolution_events` per the database standard:
+
+```sql
+deleted_at TIMESTAMP NULL
+updated_at TIMESTAMP
+updated_by UUID
+```
+
+The `EvolutionService.rollback()` action creates a NEW version pointing to the rolled-back content (auto-snapshot of current version is preserved as a separate version). It does not destroy history.
+
+---
+
+### Consensus Score (calculated, not stored)
+
+```text
+consensus_score =
+    (has_accepted_reply ? 30 : 0) +
+    (upvote_ratio * 30) +
+    (participant_diversity * 20) +
+    (avg_reputation * 20)
+```
+
+Where:
+
+- `has_accepted_reply` — 1 if discussion has an accepted reply, 0 otherwise
+- `upvote_ratio` — `upvotes / (upvotes + downvotes)` (0-1, multiplied by 30)
+- `participant_diversity` — `min(1, unique_participants / 5) * 20`
+- `avg_reputation` — `(sum_user_reputations / participants) / 1000 * 20` (capped at 20)
+
+Range: 0-100. Threshold for auto-synthesis: 60.
 
 ---
 

@@ -528,6 +528,16 @@ Tasks:
 * Version history tracking
 * Evolution timeline visualization
 * Frontend: EvolutionPage
+* Backend: ai_provider, consensus, synthesis, evolution services
+* 7 evolution endpoints (`/evolution/*`, `/faqs/{id}/rollback`, `/discussions/{id}/synthesize`)
+* Diff viewer (admin-only, Q8=B)
+* Rollback (admin-only, non-destructive)
+* Auto-synthesis on accept-reply (consensus ≥ 60)
+* 23 new pytest cases (4 consensus + 4 synthesis + 11 evolution + 4 question_analysis)
+* 193 data-cm-* template hooks (defense-in-depth)
+* 22/23 browser + 30/31 public + 70/70 pytest all green
+
+**Status: COMPLETE (Phase 6.5–6.9, 2026-06-07)**
 
 ---
 

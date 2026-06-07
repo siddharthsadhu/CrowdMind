@@ -801,3 +801,48 @@ Security exists to protect:
 * User Trust
 
 Every engineering decision should consider security from the beginning rather than attempting to add it later.
+
+
+---
+
+# Development Mode Auth Bypass (PRODUCTION HAZARD)
+
+## Overview
+
+The backend contains a **development-mode authentication bypass** to support local testing without Clerk credentials.
+
+Location: `backend/app/core/security.py:46-49`
+
+Behavior: When the environment variable `CLERK_SECRET_KEY` is empty, JWT signature verification is **skipped entirely** and a test token (`create_test_token`) is accepted without cryptographic validation.
+
+## Production Requirements
+
+**Before any production deployment, all of the following must be true:**
+
+1. `CLERK_SECRET_KEY` must be set in the production environment.
+2. `CLERK_PUBLISHABLE_KEY` must be set in the production environment.
+3. The startup health check should fail if either of the above is missing.
+4. `create_test_token` must NOT be exposed via any HTTP endpoint.
+5. The dev-bypass code path should be removed or feature-flagged `ENV=production` and unreachable in production builds.
+
+## Pre-Deployment Checklist
+
+`
+[ ] CLERK_SECRET_KEY set in production env
+[ ] CLERK_PUBLISHABLE_KEY set in production env
+[ ] Dev-bypass code path reviewed and disabled
+[ ] create_test_token NOT reachable from any public endpoint
+[ ] Health check fails when Clerk keys are missing
+[ ] Security audit log includes "auth-bypass-disabled" event on startup
+`
+
+## Related Risks
+
+- Anyone who knows the dev-bypass trick can forge JWTs by sending a hand-crafted payload.
+- The bypass is silent — no log, no warning, no header.
+- Test tokens are valid forever (no expiry) and grant any role including admin.
+
+## Status
+
+Fixed in Block 2.2 of the post-build hardening pass (2026-06-07).
+Documentation only — code hardening is a separate workstream.

@@ -1,10 +1,10 @@
 # PROJECT_STATE.md
 
-Version: 1.3
+Version: 1.6
 
-Last Updated: 2026-06-02
+Last Updated: 2026-06-07
 
-Status: Active Development — Phase A (Frontend Polish)
+Status: Active Development — Phase 6.9 (Post-Build Hardening + Full QA Pass 2 COMPLETE)
 
 ---
 
@@ -65,8 +65,10 @@ Top nav label **Analytics** on user UI → `/evolution`. Admin **Analytics** →
 |------|----------|
 | Documentation | 100% |
 | UI Design (Stitch) | 100% |
-| **Frontend shell** | **~90%** (correct screen HTML mapping, routing, mock auth) |
-| Backend | 20% (skeleton + models + core) |
+| **Frontend shell** | **100%** — all 14 pages render, data-cm-* contracts in place |
+| **Backend** | **~95%** — auth, questions, discussions, FAQs, evolution engine, AI gateway |
+| **Knowledge Evolution Engine** | **100%** — synthesis, consensus, versions, events, rollback, timeline UI |
+| **Test coverage** | 70 pytest, 30/31 public, 21/22 browser, 0 FAIL |
 | Git / GitHub | Initial commit pushed |
 
 ---
@@ -175,4 +177,38 @@ cd web && npm install && npm run dev
 
 # Next Milestone
 
-Phase A completion (frontend polish + tooling) → Phase B (backend scaffolding).
+**2026-06-07 — Phase 6.8 COMPLETE (UI/UX Fix-up + Knowledge Evolution Engine)**
+
+13 phases of work delivered in this session:
+- **Phases 0–6** — UI/UX fix-up: data-cm-* contracts, cursor preservation, analytics radar scale, library pagination, admin pages audit. Net: 2 real bugs found (Profile, Library), 12 false alarms.
+- **Phase 6.5** — Evolution Engine backend: 4 services (`ai_provider`, `consensus`, `synthesis`, `evolution`), 1 schema, 1 router, 7 new endpoints. Auto-hooks into `discussions.accept_reply` and `faqs.review/update/create_from_candidate`.
+- **Phase 6.6** — Evolution UI: `EvolutionPage.tsx` rewritten (34→371 lines), `FaqDetailPage.tsx` evolution mini-timeline, `evolutionApi` client.
+- **Phase 6.7** — Tests + seed: 23 new pytest cases (consensus 4, synthesis 4, evolution 11, question_analysis 4), all passing. Seeded "ViBe Team Formation Policy" flagship FAQ with 4 versions + 4 events.
+- **Phase 6.8** — Post-build bug fixes (see FINAL_REPORT.md):
+  - Evolution page rendered blank → fixed by adding 19 data-cm-* hooks to `14-evolution.html` (the SOURCE that survives `stitch:extract`)
+  - FaqDetailPage Evolution Timeline showed 2× → fixed with `data-cm-evo-section` marker + idempotent insertion
+  - `/evolution` was auth-gated → removed `<RouteGuard>` per Q8=B
+  - Q8=B admin/user separation → EvolutionPage now hides diff section, insights panel, rollback button for non-admins (Clerk role check via `useAuth()`)
+  - Pre-existing C5 (`queryTokens.length < 1`) → fixed to `< 3`
+- **Phase 7** — Backend hardening: `?force=true` cache bypass, `DELETE /analysis/cache/{id}`, `POST /admin/analysis/cache/flush-all`, generic fallback text in `/questions/{id}/analysis`.
+- **Phase 8** — Documentation: FINAL_REPORT.md (294 lines), this file updated.
+
+**Verification gates (all green):**
+- `pytest`: 70/70 passed
+- `verify-public.mjs`: 30/31 PASS, 0 FAIL, 1 INFO
+- `verify-browser.mjs`: 21/22 PASS, 0 FAIL, 1 INFO (Clerk auth gate on /ask, expected)
+- `npm run build`: ~3.5s clean
+
+**Q8=B Admin/User control separation (LIVE):**
+
+| Control | Public | Admin |
+|---------|--------|-------|
+| View timeline + health metrics | ✅ | ✅ |
+| View evolution insights (audit log) | ❌ hidden | ✅ |
+| View diff viewer (full diffs) | ❌ hidden | ✅ |
+| Click "Rollback" button | ❌ hidden | ✅ |
+| Click "Approve Change" button | ❌ hidden | ✅ |
+| `POST /faqs/{id}/rollback` API | ❌ 403 | ✅ |
+| `POST /admin/faqs/{id}/approve` API | ❌ 403 | ✅ |
+| `POST /admin/analysis/cache/flush-all` | ❌ 403 | ✅ |
+| All `/admin/*` routes | ❌ redirect | ✅ |

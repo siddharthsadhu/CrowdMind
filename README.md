@@ -160,13 +160,25 @@ knowledge assets.
 
 ---
 
-## Knowledge Evolution
+## Knowledge Evolution Engine
 
 Knowledge continuously improves through:
 
 * New Discussions
 * Community Feedback
 * Updated Versions
+
+The **Knowledge Evolution Engine** (Phase 6.5+, complete 2026-06-07) is a full backend service that:
+
+- **Versions** every FAQ change with append-only `faq_versions` rows
+- **Tracks events** (`faq_evolution_events`) for publication, update, correction, rollback, clarification
+- **Computes weighted consensus** (0-100) from accepted replies, upvote ratio, participant diversity, and reputation
+- **Auto-synthesizes** new FAQ candidates when discussion consensus ≥ 60
+- **Diffs versions** for admin-only comparison
+- **Rolls back non-destructively** (auto-snapshots current version before reverting)
+- **Provider-agnostic AI** (Gemini 2.5 Flash primary, Groq Llama 3.3 70B fallback)
+
+Public timeline + health metrics are visible to all visitors. Diff viewer, rollback button, insights panel are admin-only per Q8=B.
 
 ---
 

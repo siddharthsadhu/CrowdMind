@@ -1142,3 +1142,131 @@ The ultimate source of truth remains:
 ```text id="m1v6zp"
 Community Validated Knowledge
 ```
+
+
+---
+
+# Phase 6.5+ AI Services (Implementation Detail)
+
+## Provider-Agnostic AI Service
+
+Location: `backend/app/services/ai_provider.py`
+
+Interface:
+
+```python
+async def call_ai(prompt: str, *, json_mode: bool = False, max_tokens: int = 1024) -> dict:
+    """Call the active AI provider with automatic fallback.
+    Returns: { text, provider, used_fallback, latency_ms }
+    """
+```
+
+Provider priority:
+
+1. **Google Gemini 2.5 Flash** — primary
+2. **Groq (Llama 3.3 70B Versatile)** — fallback on Gemini failure (rate limit, network, timeout)
+
+Failure mode:
+
+- If both providers fail, returns `{ text: "", used_fallback: true, error: "..." }`
+- The caller is expected to handle the empty text gracefully (return a generic fallback response, log the error, and emit a metric)
+
+## Consensus Service
+
+Location: `backend/app/services/consensus.py`
+
+Function:
+
+```python
+async def calculate_consensus(discussion: Discussion) -> float:
+    """Weighted consensus score 0-100.
+    Formula:
+      consensus = (has_accepted_reply * 30)
+                + (upvote_ratio * 30)
+                + (participant_diversity * 20)
+                + (avg_reputation * 20)
+    """
+```
+
+Used by: `synthesis.py` (decides if consensus is high enough to trigger auto-synthesis).
+
+## Synthesis Service
+
+Location: `backend/app/services/synthesis.py`
+
+Function:
+
+```python
+async def synthesize_faq_from_discussion(
+    discussion: Discussion,
+    db: AsyncSession,
+    *,
+    force: bool = False,
+) -> FaqCandidate | None:
+    """Generate a FAQ candidate from a discussion's accepted reply.
+    Returns None if consensus < threshold and force is False.
+    """
+```
+
+Workflow:
+
+1. Compute consensus score
+2. If consensus < 60 and not force → return None (no candidate)
+3. Build prompt: accepted reply + community agreement + discussion context
+4. Call `call_ai()` with JSON mode
+5. Parse response into a `FaqCandidate` draft
+6. Save to DB, return the candidate
+
+Hallucination guardrails:
+
+- Source = accepted reply text (required)
+- Community quote = highest-upvoted reply
+- LLM only summarizes and rephrases
+- Output flagged `used_fallback` if AI provider failed
+
+## Evolution Service
+
+Location: `backend/app/services/evolution.py`
+
+Functions:
+
+```python
+async def get_timeline(faq_id: UUID) -> dict:
+    """Returns { timeline: [versions], events: [events], current_version: int }"""
+
+async def get_diff(faq_id: UUID, from_v: int, to_v: int) -> dict:
+    """Returns unified-diff style hunks between two versions."""
+
+async def record_event(faq_id: UUID, event_type: str, description: str, user_id: UUID | None = None) -> EvolutionEvent:
+    """Append an EvolutionEvent to the timeline (idempotent on type+timestamp)."""
+
+async def rollback(faq_id: UUID, target_version: int, reason: str, user_id: UUID) -> dict:
+    """Non-destructive rollback: auto-snapshots current, reverts to target_version.
+    Creates a new FaqVersion + EvolutionEvent.
+    """
+```
+
+## Knowledge Evolution Pipeline
+
+```
+Discussion
+    ↓
+Reply Accepted
+    ↓
+ConsensusService.calculate_consensus()  → score
+    ↓ ≥ 60
+SynthesisService.synthesize_faq_from_discussion()
+    ↓
+AI Provider (Gemini → Groq fallback)
+    ↓
+FaqCandidate (status = PENDING)
+    ↓
+Moderator Review
+    ↓
+PublishedFaq
+    ↓
+EvolutionService.record_event("FAQ_PUBLISHED")
+    ↓
+Visible on /evolution page
+```
+

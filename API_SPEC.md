@@ -855,6 +855,146 @@ Public.
 
 ---
 
+## Get FAQ Version Diff
+
+```http
+GET /evolution/diff/{faq_id}?from=1&to=4
+```
+
+Returns unified-diff style hunks between two FAQ versions.
+
+Auth: Public (read-only).
+
+Response:
+
+```json
+{
+  "faq_id": "uuid",
+  "from_version": 1,
+  "to_version": 4,
+  "from_title": "ViBe Team Formation Policy v1",
+  "to_title": "ViBe Team Formation Policy v4",
+  "hunks": [
+    {
+      "field": "answer",
+      "op": "modified",
+      "old_value": "Teams were fixed post-Phase 1...",
+      "new_value": "Self-formation is the default; faculty intervenes when self-formation fails..."
+    }
+  ],
+  "change_summary": "Made self-formation the default; added NOC requirement"
+}
+```
+
+---
+
+## Get FAQ Versions
+
+```http
+GET /faqs/{faq_id}/versions
+```
+
+Returns paginated version history for a FAQ.
+
+Auth: Public.
+
+---
+
+## Rollback FAQ Version (Admin only)
+
+```http
+POST /faqs/{faq_id}/rollback
+```
+
+Request:
+
+```json
+{ "target_version": 2, "reason": "v4 introduced regression in team size policy" }
+```
+
+Response:
+
+```json
+{
+  "faq_id": "uuid",
+  "rolled_back_from": 4,
+  "rolled_back_to": 2,
+  "new_version": 5,
+  "auto_snapshot_id": "uuid",
+  "rollback_event_id": "uuid"
+}
+```
+
+Auth: **Admin** (403 otherwise). Non-destructive — auto-snapshots the current version before reverting.
+
+Errors:
+
+* `400` — `target_version` does not exist
+* `404` — FAQ not found
+* `403` — caller is not admin
+
+---
+
+## Synthesize FAQ from Discussion (Admin only)
+
+```http
+POST /discussions/{discussion_id}/synthesize
+```
+
+Triggers AI synthesis of an accepted-reply into a new FAQ candidate or version.
+
+Auth: **Admin**.
+
+Response:
+
+```json
+{
+  "discussion_id": "uuid",
+  "synthesized_faq_id": "uuid",
+  "candidate_id": "uuid",
+  "consensus_score": 87.5,
+  "used_fallback": false
+}
+```
+
+---
+
+## Flush All Analysis Cache (Admin only)
+
+```http
+POST /admin/analysis/cache/flush-all
+```
+
+Auth: **Admin**.
+
+---
+
+## Delete Analysis Cache Entry (Admin only)
+
+```http
+DELETE /admin/analysis/cache/{question_id}
+```
+
+Auth: **Admin**.
+
+---
+
+## Question Analysis with Force Refresh
+
+```http
+POST /questions/analyze?force=true
+```
+
+Request body: `QuestionAnalysisRequest` (text, categories, context)
+
+Auth: Authenticated user.
+
+When `force=true`, the analysis cache is bypassed and a fresh Gemini call is made. On Gemini failure, Groq is tried as fallback. On both failures, a generic response with `used_fallback=true` is returned.
+
+---
+
+---
+
 # Search APIs
 
 Base Route:

@@ -1055,3 +1055,61 @@ Recoverable
 ```
 
 before reaching users.
+
+
+---
+
+# Pre-Deployment Checklist (Phase 6.9)
+
+Before deploying to production, verify the following items are completed.
+
+## Environment Variables
+
+- [ ] CLERK_SECRET_KEY is set to a production Clerk secret
+- [ ] CLERK_PUBLISHABLE_KEY is set to a production Clerk publishable key
+- [ ] NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is set to the same production value
+- [ ] APP_ENV=production (NOT development)
+- [ ] DATABASE_URL points to production Postgres
+- [ ] GEMINI_API_KEY is set
+- [ ] GROQ_API_KEY is set (for fallback)
+- [ ] No .env file is committed to git
+
+## Security
+
+- [ ] ackend/app/core/security.py dev-bypass path is unreachable (verify CLERK_SECRET_KEY is non-empty)
+- [ ] create_test_token is not exposed via any public endpoint
+- [ ] All admin endpoints (POST /faqs/{id}/rollback, POST /discussions/{id}/synthesize, /admin/*) require admin role server-side
+- [ ] CORS allows only the production frontend origin
+- [ ] HTTPS is enforced
+
+## Database
+
+- [ ] 
+pm run db:migrate (or equivalent) has been run
+- [ ] seed.py has been run
+- [ ] seed_evolution_demo.py has been run (optional, creates the flagship ViBe FAQ)
+- [ ] pgvector extension is enabled in production DB
+
+## Frontend
+
+- [ ] 
+pm run build completes in < 5s with 0 errors
+- [ ] data-cm-* attribute count: 193 (run grep -rh "data-cm-" web/public/stitch-ref/*.html | wc -l)
+- [ ] 
+ode verify-public.mjs reports 31/31 PASS
+- [ ] 
+ode verify-browser.mjs reports 22/23 PASS (test 19 /ask is INFO by design)
+
+## Backend
+
+- [ ] python -m pytest reports 70/70 PASS
+- [ ] Health check (/health) returns 200
+- [ ] All 7 evolution endpoints return 401 for unauthenticated requests
+- [ ] Admin endpoints return 403 for non-admin requests
+
+## Observability
+
+- [ ] Logs are structured (JSON) and shipped to a central log store
+- [ ] Error tracking (Sentry or equivalent) is configured
+- [ ] Uptime monitoring is active on /health
+- [ ] Alert on auth-bypass activation (should never fire in production)

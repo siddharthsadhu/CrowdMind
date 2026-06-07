@@ -2582,3 +2582,70 @@ The architecture prioritizes:
 Every future engineering decision must align with these principles.
 
 This document serves as the definitive technical architecture reference for the CrowdMind platform.
+
+
+---
+
+# Phase 6.5+ Architecture Additions
+
+## New Services (under `backend/app/services/`)
+
+```
+backend/app/services/
+├── ai_provider.py     # Provider-agnostic AI gateway (Gemini → Groq fallback)
+├── consensus.py       # Weighted consensus scoring (0-100)
+├── synthesis.py       # FAQ candidate generation from discussions
+├── evolution.py       # Version timeline, events, diff, rollback
+├── faqs.py            # (existing) Updated to record evolution events
+└── discussions.py     # (existing) Updated to trigger synthesis on accept-reply
+```
+
+## New API Router
+
+```
+backend/app/api/evolution.py   # 7 endpoints:
+  GET    /evolution/timeline/{faq_id}
+  GET    /evolution/events
+  GET    /evolution/diff/{faq_id}?from=&to=
+  GET    /faqs/{faq_id}/versions
+  POST   /faqs/{faq_id}/rollback              (admin)
+  POST   /discussions/{id}/synthesize         (admin)
+  POST   /admin/analysis/cache/flush-all      (admin)
+  DELETE /admin/analysis/cache/{question_id}  (admin)
+```
+
+## Frontend Service
+
+```
+web/src/services/api/evolution.ts   # TypeScript client for /evolution/*
+```
+
+## New UI Page
+
+```
+web/src/pages/user/EvolutionPage.tsx  # Public timeline + admin-only diff/rollback
+```
+
+## Database Tables (no migrations needed — tables existed)
+
+- `faq_versions` — version history (extended with `updated_at`, `updated_by`, `deleted_at`)
+- `faq_evolution_events` — event log (extended with same audit fields)
+- `reputation_history` — used for consensus calculation
+- `discussions`, `replies`, `votes` — read for consensus scoring
+
+## Frontend Contract: `data-cm-*` attributes
+
+Every dynamic DOM injection is gated on a `data-cm-*` attribute present in the source Stitch template. The `npm run stitch:extract` step regenerates `web/src/stitch-content/*.ts` from `web/public/stitch-ref/*.html`, so all dynamic hooks must live in the `.html` files.
+
+Total `data-cm-*` attribute contract coverage (after Phase 6.9):
+
+| File | Count |
+|---|---|
+| 03-faq-detail.html | 61 |
+| 08-thread.html | 28 |
+| 10-profile.html | 16 |
+| 12-saved.html | 3 |
+| 14-evolution.html | 26 |
+| 18-analytics.html | 59 |
+| **Total** | **193** |
+

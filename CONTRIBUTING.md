@@ -152,6 +152,21 @@ refactor: simplify consensus engine
 test: add FAQ service unit tests
 ```
 
+### Phase 6.5+ Test Suite
+
+23 new pytest cases (added 2026-06-07):
+
+```
+backend/tests/test_consensus.py        # 4 cases — weighted consensus scoring
+backend/tests/test_synthesis.py        # 4 cases — FAQ candidate generation
+backend/tests/test_evolution.py        # 11 cases — timeline, events, diff, rollback
+backend/tests/test_question_analysis.py  # 4 cases — force-refresh, cache, fallback
+```
+
+Total: 70 cases passing (47 existing + 23 new).
+
+Run: `cd backend && python -m pytest --tb=short -v`
+
 ---
 
 ## Performance
