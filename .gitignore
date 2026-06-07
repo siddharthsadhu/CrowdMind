@@ -19,3 +19,18 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Logs and runtime artifacts
+*.log
+*.err
+backend.log
+backend.err
+frontend.log
+frontend.err
+backend/.coverage
+.coverage
+htmlcov/
+
+# Ephemeral QA screenshot dumps (only the tracked phase-* dirs are kept)
+verification-screenshots/browser/
+verification-screenshots/final/
